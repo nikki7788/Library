@@ -1,0 +1,21 @@
+﻿/*برای ریست کردن صفحه*/
+*{
+    margin:0;
+    padding:0;
+    border:0;
+}
+/*برای ریست کردن صفحه وکلاس مربوط  در وت استرپ*/
+.container-fluid{
+    margin:0 auto !important;
+    padding:0;
+}
+
+#brand-icon{
+    width:26px;
+    height:26px;
+}
+#topline{
+    width:100%;
+    height:2px;
+    background-color:blue;
+}
