@@ -12669,11 +12669,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Click Site Client Project\\LIbrary\\Library Project\\Library Project\\Library Project.csproj",
+      "projectUniqueName": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\Library Project.csproj",
       "projectName": "Library Project",
-      "projectPath": "D:\\Click Site Client Project\\LIbrary\\Library Project\\Library Project\\Library Project.csproj",
+      "projectPath": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\Library Project.csproj",
       "packagesPath": "C:\\Users\\sarir\\.nuget\\packages\\",
-      "outputPath": "D:\\Click Site Client Project\\LIbrary\\Library Project\\Library Project\\obj\\",
+      "outputPath": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

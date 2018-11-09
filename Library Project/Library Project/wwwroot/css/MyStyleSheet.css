@@ -1,21 +1,92 @@
 ﻿/*برای ریست کردن صفحه*/
-*{
-    margin:0;
-    padding:0;
-    border:0;
-}
-/*برای ریست کردن صفحه وکلاس مربوط  در وت استرپ*/
-.container-fluid{
-    margin:0 auto !important;
-    padding:0;
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
-#brand-icon{
-    width:26px;
-    height:26px;
+/*برای ریست کردن صفحه وکلاس مربوط  در وت استرپ*/
+.container-fluid , .container {
+    /*margin: 0 auto !important;*/
+    padding: 0;
 }
-#topline{
-    width:100%;
-    height:2px;
-    background-color:blue;
+
+a {
+    text-align: center;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+#brand-icon {
+    width: 26px;
+    height: 26px;
+}
+
+#topline {
+    width: 100%;
+    height: 2px;
+    background-color: blue;
+}
+
+body {
+    background-image: url(../images/background2.jpeg)
+}
+
+.divStyle {
+    border: 1px solid rgb(220,220,200);
+    border-radius: 2px;
+    background-color: whitesmoke;
+}
+
+.div-header {
+    color: rgb(0,0,200);
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.my-hr {
+    border: 1px solid green;
+    border-radius: 15px;
+    margin: 8px auto;
+    width: 100%;
+}
+
+.minhr {
+    background-color: rgb(200,200,225);
+    margin: 6px 15px;
+    border-radius: 8px;
+    height: 1px;
+}
+
+.newsPartial {
+    padding: 10px 8px;
+}
+
+    .newsPartial img {
+        border-radius: 45px;
+        border: 1px solid rgb(200,200,20);
+    }
+
+    .newsPartial a {
+        color: black;
+    }
+
+    .newsPartial span:hover {
+        color: green;
+    }
+
+    .newsPartial span {
+        margin-right: 10px;
+        font-size: 14px;
+        color: black;
+    }
+
+#right-panel-lastnews {
+    margin-bottom: 10px;
+}
+
+#main-div{
+    margin-top:15px;
 }
