@@ -6,7 +6,7 @@
 }
 
 /*برای ریست کردن صفحه وکلاس مربوط  در وت استرپ*/
-.container-fluid , .container {
+.container-fluid, .container {
     /*margin: 0 auto !important;*/
     padding: 0;
 }
@@ -31,7 +31,7 @@ a {
 }
 
 body {
-    background-image: url(../images/background2.jpeg)
+    background-image: url(../images/background2.jpeg);
 }
 
 .divStyle {
@@ -43,7 +43,7 @@ body {
 .div-header {
     color: rgb(0,0,200);
     margin-right: 10px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .my-hr {
@@ -76,10 +76,18 @@ body {
     .newsPartial span:hover {
         color: green;
     }
-
-    .newsPartial span {
+    /*دیو کلی با کلاس
+        newspartial
+        داخل ان دیو فرزند مستفیم ان که کلاس
+        div-header
+        دارد.
+        سپس اولین دیو بعد از دیو با کلاس
+        div header
+        اسپن های داخل ان
+            */
+    .newsPartial > div.div-header + div span {
         margin-right: 10px;
-        font-size: 14px;
+        font-size: 13px;
         color: black;
     }
 
@@ -87,6 +95,21 @@ body {
     margin-bottom: 10px;
 }
 
-#main-div{
-    margin-top:15px;
+#main-div {
+    margin-top: 15px;
+}
+
+
+.book-hr {
+    border: 1px solid rgb(200,200,220);
+    width: 90%;
+    margin: 8px auto;
+    border-radius: 15px;
+}
+#main-last-book{
+    border-radius:2px;
+    background-color:white;
+    border:1px solid rgb(220,220,200);
+    margin-bottom:15px;
+    font-size:14px;
 }

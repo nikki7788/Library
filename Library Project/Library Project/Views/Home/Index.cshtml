@@ -21,12 +21,7 @@
 
                 @* استفاده از پارشیال ویو *@
                 @Html.Partial("_LastNewsPartial")
-
-
-
             </div>  @*end right-panel-lastnews*@
-
-
 
             <!--start right-panel-user-->
             <div id="right-panel-lastregisteruser" class="divStyle">
@@ -35,9 +30,6 @@
 
             </div>  @*End right-panel-user*@
 
-
-
-
         </div> @*end main-right-panel*@
 
 
@@ -45,7 +37,8 @@
         <!--start main-content-->
         @*برای این است که مطمین شویم این دیو حتا سمت چپ میماند float-left*@
         <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 float-left" style="background-color:#b6ff00">
-            div-main
+
+        @Html.Partial("_LastBookPartial")
 
 
         </div>  @*End main-content*@
