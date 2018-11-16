@@ -12659,6 +12659,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Microsoft.AspNetCore.All >= 2.0.9",
+      "Microsoft.EntityFrameworkCore.Tools >= 2.0.3",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
@@ -12669,9 +12670,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\Library Project.csproj",
-      "projectName": "Library Project",
-      "projectPath": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\Library Project.csproj",
+      "projectUniqueName": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\Library.csproj",
+      "projectName": "Library",
+      "projectPath": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\Library.csproj",
       "packagesPath": "C:\\Users\\sarir\\.nuget\\packages\\",
       "outputPath": "D:\\MVC Projects\\GitHub\\Library-project\\Library Project\\Library Project\\obj\\",
       "projectStyle": "PackageReference",
@@ -12706,6 +12707,12 @@
           "Microsoft.AspNetCore.All": {
             "target": "Package",
             "version": "[2.0.9, )"
+          },
+          "Microsoft.EntityFrameworkCore.Tools": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",

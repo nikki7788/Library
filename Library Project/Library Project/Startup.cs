@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Library.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Library_Project
+namespace Library
 {
     public class Startup
     {
@@ -22,6 +25,16 @@ namespace Library_Project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            //Define Connection String
+            services.AddDbContext<ApplicationDbContext>(option =>
+            option.UseSqlServer(Configuration.GetConnectionString("default-connection")));
+
+            //as to create and use identity in the database
+            services.AddIdentity < ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
