@@ -31,7 +31,7 @@ namespace Library
             option.UseSqlServer(Configuration.GetConnectionString("default-connection")));
 
             //as to create and use identity in the database
-            services.AddIdentity < ApplicationUser, ApplicationRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -52,8 +52,23 @@ namespace Library
 
             app.UseStaticFiles();
 
+            //app.UseAuthentication() is replaced with app.UseIdentity() because this method,app.UseIdentity, will be removed in a future version.
+            app.UseAuthentication();
+
+
             app.UseMvc(routes =>
             {
+                //new Area for admin
+                routes.MapRoute(
+                   name: "Admin",
+                   template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+
+                //new Area for User
+                routes.MapRoute(
+                    name: "UserProfile",
+                    template: "{area:exists}/{controller=UserProfile}/{action=Index}/{id?}");
+
+                //traditional routing
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
