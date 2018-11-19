@@ -1,0 +1,52 @@
+﻿<!-- we must add_viewImports to the Areas-admin-views as to be recognize by the views in this Area  -->
+<!-- we must use the IEnumerable <> type becaue we defined a list of view Model -->
+@model IEnumerable<UserListViewModel>
+@{
+
+    ViewData["Title"] = "لیست کاربران";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card mt-3">
+    <div class="card-header bg-primary text-light">لیست کاربران</div>
+    <div class="card-body">
+        <div class="btn-group">
+            <a class="btn btn-primary" id="show-add-user" data-toggle="modal" asp-action="AddUser">
+                <i class="fa fa-plus"></i>
+                <span> افزودن کاربر</span>
+            </a>
+        </div>
+        <div></div>
+        <table class="mt-3 table table-bordered table-striped table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>نام و نام خانوادگی</th>
+                    <th>ایمیل</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>
+                        <td>
+                            <a class="btn btn-info " id="show-edit-user" data-toggle="modal" asp-action="EditUser">
+                                <i class="fa fa-pen"></i>
+                                <span>ویرایش</span>
+                            </a>
+                            <a class="btn btn-danger " id="show-delete-user" data-toggle="modal" asp-action="DeleteUser">
+                                <i class="fa fa-trash"></i>
+                                <span>حذف</span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
