@@ -13,5 +13,14 @@ namespace Library.Models
         {
 
         }
+
+        #region#######---------------------    Tables    ----------------------------########
+        public DbSet<Author> Authors { get; set; }
+
+        public DbSet<BookGroup> BookGroups { get; set; }
+
+        public DbSet<Book> Books { get; set; }
+        #endregion
+
     }
 }
