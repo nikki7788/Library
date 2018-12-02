@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Library.Models
 {
+
+    /// <summary>
+    /// نویسنده ها
+    /// Authors
+    /// </summary>
     public class Author
     {
         [Key]

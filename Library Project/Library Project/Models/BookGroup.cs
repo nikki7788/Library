@@ -16,8 +16,10 @@ namespace Library.Models
         [Key]
         public int BookGroupId { get; set; }
 
+        [Display(Name ="نام گروه")]
         public string BookGroupName { get; set; }
 
+        [Display(Name ="توضیحات گروه")]
         public string BookGroupDescription { get; set; }
 
     }

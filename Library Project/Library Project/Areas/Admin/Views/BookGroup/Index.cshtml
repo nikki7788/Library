@@ -1,0 +1,52 @@
+﻿
+@model IEnumerable<BookGroup>
+
+@{
+    ViewData["Title"] = "لیست گروه بندی کتابها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mt-3">
+    <div class="card-header bg-primary text-light">لیست گروه بندی کتابها</div>
+    <div class="card-body">
+        <div >
+            <a class="btn btn-primary" data-toggle="modal" asp-action="AddBookGroup">
+                <i class="fa fa-plus"></i>
+                <span>افزودن گروه کتاب</span>
+            </a>
+        </div>
+
+        <table class="table table-striped table-sm table-bordered mt-3">
+            <thead>
+                <tr>
+                    <!-- Html Helper for dynamic implementing the property titles of the table(class= @@model IEnumerable<BookGroup>)-->
+                    <th>@Html.DisplayNameFor(model => model.BookGroupName)</th>
+                    <th>@Html.DisplayNameFor(model => model.BookGroupDescription)</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.BookGroupName</td>
+                        <td>@item.BookGroupDescription</td>
+                        <td>
+                            <a class="btn btn-info" data-toggle="modal" asp-action="EditBookGroup">
+                                <i class="fa fa-pen"></i>
+                                <span>ویرایش</span>
+                            </a>
+                            <a class="btn btn-danger" data-toggle="modal" asp-action="DeleteBookGroup">
+                                <i class="fa fa-pen"></i>
+                                <span>حذف</span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
