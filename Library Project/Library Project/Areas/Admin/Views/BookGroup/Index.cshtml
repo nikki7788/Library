@@ -10,7 +10,7 @@
     <div class="card-header bg-primary text-light">لیست گروه بندی کتابها</div>
     <div class="card-body">
         <div >
-            <a class="btn btn-primary" data-toggle="modal" asp-action="AddBookGroup">
+            <a class="btn btn-primary" data-toggle="modal" id="show-add-bookgroup" asp-action="AddBookGroup">
                 <i class="fa fa-plus"></i>
                 <span>افزودن گروه کتاب</span>
             </a>
@@ -32,12 +32,12 @@
                         <td>@item.BookGroupName</td>
                         <td>@item.BookGroupDescription</td>
                         <td>
-                            <a class="btn btn-info" data-toggle="modal" asp-action="EditBookGroup">
+                            <a class="btn btn-info" data-toggle="modal"  id="show-edit-bookgroup" asp-action="EditBookGroup">
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
-                            <a class="btn btn-danger" data-toggle="modal" asp-action="DeleteBookGroup">
-                                <i class="fa fa-pen"></i>
+                            <a class="btn btn-danger" data-toggle="modal"  id="show-delete-bookgroup" asp-action="DeleteBookGroup">
+                                <i class="fa fa-trash"></i>
                                 <span>حذف</span>
                             </a>
                         </td>

@@ -16,8 +16,10 @@ namespace Library.Models
         [Key]
         public int AuthorId { get; set; }
 
-        public string aAuthorName { get; set; }
+        [Display(Name ="نام نویسنده")]
+        public string AuthorName { get; set; }
 
+        [Display(Name ="توضیحات نویسنده")]
         public string AuthorDescription { get; set; }
     }
 }

@@ -13,14 +13,14 @@
     </div>
     <div class="card-body">
         <div class="btn-group">
-            <a class="btn btn-primary" id="show-add-user" data-toggle="modal" asp-action="AddRole">
+            <a class="btn btn-primary" id="show-add-role" data-toggle="modal" asp-action="AddRole">
                 <i class="fa fa-plus"></i>
                 <span> افزودن نقش جدید</span>
             </a>
         </div>
         <div></div>
         <table class="table table-striped table-bordered table-sm mt-3">
-            <thead class="table-light ">
+            <thead class="thead-light ">
                 <tr>
                     <th>نام نقش</th>
                     <th>توضیحات</th>
@@ -37,11 +37,11 @@
                         <td>@item.NumberOfUsers</td>
                         <td>
                             <div>
-                                <a class="btn btn-info" id="show-edit-user" data-toggle="modal" asp-action="EditRole">
+                                <a class="btn btn-info" id="show-edit-role" data-toggle="modal" asp-action="EditRole">
                                     <i class="fa fa-pen"></i>
                                     <span>ویرایش نقش</span>
                                 </a>
-                                <a class="btn btn-danger" id="show-delete-user" data-toggle="modal" asp-action="DeleteRole">
+                                <a class="btn btn-danger" id="show-delete-role" data-toggle="modal" asp-action="DeleteRole">
                                     <i class="fa fa-trash"></i>
                                     <span>حذف نقش</span>
                                 </a>

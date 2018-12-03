@@ -8,4 +8,3 @@ D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.AssemblyInfo.cs
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.dll
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.pdb
-D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.csprojAssemblyReference.cache
