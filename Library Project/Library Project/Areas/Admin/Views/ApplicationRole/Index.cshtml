@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
         <div class="btn-group">
-            <a class="btn btn-primary" id="show-add-role" data-toggle="modal" asp-action="AddRole">
+            <a class="btn btn-primary" id="show-add-role" data-toggle="modal" data-target="#modal-action-application-role" asp-action="AddRole">
                 <i class="fa fa-plus"></i>
                 <span> افزودن نقش جدید</span>
             </a>
@@ -55,3 +55,9 @@
         </table>
     </div>
 </div>
+
+@Html.Partial("_ModalPartial", new BootstrapModel { Id = "modal-action-application-role", Size = ModalSize.Medium })
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Modal-js/application-role-index.js"></script>

@@ -41,8 +41,13 @@ namespace Library.Areas.Admin.Controllers
 
             return View(model);
         }
+        //وقتی روی افزودن نقش جید کلیک میکنیم مودال مربوط به رول را باز میکند
+        [HttpGet]
+        public IActionResult AddRole()
+        {
 
-
+            return PartialView("AddEditApplicationRolePartial");
+        }
 
     }
 }

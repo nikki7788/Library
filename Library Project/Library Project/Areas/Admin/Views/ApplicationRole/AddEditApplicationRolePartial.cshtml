@@ -4,15 +4,25 @@
 <!--And also, your user will be able to easily find where the form starts and ends because screen readers mark start and end of regions.-->
 
 <form asp-action="AddEditApplicationRole" role="form">
+
+    <!--Modal header-->
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نقش سیستمی" })
+
+
+    <!--Modal Body-->
     <div class="modal-body">
         <div class="form-group row ">
+
             <!-- col-form-label for adjusting vertically label and input placeholder in horizontally forms-->
             <!--if vertically adhustment dosen't matter you should use the form-control class-->
             <!--Added new .col-form-label class to vertically center labels with .form-controls.-->
+
             <label class="col-3 col-form-label" asp-for="Name"></label>
             <input asp-for="Name" class="col-6 form-control" />
         </div>
+
         <!--row for setting the label and the input horizontally insted of vertically-->
+
         <div class="form-group row">
 
             <label class="col-3 col-form-label" asp-for="Description"></label>
@@ -20,4 +30,13 @@
         </div>
 
     </div>
+
+
 </form>
+
+<!--Modal Footer-->
+@await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نقش" })
+
+
+
+

@@ -52,7 +52,7 @@ namespace Library
 
             app.UseStaticFiles();
 
-            //app.UseAuthentication() is replaced with app.UseIdentity() because this method,app.UseIdentity, will be removed in a future version.
+            //app.UseIdentity() is replaced with app.UseAuthentication() because this method,app.UseIdentity, will be removed in a future version.
             app.UseAuthentication();
 
 
