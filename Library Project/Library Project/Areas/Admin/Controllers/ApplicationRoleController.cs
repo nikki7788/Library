@@ -41,12 +41,22 @@ namespace Library.Areas.Admin.Controllers
 
             return View(model);
         }
-        //وقتی روی افزودن نقش جید کلیک میکنیم مودال مربوط به رول را باز میکند
+        //وقتی روی افزودن نقش جدید و ویرایش کلیک میکنیم مودال مربوط به رول را باز میکند
         [HttpGet]
-        public IActionResult AddRole()
+        public async Task <IActionResult> AddEditRole(string Id)
         {
+            ApplicationRoleViewModel model = new ApplicationRoleViewModel();
 
-            return PartialView("AddEditApplicationRolePartial");
+            ApplicationRole applicationRole =await _roleManager.FindByIdAsync(Id);
+
+            if (!string.IsNullOrEmpty(Id))
+            {
+                model.Id = applicationRole.Id;
+                model.Name = applicationRole.Name;
+                model.Description = applicationRole.Description;
+            }
+
+            return PartialView("AddEditApplicationRolePartial",model);
         }
 
     }

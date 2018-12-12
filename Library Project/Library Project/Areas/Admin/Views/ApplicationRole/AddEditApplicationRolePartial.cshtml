@@ -1,16 +1,17 @@
-﻿@model ApplicationRoleViewModel
+﻿
+
+@model ApplicationRoleViewModel
+<!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
 <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
   That means that a user can easily jump to the form with his/her region quick navigation keys-->
 <!--And also, your user will be able to easily find where the form starts and ends because screen readers mark start and end of regions.-->
+<!--## Modal header ##-->
+@await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نقش سیستمی" })
 
-<form asp-action="AddEditApplicationRole" role="form">
+<!--Modal Body-->
+<div class="modal-body">
+    <form asp-action="AddEditApplicationRole" role="form">
 
-    <!--Modal header-->
-    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نقش سیستمی" })
-
-
-    <!--Modal Body-->
-    <div class="modal-body">
         <div class="form-group row ">
 
             <!-- col-form-label for adjusting vertically label and input placeholder in horizontally forms-->
@@ -28,12 +29,8 @@
             <label class="col-3 col-form-label" asp-for="Description"></label>
             <input asp-for="Description" class="col-6 form-control" />
         </div>
-
-    </div>
-
-
-</form>
-
+    </form>
+</div>
 <!--Modal Footer-->
 @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نقش" })
 

@@ -13,7 +13,8 @@
     </div>
     <div class="card-body">
         <div class="btn-group">
-            <a class="btn btn-primary" id="show-add-role" data-toggle="modal" data-target="#modal-action-application-role" asp-action="AddRole">
+            <a class="btn btn-primary" id="show-add-role" data-toggle="modal" data-target="#modal-action-application-role"
+               asp-action="AddEditRole">
                 <i class="fa fa-plus"></i>
                 <span> افزودن نقش جدید</span>
             </a>
@@ -37,7 +38,10 @@
                         <td>@item.NumberOfUsers</td>
                         <td>
                             <div>
-                                <a class="btn btn-info" id="show-edit-role" data-toggle="modal" asp-action="EditRole">
+                                <!--asp-route-id for sending the id of the item to the action
+                                    برای ارسال ای دی هر رکورد و ایتم به اکشن-->
+                                <a class="btn btn-info" id="show-edit-role" data-toggle="modal" asp-action="AddEditRole"
+                                   data-target="#modal-action-application-role" asp-route-id="@item.Id">
                                     <i class="fa fa-pen"></i>
                                     <span>ویرایش نقش</span>
                                 </a>
@@ -58,6 +62,8 @@
 
 @Html.Partial("_ModalPartial", new BootstrapModel { Id = "modal-action-application-role", Size = ModalSize.Medium })
 
+<!--adding your js files when you use _layout,this code is replaced insted of @@RenderSection-->
+@section Scripts{
+  <script src="~/js/Modal-js/application-role-index.js"></script>
+}
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/Modal-js/application-role-index.js"></script>

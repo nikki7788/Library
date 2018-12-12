@@ -32,15 +32,15 @@ $(document).ready(function () {
         $(this).find(".modal-content").load(link.attr("href"));
     });
 
-    $("#modal-action-application-role").on("hide.bs.modal", function (e) {
-        $(this).removeData('bs.modal');
-    });
-  //  -------------------------------------------
-    //$("#modal-action-application-role").on("shown.bs.modal", function (e) {
-    //    var m = $(e.relatedTarget);
-    //    $(this).find(".modal-content").load("AddEditApplicationRolePartial.cshtml");
+    //$("#modal-action-application-role").on("hide.bs.modal", function (e) {
+    //    $(this).removeData('bs.modal');
     //});
 
+
+
+
+
+ 
     //------------################################################################################-----------------------
     
     //دستور کامل
