@@ -1,5 +1,6 @@
 ﻿using Library.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,33 @@ namespace Library.Areas.Admin.Controllers
 
 
             return View(model);
+        }
+
+
+
+        //چون دستور ما خرجی 
+        //نوع SingleOrDefault()
+        // ندارد بنابراین async
+        // نوشتن اکشن هم فایده ای ندارد و خطا میدهد چون حتما در دستور باید از async task<>
+        // استفاده کنیمawait ....async()
+
+        [HttpGet]
+        public IActionResult AddEditAuthor(int Id)
+        {
+            Author author = new Author();
+            if (Id != 0)
+            {
+                using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+                {
+                    author = _contex.Authors.Where(a => a.AuthorId == Id).SingleOrDefault();
+                    if (author == null)
+                    {
+                        RedirectToAction("Index");
+                    }
+                }
+
+            }
+            return PartialView("_AddEditAuthorPartial", author);
         }
 
     }

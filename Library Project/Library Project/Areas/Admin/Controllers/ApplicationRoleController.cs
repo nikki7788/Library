@@ -55,8 +55,11 @@ namespace Library.Areas.Admin.Controllers
                 model.Name = applicationRole.Name;
                 model.Description = applicationRole.Description;
             }
-
-            return PartialView("AddEditApplicationRolePartial",model);
+            if (applicationRole==null)
+            {
+                RedirectToAction("Index");
+            }
+            return PartialView("_AddEditApplicationRolePartial",model);
         }
 
     }

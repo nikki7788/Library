@@ -1,16 +1,28 @@
 ﻿
 
 @model ApplicationRoleViewModel
+
 <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
 <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
   That means that a user can easily jump to the form with his/her region quick navigation keys-->
+<!--###########################################################################################################-->
 <!--And also, your user will be able to easily find where the form starts and ends because screen readers mark start and end of regions.-->
 <!--## Modal header ##-->
-@await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نقش سیستمی" })
+<!--اگر ای دی وجود داشت و نال و خالی نبود متن دکمه را به ویرایش تغییر بده-->
+@if (!string.IsNullOrEmpty(Model.Id))
+{
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش نقش سیستمی" })
+
+}
+else
+{
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نقش سیستمی" })
+
+}
 
 <!--Modal Body-->
 <div class="modal-body">
-    <form asp-action="AddEditApplicationRole" role="form">
+    <form asp-action="/" role="form">
 
         <div class="form-group row ">
 
@@ -31,8 +43,18 @@
         </div>
     </form>
 </div>
+
 <!--Modal Footer-->
-@await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نقش" })
+<!--اگر ای دی وجود داشت و نال و خالی نبود متن دکمه را به ویرایش تغییر بده-->
+@if (!String.IsNullOrEmpty(Model.Id))
+{
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش نقش" })
+
+}
+else
+{
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نقش" })
+}
 
 
 
