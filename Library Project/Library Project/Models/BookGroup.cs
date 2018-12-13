@@ -17,9 +17,11 @@ namespace Library.Models
         public int BookGroupId { get; set; }
 
         [Display(Name ="نام گروه")]
+        [Required(ErrorMessage = "لطفا نام گروه بندی را وارد کنید")]
         public string BookGroupName { get; set; }
 
         [Display(Name ="توضیحات گروه")]
+        [Required(ErrorMessage = "لطفا توضیحات گروه بندی را وارد کیند")]
         public string BookGroupDescription { get; set; }
 
     }

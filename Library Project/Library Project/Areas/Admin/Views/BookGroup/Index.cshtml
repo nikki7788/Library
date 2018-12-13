@@ -9,8 +9,9 @@
 <div class="card mt-3">
     <div class="card-header bg-primary text-light">لیست گروه بندی کتابها</div>
     <div class="card-body">
-        <div >
-            <a class="btn btn-primary" data-toggle="modal" id="show-add-bookgroup" asp-action="AddBookGroup">
+        <div>
+            <a class="btn btn-primary" data-toggle="modal" id="show-add-bookgroup" asp-action="AddEditBookGroup"
+               data-target="#modal-action-bookgroup">
                 <i class="fa fa-plus"></i>
                 <span>افزودن گروه کتاب</span>
             </a>
@@ -32,11 +33,12 @@
                         <td>@item.BookGroupName</td>
                         <td>@item.BookGroupDescription</td>
                         <td>
-                            <a class="btn btn-info" data-toggle="modal"  id="show-edit-bookgroup" asp-action="EditBookGroup">
+                            <a class="btn btn-info" data-toggle="modal" id="show-edit-bookgroup" asp-action="AddEditBookGroup"
+                               data-target="#modal-action-bookgroup" asp-route-id="@item.BookGroupId">
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
-                            <a class="btn btn-danger" data-toggle="modal"  id="show-delete-bookgroup" asp-action="DeleteBookGroup">
+                            <a class="btn btn-danger" data-toggle="modal" id="show-delete-bookgroup" asp-action="DeleteBookGroup">
                                 <i class="fa fa-trash"></i>
                                 <span>حذف</span>
                             </a>
@@ -50,3 +52,8 @@
     </div>
 </div>
 
+@Html.Partial("_ModalPartial",new BootstrapModel {Id="modal-action-bookgroup",Size=ModalSize.Medium })
+
+@section Scripts{ 
+<script src="~/js/Modal-js/bookgroup-index.js"></script>
+}

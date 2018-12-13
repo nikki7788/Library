@@ -8,7 +8,7 @@
 <!--###########################################################################################################-->
 <!--And also, your user will be able to easily find where the form starts and ends because screen readers mark start and end of regions.-->
 <!--## Modal header ##-->
-<!--اگر ای دی وجود داشت و نال و خالی نبود متن دکمه را به ویرایش تغییر بده-->
+<!--اگر ای دی وجود داشت(چون آی دی است صفر نیست) و  خالی نبود(چون ازنوع اینتیجر است و مقدار پیش فرض ان صفر است ،منظور از وجود داشتن این است که صفر نباشد) متن دکمه را به ویرایش تغییر بده-->
 @if (!string.IsNullOrEmpty(Model.Id))
 {
     @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش نقش سیستمی" })
