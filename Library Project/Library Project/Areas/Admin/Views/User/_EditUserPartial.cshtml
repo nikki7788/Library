@@ -1,0 +1,34 @@
+﻿
+@model EditUserViewModel
+<!--Modal header-->
+@await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کاربر" })
+
+<!--Modal Body-->
+<div class="modal-body">
+    <form asp-action="/" role="form">
+        <div class="form-group row">
+            <label asp-for="FullName" class="col-lg-6 col-form-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="FullName" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Email" class="col-lg-6 col-form-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="Email" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ApplicationReleId" class="col-lg-6 col-form-label"></label>
+            <div class="col-lg-6">
+                <select asp-for="ApplicationReleId" asp-items="@Model.ApplicationRoles" class="form-control">
+                    <option>انتخاب نقش</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!--Modal footer-->
+@await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش اطالاعات" })

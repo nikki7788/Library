@@ -12,7 +12,8 @@
     <div class="card-header bg-primary text-light">لیست کاربران</div>
     <div class="card-body">
         <div class="btn-group">
-            <a class="btn btn-primary" id="show-add-user" data-toggle="modal" asp-action="AddUser">
+            <a class="btn btn-primary" id="show-add-user" data-toggle="modal" asp-action="AddUser"
+               data-target="#modal-action-user">
                 <i class="fa fa-plus"></i>
                 <span> افزودن کاربر</span>
             </a>
@@ -33,7 +34,8 @@
                         <td>@item.Name</td>
                         <td>@item.Email</td>
                         <td>
-                            <a class="btn btn-info " id="show-edit-user" data-toggle="modal" asp-action="EditUser">
+                            <a class="btn btn-info " id="show-edit-user" data-toggle="modal" asp-action="EditUser"
+                               data-target="#modal-action-user" asp-route-id="@item.Id">
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
@@ -50,3 +52,13 @@
 
     </div>
 </div>
+
+@Html.Partial("_ModalPartial", new BootstrapModel { Id = "modal-action-user", Size = ModalSize.Medium })
+
+@section Scripts{
+
+    <script src="~/js/Modal-js/user-index.js"></script>
+
+    @*<script src="~/js/Modal-js/all-index.js"></script>*@
+
+}

@@ -6,6 +6,7 @@ using Library.Models;
 using Library.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Library.Area.Admin.Controllers
 {
@@ -35,10 +36,58 @@ namespace Library.Area.Admin.Controllers
             {
                 Id = u.Id,
                 Name = u.FirstName,
-                Email=u.Email
+                Email = u.Email
             }).ToList();
 
             return View(model);
+        }
+
+        public IActionResult AddUser()
+        {
+            UserViewModel model = new UserViewModel();
+            model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
+            {
+                Text = r.Name,
+                Value = r.Id,
+            }).ToList();
+
+            return PartialView("_AddUserPartial", model);
+        }
+
+        [HttpGet]
+        public async task<IActionResult> EditUser(string Id)
+        {
+            //UserViewModel model = new UserViewModel
+            //{
+            //    ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
+            //    {
+            //        Text = r.Name,
+            //        Value = r.Id,
+            //    }).ToList()
+            //};
+            //هردو روش یکی هستنداین روش و روش بالایی 
+
+            //اطالاعات کمبوباکس رااز دیتا بیس اوردیم
+            EditUserViewModel model = new EditUserViewModel();
+            model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
+            {
+                Text = r.Name,
+                Value = r.Id,
+            }).ToList();
+
+            ///////////////  اطلاعات کاربر انتخاب شده را اوردیم از دیتابیس ///////////////
+            if (string.IsNullOrEmpty(Id))
+            {
+                ApplicationUser user = await _userManager.FindByIdAsync(Id);
+                if (user != null)
+                {
+                    model.FullName = user.FirstName + " " + user.LastName;
+                    model.Email = user.Email;
+                    //برای نمایش نقش و رل کاربر در کمبو باکس
+                    model.ApplicationReleId = _roleManager.Roles.Single(r => r.Name == _userManager.GetRolesAsync(user).Result.Single()).Id;
+                }
+            }
+            return PartialView("_EditUserPartial", model);
         }
     }
 }
