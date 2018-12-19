@@ -33,7 +33,8 @@ namespace Library.Models.ViewModel
       
         //نقش و رل کاربری که برای ویرایش انتخاب کردیم را در این پارپرتی میریزیم.
         //در واقع آی دی نقش و رل رامیریزیم چون
-        //value in select list=role.id
+        //value in selectlist=role.id
+        //چون بانوع یوزر و رل کار میکنیم باید ای ید از نوع استربنگ باشد
         [Display(Name ="نقش")]
         public string ApplicationReleId { get; set; }
         #endregion

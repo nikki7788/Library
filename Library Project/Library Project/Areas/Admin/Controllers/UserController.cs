@@ -55,7 +55,7 @@ namespace Library.Area.Admin.Controllers
         }
 
         [HttpGet]
-        public async task<IActionResult> EditUser(string Id)
+        public async Task<IActionResult> EditUser(string id)
         {
             //UserViewModel model = new UserViewModel
             //{
@@ -76,9 +76,9 @@ namespace Library.Area.Admin.Controllers
             }).ToList();
 
             ///////////////  اطلاعات کاربر انتخاب شده را اوردیم از دیتابیس ///////////////
-            if (string.IsNullOrEmpty(Id))
+            if (string.IsNullOrEmpty(id))
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(Id);
+                ApplicationUser user = await _userManager.FindByIdAsync(id);
                 if (user != null)
                 {
                     model.FullName = user.FirstName + " " + user.LastName;

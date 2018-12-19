@@ -45,14 +45,14 @@ namespace Library.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddEditBookGroup(int Id)
+        public IActionResult AddEditBookGroup(int id)
         {
             BookGroup bookgroup = new BookGroup();
-            if (Id!=0)
+            if (id != 0)
             {
                 using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>()) 
                 {
-                    bookgroup = _context.BookGroups.Where(b => b.BookGroupId == Id).SingleOrDefault();
+                    bookgroup = _context.BookGroups.Where(b => b.BookGroupId == id).SingleOrDefault();
                     if (bookgroup==null)
                     {
                         RedirectToAction("Index");

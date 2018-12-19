@@ -10,7 +10,8 @@
     <div class="card-header bg-primary text-light">لیست  کتابها</div>
     <div class="card-body">
         <div>
-            <a class="btn btn-primary" data-toggle="modal" id="show-add-book" asp-action="AddBook">
+            <a class="btn btn-primary" data-toggle="modal" id="show-add-book" asp-action="AddBook"
+               data-target="#modal-action-book">
                 <i class="fa fa-plus"></i>
                 <span>افزودن  کتاب</span>
             </a>
@@ -38,7 +39,8 @@
                         <td>@item.AuthorName</td>
                         <td>@item.BookGroupName</td>
                         <td>
-                            <a class="btn btn-info" data-toggle="modal" id="show-edit-book" asp-action="EditBook">
+                            <a class="btn btn-info" data-toggle="modal" id="show-edit-book" asp-action="EditBook"
+                               data-target="#modal-action-book" asp-route-id="@item.BookId">
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
@@ -56,5 +58,15 @@
     </div>
 </div>
 
+@Html.Partial("_Modalpartial", new BootstrapModel { Id = "modal-action-book", Size = ModalSize.Large })
+
+@section Scripts{
+    <script src="~/js/Modal-js/book-index.js"></script>
+
+    <!--Js for the ckeditor 5-->
+    <script src="~/js/ckeditor5/ckeditor.js"></script>
+    <!--Js for changing the ckeditor 5 language-->
+    <script src="~/js/ckeditor5/translations/fa.js"></script>
 
 
+}

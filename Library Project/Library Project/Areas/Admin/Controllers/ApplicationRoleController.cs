@@ -43,13 +43,13 @@ namespace Library.Areas.Admin.Controllers
         }
         //وقتی روی افزودن نقش جدید و ویرایش کلیک میکنیم مودال مربوط به رول را باز میکند
         [HttpGet]
-        public async Task <IActionResult> AddEditRole(string Id)
+        public async Task <IActionResult> AddEditRole(string id)
         {
             ApplicationRoleViewModel model = new ApplicationRoleViewModel();
 
-            ApplicationRole applicationRole =await _roleManager.FindByIdAsync(Id);
+            ApplicationRole applicationRole =await _roleManager.FindByIdAsync(id);
 
-            if (!string.IsNullOrEmpty(Id))
+            if (!string.IsNullOrEmpty(id))
             {
                 model.Id = applicationRole.Id;
                 model.Name = applicationRole.Name;

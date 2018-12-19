@@ -1,9 +1,8 @@
 ﻿
 @model Author
 <!--برای اینکه چند پارشال میخوهیم همزمان اجرا شود-->
-
 <!--Modal header-->
-@if (Model.AuthorId!=0)
+@if (Model.AuthorId != 0)
 {
     @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش نویسنده" })
 }
@@ -21,12 +20,16 @@ else
         <div class="form-group row">
 
             <label class="col-lg-3 col-sm-3 col-form-label" asp-for="AuthorName"></label>
-            <input class="col-lg-6 form-control" asp-for="AuthorName" />
+            <div class="col-6">
+                <input class=" form-control" asp-for="AuthorName" />
+            </div>
         </div>
 
         <div class="form-group row">
             <label class="col-lg-3 col-sm-3 col-form-label" asp-for="AuthorDescription"></label>
-            <input class="col-lg-6 form-control" asp-for="AuthorDescription" />
+            <div class="col-6">
+                <input class=" form-control" asp-for="AuthorDescription" />
+            </div>
         </div>
     </form>
 

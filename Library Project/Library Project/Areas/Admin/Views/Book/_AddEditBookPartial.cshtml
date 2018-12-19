@@ -1,0 +1,81 @@
+﻿
+@model AddEditBookViewModel
+<!--Modal Header-->
+@if (Model.BookId != 0)
+{
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کتاب" })
+}
+else
+{
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
+
+}
+<!--Modal Body-->
+<div class="modal-body">
+    <form asp-action="/" role="form">
+        <div class="form-group row">
+            <label class="col-3 col-form-label" asp-for="BookName"></label>
+            <div class="col-9">
+                <input asp-for="BookName" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-3 col-form-label" asp-for="BookDescription"></label>
+            <div class="col-9 ">
+                <textarea asp-for="BookDescription" id="bookdescription" name="bookdescription" class="form-control"></textarea>
+            </div>
+            <!--For the ckeditor 5 and changing it's language-->
+            <script>
+                //this code is for the default clasic editor if you're going to customize editor you should change the below code.
+                //CKEditor 5 documentation ====> https://ckeditor.com/docs/ckeditor5/latest/
+                ClassicEditor
+                    .create(document.querySelector('#bookdescription'), {
+                        language: 'fa'
+                    })
+                    .then(editor => {
+                        window.editor = editor;
+                    })
+                    .catch(err => {
+                        console.error(err.stack);
+                    });
+            </script>
+        </div>
+
+
+        <div class="form-group row">
+            <label class="col-3 col-form-label" asp-for="BookGroupId"></label>
+            <div class="col-9 ">
+                <select asp-for="BookGroupId" asp-items="@Model.BookGroups" class="form-control">
+                    <option>انتخاب گروه بندی</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-3 col-form-label" asp-for="AuthorId"></label>
+            <div class="col-9">
+                <select asp-for="AuthorId" asp-items="@Model.Authors" class="form-control">
+                    <option>انتخاب نویسنده</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-3 col-form-label" asp-for="BookPageCount"></label>
+            <div class="col-9">
+                <input asp-for="BookPageCount" class="form-control" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--Modal Footer-->
+@if (Model.BookId != 0)
+{
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
+}
+else
+{
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
+
+}
+
+

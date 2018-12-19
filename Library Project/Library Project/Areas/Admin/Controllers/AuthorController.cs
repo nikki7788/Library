@@ -50,14 +50,16 @@ namespace Library.Areas.Admin.Controllers
         // استفاده کنیمawait ....async()
 
         [HttpGet]
-        public IActionResult AddEditAuthor(int Id)
+        public IActionResult AddEditAuthor(int id)
         {
             Author author = new Author();
-            if (Id != 0)
+            if (id != 0)
             {
+                //برای دیپندنسی ابنجکشن
+                //چون داریم از دیتابیس اطلاعات میخوانبم و خالت وبرایش است ولی در خالت اضافه کردن این دیندنسی ابجکشن را نمیخواهد 
                 using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
                 {
-                    author = _contex.Authors.Where(a => a.AuthorId == Id).SingleOrDefault();
+                    author = _contex.Authors.Where(a => a.AuthorId == id).SingleOrDefault();
                     if (author == null)
                     {
                         RedirectToAction("Index");

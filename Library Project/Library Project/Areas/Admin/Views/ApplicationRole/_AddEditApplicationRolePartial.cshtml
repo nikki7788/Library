@@ -1,7 +1,6 @@
 ﻿
 
 @model ApplicationRoleViewModel
-
 <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
 <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
   That means that a user can easily jump to the form with his/her region quick navigation keys-->
@@ -31,7 +30,9 @@ else
             <!--Added new .col-form-label class to vertically center labels with .form-controls.-->
 
             <label class="col-3 col-form-label" asp-for="Name"></label>
-            <input asp-for="Name" class="col-6 form-control" />
+            <div class="col-6">
+                <input asp-for="Name" class=" form-control" />
+            </div>
         </div>
 
         <!--row for setting the label and the input horizontally insted of vertically-->
@@ -39,7 +40,9 @@ else
         <div class="form-group row">
 
             <label class="col-3 col-form-label" asp-for="Description"></label>
-            <input asp-for="Description" class="col-6 form-control" />
+            <div class="col-6">
+                <input asp-for="Description" class=" form-control" />
+            </div>
         </div>
     </form>
 </div>
