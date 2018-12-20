@@ -10,9 +10,10 @@ else
     @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
 
 }
-<!--Modal Body-->
-<div class="modal-body">
-    <form asp-action="/" role="form">
+<!--Modal Body--> 
+<form asp-action="/" role="form">
+    <div class="modal-body">
+
         <div class="form-group row">
             <label class="col-3 col-form-label" asp-for="BookName"></label>
             <div class="col-9">
@@ -64,18 +65,18 @@ else
                 <input asp-for="BookPageCount" class="form-control" />
             </div>
         </div>
-    </form>
-</div>
 
-<!--Modal Footer-->
-@if (Model.BookId != 0)
-{
-    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
-}
-else
-{
-    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
+    </div>
 
-}
+    <!--Modal Footer-->
+    @if (Model.BookId != 0)
+    {
+        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
 
+    }
+</form>
 

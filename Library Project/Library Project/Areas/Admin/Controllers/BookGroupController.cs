@@ -50,10 +50,10 @@ namespace Library.Areas.Admin.Controllers
             BookGroup bookgroup = new BookGroup();
             if (id != 0)
             {
-                using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>()) 
+                using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
                     bookgroup = _context.BookGroups.Where(b => b.BookGroupId == id).SingleOrDefault();
-                    if (bookgroup==null)
+                    if (bookgroup == null)
                     {
                         RedirectToAction("Index");
                     }
@@ -61,6 +61,45 @@ namespace Library.Areas.Admin.Controllers
                 }
             }
             return PartialView("_AddEditBookGroupPartial", bookgroup);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddEditBookGroup(BookGroup model, int id)
+        {
+            //برای چک کرن ولیدیشن هایی که در کلاس 
+            // دادیم که همان اتریبیوت هاهستند bookgroup
+            if (ModelState.IsValid)
+            {
+                //inserting(adding) mode
+                if (id == 0)
+                {
+                    //چون داریم روی دیتابیس اطلاعات ثبت میکنیم یا اپدیت اطلاعات میکیم از 
+                    //استفاده میکنیم. usin() 
+                    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+                    {
+                        db.BookGroups.Add(model);
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Index");
+                }
+                //updating mode
+                else
+                {
+                    //چون داریم روی دیتابیس اطلاعات ثبت میکنیم یا اپدیت اطلاعات میکیم از 
+                    //استفاده میکنیم. usin() 
+                    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+                    {
+                        db.BookGroups.Update(model);
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                return PartialView("_AddEditBookGroup", model);
+            }
         }
     }
 }

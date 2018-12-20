@@ -10,28 +10,42 @@ else
     @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن گروه بندی" })
 
 }
+<!--برای امنیت بیشتر در ارسال اطلاعات-->
+<!--این خط کد باید کامنت شود چون درصورت عدم ذعایت ولیدیشن  خطاها نمایش داده میشود ولی اگر خطاهارا برطرف کنیم و ورایش یا افزودن را بزینم دیگر اطالاعات در دیتابیس ثبت نمیشود ajax  درحالت-->
+@Html.AntiForgeryToken()
+<form asp-controller="BookGroup" asp-action="AddEditBookGroup" method="post" role="form">
 
-<!--Modal body-->
-<div class="modal-body">
-    <form asp-action="/" role="form">
+
+    <!--Modal body-->
+    <div class="modal-body">
+
         <div class="form-group row">
-            <label class="col-lg-3 co-sm-3 col-form-label" asp-for="BookGroupName"></label>
-            <div class="col-6"><input class="form-control " asp-for="BookGroupName" /></div>
+            <label class="col-lg-3 col-sm-4 col-4 col-form-label" asp-for="BookGroupName"></label>
+            <div class="col-lg-9 col-sm-8 col-7"><input class="form-control " asp-for="BookGroupName" /></div>
         </div>
 
         <div class="form-group row">
-            <label class="col-lg-3 co-sm-3 col-form-label" asp-for="BookGroupDescription"></label>
-            <div class="col-6"><input class="form-control " asp-for="BookGroupDescription" /></div>
+            <label class="col-lg-3 col-sm-4 col-4 col-form-label" asp-for="BookGroupDescription"></label>
+            <div class="col-lg-9 col-sm-8 col-7"><input class="form-control " asp-for="BookGroupDescription" /></div>
         </div>
-    </form>
-</div>
+        <!--برای ارسال آی دی به سمت اکشن در حالت ویرایش
+            آی دی را در ورودی اکشن دریافت میکنیم-->
+        <div class="form-group row d-none">
+            <label class="col-4 col-form-label" asp-for="BookGroupId"></label>
+            <div class="col-6"><input class="form-control " asp-for="BookGroupId" /></div>
+        </div>
 
-<!--Modal Footer-->
-@if (Model.BookGroupId != 0)
-{
-    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش گروه بندی" })
-}
-else
-{
-    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن گروه بندی" })
-}
+    </div>
+    <!--فوتر را باید داخل تگ فرم قرار دهیم که به عنوان دکمه ازسال کارکند و اطالاعات را به سمت سرور بفرستد
+    اگر بیرون تگ فرم باشد دکمه ویرایش یا اضافه کردن کار نمیکند.چون بیرون تگ فرم است و به عنوان دکمه ارسال کارایی ندارد-->
+    <!--Modal Footer-->
+    @if (Model.BookGroupId != 0)
+    {
+        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش گروه بندی" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن گروه بندی" })
+    }
+
+</form>

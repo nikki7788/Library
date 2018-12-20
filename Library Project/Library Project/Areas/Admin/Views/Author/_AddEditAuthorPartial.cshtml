@@ -11,11 +11,11 @@ else
     @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نویسنده" })
 }
 
+<form asp-action="/" role="form">
+    <!--Modal body-->
+    <div class="modal-body">
 
-<!--Modal body-->
-<div class="modal-body">
 
-    <form asp-action="/" role="form">
 
         <div class="form-group row">
 
@@ -31,16 +31,17 @@ else
                 <input class=" form-control" asp-for="AuthorDescription" />
             </div>
         </div>
-    </form>
 
-</div>
 
-<!--Modal footer-->
-@if (Model.AuthorId != 0)
-{
-    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش نویسنده" })
-}
-else
-{
-    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نویسنده " })
-}
+    </div>
+
+    <!--Modal footer-->
+    @if (Model.AuthorId != 0)
+    {
+        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش نویسنده" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نویسنده " })
+    }
+</form>
