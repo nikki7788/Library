@@ -1,39 +1,55 @@
 ﻿@model BookGroup
 <!--Modal Header-->
-@if (Model.BookGroupId != 0)
-{
-    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش گروه بندی" })
-
-}
-else
-{
-    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن گروه بندی" })
-
-}
 <!--برای امنیت بیشتر در ارسال اطلاعات-->
 <!--این خط کد باید کامنت شود چون درصورت عدم ذعایت ولیدیشن  خطاها نمایش داده میشود ولی اگر خطاهارا برطرف کنیم و ورایش یا افزودن را بزینم دیگر اطالاعات در دیتابیس ثبت نمیشود ajax  درحالت-->
-@Html.AntiForgeryToken()
-<form asp-controller="BookGroup" asp-action="AddEditBookGroup" method="post" role="form">
+@*@Html.AntiForgeryToken()*@
 
+<form asp-controller="BookGroup" asp-action="AddEditBookGroup" id="form-addedit-bookgroup" data-ajax="true"
+      data-ajax-method="POST" data-ajax-update="#form-addedit-bookgroup" data-ajax-mode="replace">
+    @if (Model.BookGroupId != 0)
+    {
+        @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش گروه بندی" })
+
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن گروه بندی" })
+
+    }
 
     <!--Modal body-->
     <div class="modal-body">
 
         <div class="form-group row">
             <label class="col-lg-3 col-sm-4 col-4 col-form-label" asp-for="BookGroupName"></label>
-            <div class="col-lg-9 col-sm-8 col-7"><input class="form-control " asp-for="BookGroupName" /></div>
+            <div class="col-lg-9 col-sm-8 col-7">
+                <input class="form-control " asp-for="BookGroupName" />
+                <span asp-validation-for="BookGroupName" class="text-danger"></span>
+            </div>
         </div>
 
         <div class="form-group row">
             <label class="col-lg-3 col-sm-4 col-4 col-form-label" asp-for="BookGroupDescription"></label>
-            <div class="col-lg-9 col-sm-8 col-7"><input class="form-control " asp-for="BookGroupDescription" /></div>
+            <div class="col-lg-9 col-sm-8 col-7">
+                <input class="form-control " asp-for="BookGroupDescription" />
+                <span asp-validation-for="BookGroupDescription" class="bg-danger"></span>
+            </div>
         </div>
         <!--برای ارسال آی دی به سمت اکشن در حالت ویرایش
-            آی دی را در ورودی اکشن دریافت میکنیم-->
+        آی دی را در ورودی اکشن دریافت میکنیم-->
         <div class="form-group row d-none">
             <label class="col-4 col-form-label" asp-for="BookGroupId"></label>
             <div class="col-6"><input class="form-control " asp-for="BookGroupId" /></div>
         </div>
+
+        <!--برای ارسال مسیر اکشن ایندکس به اکشن
+        و ودریافت ان در این اکشن سپس ارسال ان به پارشال ویو addeditbookgroup -->
+        <!--   _successfullyreponsePartial -->
+        <!--نوع ان را هیدن قرار میدهیم که نمایش داده نشود
+        برابر نامی باشد در ورودی اکشن میدهیم و میخاوهیم دریافت کنیم name -->
+        <!--هم برای ارسال مقدار مورد نطر که اینجا مسیر نمایش صفحه و اکشن ایندکس استvalue-->
+
+        <input type="hidden" name="redirectUrl" value="@Url.Action("Index","BookGroup")" />
 
     </div>
     <!--فوتر را باید داخل تگ فرم قرار دهیم که به عنوان دکمه ازسال کارکند و اطالاعات را به سمت سرور بفرستد

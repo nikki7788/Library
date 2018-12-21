@@ -52,8 +52,9 @@
     </div>
 </div>
 
-@Html.Partial("_ModalPartial",new BootstrapModel {Id="modal-action-bookgroup",Size=ModalSize.Medium })
+@Html.Partial("_ModalPartial", new BootstrapModel { Id = "modal-action-bookgroup", Size = ModalSize.Medium })
 
-@section Scripts{ 
-<script src="~/js/Modal-js/bookgroup-index.js"></script>
+@section Scripts{
+    @*<script src="~/js/Modal-js/all-index.js"></script>*@
+    <script src="~/js/Modal-js/bookgroup-index.js"></script>
 }

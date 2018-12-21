@@ -55,7 +55,7 @@ namespace Library.Areas.Admin.Controllers
                     bookgroup = _context.BookGroups.Where(b => b.BookGroupId == id).SingleOrDefault();
                     if (bookgroup == null)
                     {
-                        RedirectToAction("Index");
+                      return  RedirectToAction("Index");
                     }
 
                 }
@@ -65,7 +65,7 @@ namespace Library.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddEditBookGroup(BookGroup model, int id)
+        public IActionResult AddEditBookGroup(BookGroup model, int id,string redirectUrl)
         {
             //برای چک کرن ولیدیشن هایی که در کلاس 
             // دادیم که همان اتریبیوت هاهستند bookgroup
@@ -81,7 +81,9 @@ namespace Library.Areas.Admin.Controllers
                         db.BookGroups.Add(model);
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Index");
+                    return PartialView("_SuccessfullyResponsePartial", redirectUrl);
+                 
                 }
                 //updating mode
                 else
@@ -93,12 +95,13 @@ namespace Library.Areas.Admin.Controllers
                         db.BookGroups.Update(model);
                         db.SaveChanges();
                     }
-                    return RedirectToAction("Index");
+                    //  return RedirectToAction("Index");
+                    return PartialView("_SuccessfullyResponsePartial", redirectUrl);
                 }
             }
             else
             {
-                return PartialView("_AddEditBookGroup", model);
+                return PartialView("_AddEditBookGroupPartial", model);
             }
         }
     }
