@@ -1,18 +1,18 @@
 ﻿
 @model AddEditBookViewModel
-<!--Modal Header-->
-@if (Model.BookId != 0)
-{
-    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کتاب" })
-}
-else
-{
-    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
-
-}
 <!--Modal Body--> 
 <form asp-action="/" role="form">
     <div class="modal-body">
+        <!--Modal Header-->
+        @if (Model.BookId != 0)
+        {
+            @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کتاب" })
+        }
+        else
+        {
+            @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
+
+        }
 
         <div class="form-group row">
             <label class="col-3 col-form-label" asp-for="BookName"></label>

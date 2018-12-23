@@ -1,11 +1,12 @@
 ﻿
 @model UserViewModel
-<!--Modal header-->
-@await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کاربر" })
+<form asp-action="/" role="form">
+    <!--Modal header-->
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کاربر" })
 
-<!--Modal body-->
-<div class="modal-body">
-    <form asp-action="/" role="form">
+    <!--Modal body-->
+    <div class="modal-body">
+
 
         <!--کلاس "رو" برای اینکه مودال را به دو بخش عمودی تقسیم کنیم-->
         <div class="row">
@@ -55,10 +56,9 @@
                 </div>
             </div>
         </div>
-    </form>
-</div>
 
+    </div>
+    <!--modal footer-->
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کاربر" })
 
-
-<!--modal footer-->
-@await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کاربر" })
+</form>

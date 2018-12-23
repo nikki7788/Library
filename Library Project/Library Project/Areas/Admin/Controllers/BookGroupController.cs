@@ -101,6 +101,8 @@ namespace Library.Areas.Admin.Controllers
             }
             else
             {
+                //(model)اگر ولیدشن ها رعایت نشده بود مقادیر وارد شده
+                //و خطاهارا نمایش میدهددرهمان پارشال ویو
                 return PartialView("_AddEditBookGroupPartial", model);
             }
         }

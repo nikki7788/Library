@@ -1,11 +1,12 @@
 ﻿
 @model EditUserViewModel
-<!--Modal header-->
-@await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کاربر" })
+<form asp-action="/" role="form">
+    <!--Modal header-->
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کاربر" })
 
-<!--Modal Body-->
-<div class="modal-body">
-    <form asp-action="/" role="form">
+    <!--Modal Body-->
+    <div class="modal-body">
+
         <div class="form-group row">
             <label asp-for="FullName" class="col-lg-6 col-form-label"></label>
             <div class="col-lg-6">
@@ -26,9 +27,8 @@
                 </select>
             </div>
         </div>
-    </form>
-</div>
 
-
-<!--Modal footer-->
-@await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش اطالاعات" })
+    </div>
+    <!--Modal footer-->
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش اطالاعات" })
+</form>

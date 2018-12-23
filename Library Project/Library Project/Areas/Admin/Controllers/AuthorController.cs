@@ -62,13 +62,52 @@ namespace Library.Areas.Admin.Controllers
                     author = _contex.Authors.Where(a => a.AuthorId == id).SingleOrDefault();
                     if (author == null)
                     {
-                        RedirectToAction("Index");
+                        return RedirectToAction("Index");
                     }
                 }
 
             }
             return PartialView("_AddEditAuthorPartial", author);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddEditAuthor(Author model, int id, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == 0)
+                {
+                    using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+                    {
+                        //inserting
+                        db.Authors.Add(model);
+                        db.SaveChanges();
+                    }
+                    return PartialView("_SuccessfullyResponsePartial", redirectUrl);
+                }
+                else
+                {
+                    //updatin
+                    using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+                    {
+                        //insert
+                        db.Authors.Update(model);
+                        db.SaveChanges();
+                    }
+                    return PartialView("_SuccessfullyResponsePartial", redirectUrl);
+                }
+            }
+            else
+            {
+                return PartialView("_AddEditAuthorPartial", model);
+            }
+        }
+
+
+
+
+
+
 
     }
 }

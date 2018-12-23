@@ -57,7 +57,7 @@ namespace Library.Areas.Admin.Controllers
             }
             if (applicationRole==null)
             {
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             return PartialView("_AddEditApplicationRolePartial",model);
         }
