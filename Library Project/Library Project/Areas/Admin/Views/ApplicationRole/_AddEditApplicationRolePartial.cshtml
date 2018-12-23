@@ -1,7 +1,8 @@
 ﻿
 
 @model ApplicationRoleViewModel
-<form asp-action="/" role="form">
+<form asp-controller="ApplicationRole" asp-action="AddEditRole" id="form-addedit-applicationrRole"
+      data-ajax="true" data-ajax-method="POST" data-ajax-update="#form-addedit-applicationrRole" data-ajax-mode="replace">
     <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
     <!--If you add a role="form" to a form, a screen reader sees it as a region on a webpage.
       That means that a user can easily jump to the form with his/her region quick navigation keys-->
@@ -33,6 +34,7 @@
             <label class="col-3 col-form-label" asp-for="Name"></label>
             <div class="col-6">
                 <input asp-for="Name" class=" form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
 
@@ -43,8 +45,19 @@
             <label class="col-3 col-form-label" asp-for="Description"></label>
             <div class="col-6">
                 <input asp-for="Description" class=" form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
+
+
+
+        <div class="form-group row d-none">
+            <label class="col-3 col-form-label" asp-for="Id"></label>
+            <div class="col-6">
+                <input asp-for="Id" class=" form-control" />
+            </div>
+        </div>
+        <input type="hidden" name="redirectUrl" value="@Url.Action("Index","ApplicationRole")" />
 
     </div>
 
