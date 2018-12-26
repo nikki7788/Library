@@ -49,14 +49,14 @@
             </div>
         </div>
 
-
-
-        <div class="form-group row d-none">
+        <!---don't need this code because identity does it (sending id to update user in the database)-->
+        <!--رل و یوزر نیازی ب ارسال آی دی نداریم خودش در پشت پرده ارسال میشود---->
+        <!--   <div class="form-group row d-none">
             <label class="col-3 col-form-label" asp-for="Id"></label>
             <div class="col-6">
                 <input asp-for="Id" class=" form-control" />
             </div>
-        </div>
+        </div> -->
         <input type="hidden" name="redirectUrl" value="@Url.Action("Index","ApplicationRole")" />
 
     </div>

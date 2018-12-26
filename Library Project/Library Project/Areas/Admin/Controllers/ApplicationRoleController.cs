@@ -16,15 +16,25 @@ namespace Library.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public ApplicationRoleController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        #region-##- we must access to the ASpNetUserRoles table is sql and dp.injection ######### 
+        private readonly ApplicationDbContext _context;
+        private readonly IServiceProvider _iServiceProvider;
+        #endregion
+
+        public ApplicationRoleController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ApplicationDbContext context, IServiceProvider iServiceProvider)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+
+            //to count number of users in each role------we must access to the ASpNetUserRoles table is sql 
+            _context = context;
+            _iServiceProvider = iServiceProvider;
         }
 
         public IActionResult Index()
         {
-            var ur = _userManager.Users;
+            //to count number of users in each role------we must access to the ASpNetUserRoles table is sql
+            List<IdentityUserRole<string>> listUserRoles = _context.UserRoles.ToList();
 
             List<ApplicationRoleViewModel> model = new List<ApplicationRoleViewModel>();
             model = _roleManager.Roles.Select(r => new ApplicationRoleViewModel
@@ -32,9 +42,8 @@ namespace Library.Areas.Admin.Controllers
                 Id = r.Id,
                 Name = r.Name,
                 Description = r.Description,
-                //to count number of users in each role------we must access to the users table
-                // NumberOfUsers = _userManager.Users.Count()
-                NumberOfUsers = ur.Count()
+                //to count number of users in each role------we must access to the ASpNetUserRoles table is sql
+                NumberOfUsers = _context.UserRoles.Count(ur => ur.RoleId == r.Id)
             }).ToList();
 
 
@@ -80,7 +89,7 @@ namespace Library.Areas.Admin.Controllers
                 //String is a class
                 //string is a data type
                 //String.IsNullOrEmpty(id) :if id is null or empty ,it will return true then because of " ! " will return true
-
+                //روش سی شارپ جدید با شرط معمولی هم میتوان نوشت
                 bool isExist = !String.IsNullOrEmpty(id);
                 ApplicationRole applicationRole = isExist ? await _roleManager.FindByIdAsync(id) //updating
                     : new ApplicationRole(); //inserting
@@ -102,4 +111,5 @@ namespace Library.Areas.Admin.Controllers
             return PartialView("_AddEditApplicationRolePartial", model);
         }
     }
-}
+
+    }

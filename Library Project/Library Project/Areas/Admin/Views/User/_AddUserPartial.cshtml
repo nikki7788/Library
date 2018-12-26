@@ -1,6 +1,7 @@
 ﻿
 @model UserViewModel
-<form asp-action="/" role="form">
+<form asp-controller="User" asp-action="AddUser" id="formadd-user" data-ajax-method="POST"
+      data-ajax="true" data-ajax-update="#formadd-user" data-ajax-mode="replace">
     <!--Modal header-->
     @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کاربر" })
 
@@ -13,23 +14,33 @@
             <div class="col-6">
                 <!--برای در یک خط قرار دادن لیبل و اینپوت-->
                 <div class="form-group row">
-                    <label asp-for="FullName" class="col-form-label col-6"></label>
-                    <div class="col-6">
-                        <input asp-for="FullName" class="form-control " />
+                    <label asp-for="FirstName" class="col-form-label col-lg-4 col-sm-5"></label>
+                    <div class="col-lg-7 col-sm-6">
+                        <input asp-for="FirstName" class="form-control " />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="UserName" class="col-form-label col-6"></label>
-                    <div class="col-6">
-                        <input asp-for="UserName" class="form-control " />
+                    <label asp-for="LastName" class="col-form-label col-lg-4 col-sm-5"></label>
+                    <div class="col-lg-7 col-sm-6">
+                        <input asp-for="LastName" class="form-control " />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label asp-for="UserName" class="col-form-label col-lg-4 col-sm-5"></label>
+                    <div class="col-lg-7 col-sm-6">
+                        <input asp-for="UserName" class="form-control " />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
                 <div class="form-group row">
 
-                    <label asp-for="ApplicationRoleId" class="col-form-label col-6"></label>
-                    <div class="col-6">
-                        <select asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" class="form-control ">
-                            <option>انتخاب نقش</option>
+                    <label asp-for="ApplicationRoleId" class="col-form-label col-lg-4 col-sm-5"></label>
+                    <div class="col-lg-7 col-sm-6">
+                        <select asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" class="form-control">
+                        
                         </select>
                     </div>
                 </div>
@@ -37,25 +48,40 @@
 
             <div class="col-6 ">
                 <div class="form-group row">
-                    <label asp-for="Email" class="col-form-label col-5 "></label>
-                    <div class="col-6">
+                    <label asp-for="PhoneNumber" class="col-form-label col-lg-4 col-sm-5 "></label>
+                    <div class="col-lg-7 col-sm-6">
+                        <input asp-for="PhoneNumber" class="form-control " />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Email" class="col-form-label col-lg-4 col-sm-5 "></label>
+                    <div class="col-lg-7 col-sm-6">
                         <input asp-for="Email" class="form-control " />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Password" class="col-form-label col-5"></label>
-                    <div class="col-6">
+                    <label asp-for="Password" class="col-form-label col-lg-4 col-sm-5"></label>
+                    <div class="col-lg-7 col-sm-6">
                         <input asp-for="Password" class="form-control " />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="ConfirmPassword" class="col-form-label col-5"></label>
-                    <div class="col-6">
+                    <label asp-for="ConfirmPassword" class="col-form-label col-lg-4 col-sm-5"></label>
+                    <div class="col-lg-7 col-sm-6">
                         <input asp-for="ConfirmPassword" class="form-control " />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
+
+       
+
+        <input type="hidden" name="redirectUrl" value="@Url.Action("Index","User")" />
+
 
     </div>
     <!--modal footer-->
