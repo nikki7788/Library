@@ -9,7 +9,8 @@ namespace Library.Models.ViewModel
 {
     public class AddEditBookViewModel
     {
-        //the [key] attribute is optional in view models because view models don't create as a table in the database as a result don't need primary key
+        //the [key] attribute is optional in view models because 
+        //view models don't create as a table in the database as a result don't need primary key
         [Key]
         public int BookId { get; set; }
 
@@ -23,11 +24,11 @@ namespace Library.Models.ViewModel
         public string BookDescription { get; set; }
 
         [Display(Name = "تصویر کتاب")]
-        [Required(ErrorMessage = "لطفا تصویر کتاب  را ارسال کنید")]
+        // [Required(ErrorMessage = "لطفا تصویر کتاب  را ارسال کنید")]
         public string BookImage { get; set; }
 
         [Display(Name = "تعداد صفحات")]
-        [Required(ErrorMessage = "لطفا تعداد صفخات کتاب را وارد کنید")]
+        //  [Required(ErrorMessage = "لطفا تعداد صفخات کتاب را وارد کنید")]
         public int BookPageCount { get; set; }
 
         #region###############----- Dropdown list--######################

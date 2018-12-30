@@ -3,9 +3,9 @@ D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\bin\Debug
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\bin\Debug\netcoreapp2.0\Library.runtimeconfig.dev.json
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\bin\Debug\netcoreapp2.0\Library.dll
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\bin\Debug\netcoreapp2.0\Library.pdb
+D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.csprojAssemblyReference.cache
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.csproj.CoreCompileInputs.cache
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.AssemblyInfoInputs.cache
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.AssemblyInfo.cs
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.dll
 D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.pdb
-D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.csprojAssemblyReference.cache

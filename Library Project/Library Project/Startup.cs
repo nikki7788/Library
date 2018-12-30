@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +25,7 @@ namespace Library
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+
 
             //Define Connection String
             services.AddDbContext<ApplicationDbContext>(option =>
@@ -35,6 +36,12 @@ namespace Library
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Add framework services.
+            services.AddMvc();
+            //for using auto Mapper
+            services.AddAutoMapper();
+
+            //Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

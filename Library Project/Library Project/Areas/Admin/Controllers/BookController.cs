@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.Models;
 using Library.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace Library.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _iServiceProvider;
-        public BookController(ApplicationDbContext context, IServiceProvider iServiceProvider)
+        //   private readonly IMapper _mapper;
+        public BookController(ApplicationDbContext context, IServiceProvider iServiceProvider /*,IMapper mapper*/ )
         {
             _context = context;
             _iServiceProvider = iServiceProvider;
+            //   _mapper = mapper;
         }
 
 
@@ -143,6 +146,7 @@ namespace Library.Areas.Admin.Controllers
                         model.AuthorId = book.AuthorId;
                         //مقدار کمبو باکس انتخاب شده توسط کاربر انتخابی برای ویرایش را برمیگرداند
                         model.BookGroupId = book.BookGroupId;
+                        model.BookId = book.BookId;
                     }
 
                 }
@@ -150,8 +154,62 @@ namespace Library.Areas.Admin.Controllers
             return PartialView("_AddEditBookPartial", model);
 
         }
+        //برای  قسمت خواندن(گت) افزودن و ویرایش دو اکشن نوشتیم که اکشن ما طولانی نشود
+        //چون برای قسمت پست پیرایش و افزودن یک پارشال ویو تعریف کرده ایم باید یک اکشن برای هر دوحالت بنویسیم
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        
+        public IActionResult AddEditBook(int bookid, AddEditBookViewModel model, string redirectUrl)
+        {
+            // آی دی ورودی حتما باید همنام اتریبیوت
+            //تگ باشد که درپارشال asp-for="BookId"
+            // دادیم_AddEditBookPartial
 
-      
+            if (ModelState.IsValid )
+            {
+                if (bookid == 0)
+                {
+                    //Insert
+                    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+                    {
+                        //برای گفتن صریح اینکه ویو مدل ما همان کلاس بوک مااست به ام وی سی و بتواند ان را روی جدول بوک ذخیره کند
+                        //Book bookModel = _mapper.Map<AddEditBookViewModel, Book>(model);
+                        Book bookModel = Mapper.Map<AddEditBookViewModel, Book>(model);
 
+                        db.Books.Add(bookModel);
+                        db.SaveChanges();
+
+                    }
+                }
+                else
+                {
+                    //Update
+                    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+                    {
+                        //برای گفتن صریح اینکه ویو مدل ما همان کلاس بوک مااست به ام وی سی و بتواند ان را روی جدول بوک ذخیره کند
+                        Book bookModel = Mapper.Map<AddEditBookViewModel, Book>(model);
+                        db.Books.Update(bookModel);
+                        db.SaveChanges();
+                    }
+
+                }
+                return PartialView("_SuccessfullyResponsePartial", redirectUrl);
+            }
+
+            //برای نایش کمبو باکس ها بعد خطا در ولیدیشن ها
+            model.Authors = _context.Authors.Select(a => new SelectListItem
+            {
+                Text = a.AuthorName,
+                //the value accepts the string data type as a result we should convert data type to string
+                Value = a.AuthorId.ToString()
+            }).ToList();
+            model.BookGroups = _context.BookGroups.Select(bg => new SelectListItem
+            {
+                Text = bg.BookGroupName,
+                Value = bg.BookGroupId.ToString()
+            }).ToList();
+
+            return PartialView("_AddEditBookPartial", model);
+        }
     }
 }

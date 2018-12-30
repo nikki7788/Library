@@ -19,24 +19,24 @@
     <!--Modal body-->
     <div class="modal-body">
         <div class="form-group row center">
-            <label class="col-lg-3 col-sm-4 col-12  col-form-label" asp-for="AuthorName"></label>
+            <label asp-for="AuthorName" class="col-lg-3 col-sm-4 col-12  col-form-label" ></label>
             <div class="col-lg-8 col-sm-6 col-12">
-                <input class=" form-control" asp-for="AuthorName" />
+                <input asp-for="AuthorName" class=" form-control"  />
                 <span asp-validation-for="AuthorName" class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-group row ">
-            <label class="col-lg-3 col-sm-4 col-form-label" asp-for="AuthorDescription"></label>
+            <label  asp-for="AuthorDescription" class="col-lg-3 col-sm-4 col-form-label"></label>
             <div class="col-lg-8 col-sm-6">
-                <input class=" form-control" asp-for="AuthorDescription" />
+                <input asp-for="AuthorDescription" class=" form-control" />
                 <span asp-validation-for="AuthorDescription" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group row d-none">
-            <label class="col-lg-3 col-sm-3 col-form-label" asp-for="AuthorId"></label>
+            <label  asp-for="AuthorId" class="col-lg-3 col-sm-3 col-form-label"></label>
             <div class="col-6">
-                <input class=" form-control" asp-for="AuthorId" />
+                <input  asp-for="AuthorId" class=" form-control"/>
                 <span asp-validation-for="AuthorId"></span>
             </div>
         </div>

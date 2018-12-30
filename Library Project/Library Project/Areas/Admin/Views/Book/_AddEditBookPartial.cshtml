@@ -1,72 +1,121 @@
 ﻿
 @model AddEditBookViewModel
-<!--Modal Body--> 
-<form asp-action="/" role="form">
-    <div class="modal-body">
-        <!--Modal Header-->
-        @if (Model.BookId != 0)
-        {
-            @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کتاب" })
-        }
-        else
-        {
-            @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
 
-        }
+<form asp-controller="Book" asp-action="AddEditBook" id="form-addedit-book" data-ajax="true" data-ajax-method="POST"
+      data-ajax-update="#form-addedit-book" data-ajax-mode="replace">
+
+    <!--Modal Header-->
+    @if (Model.BookId != 0)
+    {
+        @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کتاب" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
+
+    }
+    <!--Modal Body-->
+    <div class="modal-body">
 
         <div class="form-group row">
-            <label class="col-3 col-form-label" asp-for="BookName"></label>
+            <label asp-for="BookName" class="col-3 col-form-label"></label>
             <div class="col-9">
                 <input asp-for="BookName" class="form-control" />
+                <span asp-validation-for="BookName" class="text-danger"></span>
             </div>
         </div>
+
         <div class="form-group row">
-            <label class="col-3 col-form-label" asp-for="BookDescription"></label>
+            <label asp-for="BookDescription" class="col-3 col-form-label"></label>
             <div class="col-9 ">
-                <textarea asp-for="BookDescription" id="bookdescription" name="bookdescription" class="form-control"></textarea>
-            </div>
-            <!--For the ckeditor 5 and changing it's language-->
-            <script>
-                //this code is for the default clasic editor if you're going to customize editor you should change the below code.
-                //CKEditor 5 documentation ====> https://ckeditor.com/docs/ckeditor5/latest/
-                ClassicEditor
-                    .create(document.querySelector('#bookdescription'), {
-                        language: 'fa'
-                    })
-                    .then(editor => {
-                        window.editor = editor;
-                    })
-                    .catch(err => {
-                        console.error(err.stack);
+                <textarea asp-for="BookDescription" id="BookDescription" name="BookDescription" class="form-control"></textarea>
+
+
+
+                <!--For the ckeditor 5 and changing it's language-->
+                @*<script type="text/javascript">
+                        //this code is for the default clasic editor if you're going to customize editor you should change the below code.
+                        //CKEditor 5 documentation ====>/*https://ckeditor.com/docs/ckeditor5/latest/*/
+                        ClassicEditor
+                            .create(document.querySelector('#BookDescription'), {
+                                language: 'fa'
+                            })
+                            .then(BookDescription => {
+                                window.BookDescription = BookDescription;
+                            })
+                            .catch(err => {
+                                console.error(err.stack);
+                            });
+                    </script>*@
+
+                @*<script>
+                    $(document).ready(function () {
+
+                        var editorContainer = document.querySelector('#BookDescription');
+
+                        var check_if_empty = function (val) {
+
+                            return $.makeArray($(val)).every(function (el) {
+
+                                return el.innerHTML.replace(/&nbsp;|\s/g, '').length === 0;
+                            });
+                        };
+
+                        var clear_input_if_empty_content = function (input) {
+
+                            var $form = $(input).parents('form');
+
+                            $form.on('submit', function () {
+
+                                if (check_if_empty($(input).val())) {
+
+                                    $(input).val('');
+                                }
+                            });
+                        };
+
+                        ClassicEditor.create(editorContainer)
+                            .then(function (editor) {
+                                clear_input_if_empty_content(editorContainer)
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     });
-            </script>
+
+                </script>*@
+                <span asp-validation-for="BookDescription" class="text-danger"></span>
+            </div>
         </div>
 
-
         <div class="form-group row">
-            <label class="col-3 col-form-label" asp-for="BookGroupId"></label>
+            <label asp-for="BookGroupId" class="col-3 col-form-label"></label>
             <div class="col-9 ">
-                <select asp-for="BookGroupId" asp-items="@Model.BookGroups" class="form-control">
-                    <option>انتخاب گروه بندی</option>
-                </select>
+                <select asp-for="BookGroupId" asp-items="@Model.BookGroups" class="form-control"></select>
             </div>
         </div>
+
         <div class="form-group row">
-            <label class="col-3 col-form-label" asp-for="AuthorId"></label>
+            <label asp-for="AuthorId" class="col-3 col-form-label"></label>
             <div class="col-9">
-                <select asp-for="AuthorId" asp-items="@Model.Authors" class="form-control">
-                    <option>انتخاب نویسنده</option>
-                </select>
+                <select asp-for="AuthorId" asp-items="@Model.Authors" class="form-control"></select>
             </div>
         </div>
+
         <div class="form-group row">
-            <label class="col-3 col-form-label" asp-for="BookPageCount"></label>
+            <label asp-for="BookPageCount" class="col-3 col-form-label"></label>
             <div class="col-9">
                 <input asp-for="BookPageCount" class="form-control" />
             </div>
         </div>
 
+
+        <input type="hidden" asp-for="BookId" />
+
+        <input type="hidden" name="redirectUrl" value="@Url.Action("Index","Book")" />
     </div>
+
+
 
     <!--Modal Footer-->
     @if (Model.BookId != 0)
@@ -78,5 +127,6 @@
         @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
 
     }
-</form>
 
+</form>
+<script src="~/js/Modal-js/ck.js"></script>
