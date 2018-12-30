@@ -68,8 +68,134 @@
     <script src="~/js/ckeditor5/ckeditor.js"></script>
     <!--Js for changing the ckeditor 5 language-->
     <script src="~/js/ckeditor5/translations/fa.js"></script>
+    @*<script src="~/js/Modal-js/ck.js"></script>*@
+    <!--Ajax scripts-->
+    @*<script src="~/js/Modal-js/Book-Ajax.js"></script>*@
 
-    <script src="~/js/Modal-js/ck.js"></script>
+    <script>
 
+//as soon as the page is loaded and then if  the id=submitdata is clicked ,run this function ...
+$(document).on("click", "#submitdata", function (ev) {
+    //ev parameter is contained in the event of clicking on the #submitdata
+
+    //the default action of the event(=ev) will not be triggered
+    ev.preventDefault();
+
+    //for sending data from a form or a Model to the server
+    //we should append all data(=files + input values + slectList values)from form to the myData
+    var myData = new FormData();
+
+    //----------###########-------- دریافت مقادیر اپلودی   -----#######---------------
+
+    //for recieving value(=file) and data from the  tag with  id= files
+    var fileUpload = $("#files").get(0);
+
+    //we need this code whenever there are more than a file for uploading
+    //all files in this tag with  id= files ,will be put into the myFiles
+    var myFiles = fileUpload.files;
+
+    //this code appends values of the myFiles  to the myData
+    for (var i = 0; i < myFiles.length; i++) {
+
+        //append("the name attr of the tag ",the tag value )
+        myData.append("files", myFiles[i]);
+    }
+    //--------------------#####################------------------------------------------------
+
+    //----############---- دریافت مقادیر اینپوت ها و کمبوباکس ها  ---##############----------------
+    //getting the values of the inputs and selects
+    $("input,select").each(function (x, y) {
+
+        //x is indexer that means it is a counter
+        //y = the selcted tag by each method in each loop    ورودی فانکشن باربر است با تگ انتخاب شده توسط حلقه در هربار حلقه زدن و لوپ
+        // متغیر اول شمارنده و ایندکسر است و متغیر دوم تگ متناظر با شماذنده را می اورد
+        //append("the name attr of the tag = e.g. asp-for="pageCount" ",the tag value = e.g. pages of book )
+        myData.append($(y).attr("name"), $(y).val());
+
+    });
+
+    //-------------------------##########################--------------------------------------
+
+    //----############----CKEDITOR دریافت مقادیر   ---##############----------------
+    var editorVal = myEditor.getData();
+    if (editorVal == "<p>&nbsp;</p>") {
+        editorVal = "";
+    }
+    myData.append("BookDescription", editorVal);
+
+    //-------------------------##########################--------------------------------------
+
+    $.ajax({
+
+        type: "post",
+        url: '@Url.Action("AddEditBook", "Book", new { Area = "Admin"})',
+       // url: 'Book/AddEditBook',   //if we write these code(=ajax js) external js file ,we should use this
+        contentType: false,
+        processData: false,    //false : don't proccess any action on my data
+        data: myData ,         //sending data
+        dataType: "json"
+
+        //when data is sent into the server and after that its response recieved from the server
+        //status and message are defined in action
+    }).done(
+        function (res) {
+        //checking ajax result (in data type and being successful )
+            if (res.status === "success") {
+                swal({
+                    position: 'center',
+                    type: 'success',
+                    title: res.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function () {
+                    //for displaying index view after finishing modal
+                    window.location.href = '@Url.Action("Index", "Book")';
+                });
+                                    @*.then((result) => {
+                    if (
+                        // Read more about handling dismissals
+                        result.dismiss === swal.DismissReason.timer
+                    ) {
+                        window.location.href = '@Url.Action("Index", "Book")';
+                    }
+                });*@
+        //alert(res.message);
+            } else if (res.status === "error")
+            {
+                //برای اینکه لیستی از خطاها را از سمت کنترلر دریافت میکند(2خطا حداکثر)وبرای اینکه همه خطاهارا در یک 
+                // نمایش دهیم swal 
+                var c=[];
+                $.each(res.error, function (a, b) {
+                    c[i] = b;
+                    i++;
+                });
+
+                // اگر یکی از اینپوت ها فقط خطا داشت ارایه سی فقط یک درایه داردو درایه دوم ان میشود تتعریف نشده برای عدم نمایش تعریف نشده در 
+                //ان را بررسی میکنیم swal 
+                if (c[1] === undefined) {
+                    c[1] = "";
+                };
+                swal({
+
+                        position: 'center',
+                        type: 'error',
+                    title: c[0] + "\n" + c[1],
+                        //text: b,
+                        showConfirmButton: true,
+                        //timer: 1500
+                    });
+                  //alert(b);
+
+        }
+        //when data isn't sent into the server and occured an error in the client side or at the beginig of entry into the sever
+        })
+        //.fail(function (xhr, b, error) {
+        //alert(error);
+        //})
+        ;
+
+});
+
+    </script>
 
 }

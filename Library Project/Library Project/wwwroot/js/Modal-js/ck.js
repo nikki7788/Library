@@ -4,9 +4,9 @@
 
 
 $(document).ready(function () {
-
+    
     var editorContainer = document.querySelector('#BookDescription');
-
+  
     var check_if_empty = function (val) {
 
         return $.makeArray($(val)).every(function (el) {
@@ -30,12 +30,12 @@ $(document).ready(function () {
 
     ClassicEditor.create(editorContainer)
         .then(function (editor) {
-            clear_input_if_empty_content(editorContainer)
+            clear_input_if_empty_content(editorContainer);
         })
         .catch(function (error) {
             console.log(error);
         });
-    defaultPrevented();
+    //defaultPrevented();
 });
 
 

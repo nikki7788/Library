@@ -1,8 +1,7 @@
 ﻿
 @model AddEditBookViewModel
 
-<form asp-controller="Book" asp-action="AddEditBook" id="form-addedit-book" data-ajax="true" data-ajax-method="POST"
-      data-ajax-update="#form-addedit-book" data-ajax-mode="replace">
+<form method="post" enctype="multipart/form-data">
 
     <!--Modal Header-->
     @if (Model.BookId != 0)
@@ -14,6 +13,8 @@
         @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
 
     }
+
+    @Html.AntiForgeryToken();     <!--insed of [ValidateAntiForgeryToken]  in action -->
     <!--Modal Body-->
     <div class="modal-body">
 
@@ -29,62 +30,19 @@
             <label asp-for="BookDescription" class="col-3 col-form-label"></label>
             <div class="col-9 ">
                 <textarea asp-for="BookDescription" id="BookDescription" name="BookDescription" class="form-control"></textarea>
-
-
-
-                <!--For the ckeditor 5 and changing it's language-->
-                @*<script type="text/javascript">
-                        //this code is for the default clasic editor if you're going to customize editor you should change the below code.
-                        //CKEditor 5 documentation ====>/*https://ckeditor.com/docs/ckeditor5/latest/*/
-                        ClassicEditor
-                            .create(document.querySelector('#BookDescription'), {
-                                language: 'fa'
-                            })
-                            .then(BookDescription => {
-                                window.BookDescription = BookDescription;
-                            })
-                            .catch(err => {
-                                console.error(err.stack);
-                            });
-                    </script>*@
-
-                @*<script>
-                    $(document).ready(function () {
-
-                        var editorContainer = document.querySelector('#BookDescription');
-
-                        var check_if_empty = function (val) {
-
-                            return $.makeArray($(val)).every(function (el) {
-
-                                return el.innerHTML.replace(/&nbsp;|\s/g, '').length === 0;
-                            });
-                        };
-
-                        var clear_input_if_empty_content = function (input) {
-
-                            var $form = $(input).parents('form');
-
-                            $form.on('submit', function () {
-
-                                if (check_if_empty($(input).val())) {
-
-                                    $(input).val('');
-                                }
-                            });
-                        };
-
-                        ClassicEditor.create(editorContainer)
-                            .then(function (editor) {
-                                clear_input_if_empty_content(editorContainer)
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                    });
-
-                </script>*@
                 <span asp-validation-for="BookDescription" class="text-danger"></span>
+                <script type="text/javascript">
+                    var myEditor;
+                    ClassicEditor
+                        .create(document.querySelector('#BookDescription'))
+                        .then(editor => {
+                            console.log(editor);
+                            myEditor = editor;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                </script>
             </div>
         </div>
 
@@ -102,6 +60,7 @@
             </div>
         </div>
 
+
         <div class="form-group row">
             <label asp-for="BookPageCount" class="col-3 col-form-label"></label>
             <div class="col-9">
@@ -109,10 +68,18 @@
             </div>
         </div>
 
+        <!-- Uploding files -->
+        <div class="form-group row">
+            <label asp-for="BookImage" class="col-3 col-form-label"></label>
+            <div class="col-9">
+                <input type="file" id="files" name="files" class="form-control-file"  />
+                @*<span asp-validation-for="BookImage" class="text-danger"></span>*@
+            </div>
+        </div>
 
         <input type="hidden" asp-for="BookId" />
 
-        <input type="hidden" name="redirectUrl" value="@Url.Action("Index","Book")" />
+        @*<input type="hidden" name="redirectUrl" value="@Url.Action("Index","Book")" />*@
     </div>
 
 
@@ -120,13 +87,17 @@
     <!--Modal Footer-->
     @if (Model.BookId != 0)
     {
-        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
+        //  @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
+        <div class="modal-footer">
+            <input type="button" id="submitdata" value="ویرایش کتاب" class="btn btn-success" />
+        </div>
     }
     else
     {
-        @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
-
+        //  @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
+        <div class="modal-footer">
+            <input type="button" id="submitdata" value="افزودن کتاب" class="btn btn-success" />
+        </div>
     }
 
 </form>
-<script src="~/js/Modal-js/ck.js"></script>

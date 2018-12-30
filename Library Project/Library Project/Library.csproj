@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="1.1.0" />
+    <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -345,11 +347,62 @@
     <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
     <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
     <None Include="wwwroot\lib\jquery\dist\core.js" />
+    <None Include="wwwroot\lib\sweetalert2\.eslintignore" />
+    <None Include="wwwroot\lib\sweetalert2\.eslintrc.js" />
+    <None Include="wwwroot\lib\sweetalert2\BACKERS.md" />
+    <None Include="wwwroot\lib\sweetalert2\CHANGELOG.md" />
+    <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.all.js" />
+    <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.js" />
+    <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.min.js" />
+    <None Include="wwwroot\lib\sweetalert2\LICENSE" />
+    <None Include="wwwroot\lib\sweetalert2\README.md" />
+    <None Include="wwwroot\lib\sweetalert2\release.config.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\animations.scss" />
+    <None Include="wwwroot\lib\sweetalert2\src\constants.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\enhancers.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\enhancers\withGlobalDefaults.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\enhancers\withNoNewKeyword.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\globalState.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods\enable-disable-elements.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods\getInput.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods\hideLoading.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods\progress-steps.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods\show-reset-validation-error.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\instanceMethods\_main.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\mixins.scss" />
+    <None Include="wwwroot\lib\sweetalert2\src\privateProps.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\adaptInputValidator.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\argsToParams.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\close.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\dom.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\fire.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\mixin.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\queue.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\showLoading.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\staticMethods\timer.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\SweetAlert.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\sweetalert2.js" />
+    <None Include="wwwroot\lib\sweetalert2\src\sweetalert2.scss" />
+    <None Include="wwwroot\lib\sweetalert2\src\toasts.scss" />
+    <None Include="wwwroot\lib\sweetalert2\src\variables.scss" />
+    <None Include="wwwroot\lib\sweetalert2\tools\build-dist.js" />
+    <None Include="wwwroot\lib\sweetalert2\tools\cherry-pick-release-to-master.js" />
+    <None Include="wwwroot\lib\sweetalert2\tools\merge-master-into-dist.js" />
+    <None Include="wwwroot\lib\sweetalert2\tools\purge-jsdelivr.js" />
+    <None Include="wwwroot\lib\sweetalert2\tools\push-branch.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Model\" />
     <Folder Include="Areas\User\Model\" />
+    <Folder Include="wwwroot\upload\thumbnailImages\" />
+    <Folder Include="wwwroot\upload\normalImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\lib\sweetalert2\sweetalert2.d.ts" />
   </ItemGroup>
 
   <ItemGroup>
