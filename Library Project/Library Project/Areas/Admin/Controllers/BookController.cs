@@ -81,7 +81,7 @@ namespace Library.Areas.Admin.Controllers
                 model.Add(obj);
 
             }
-            ViewBag.rootPath= "/upload/thumbnailimage/";
+            ViewBag.rootPath = "/upload/thumbnailimage/";
 
             return View(model);
         }
@@ -116,7 +116,7 @@ namespace Library.Areas.Admin.Controllers
                 Text = bg.BookGroupName,
                 Value = bg.BookGroupId.ToString()
             }).ToList();
-
+           
             return PartialView("_AddEditBookPartial", model);
         }
 
@@ -153,10 +153,15 @@ namespace Library.Areas.Admin.Controllers
                         //مقدار کمبو باکس انتخاب شده توسط کاربر انتخابی برای ویرایش را برمیگرداند
                         model.BookGroupId = book.BookGroupId;
                         model.BookId = book.BookId;
+                        //برای دریافت نام عکس در مودال و نمایش ان  به کمک ویوبگ
+                        model.BookImage = book.BookImage;
                     }
 
                 }
             }
+            //برای ارسال مسیر عکس ها برای نمایش در مودال ویرایش  کتاب و پیش نمایش ان 
+            ViewBag.imgRoot= "/upload/thumbnailimage/";
+
             return PartialView("_AddEditBookPartial", model);
 
         }
@@ -184,7 +189,7 @@ namespace Library.Areas.Admin.Controllers
                         using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
                         {
                             await item.CopyToAsync(fs);
-                            
+
                             model.BookImage = filename;
                         }
                         //---------------------------resize Image ---------------------------------
@@ -195,7 +200,7 @@ namespace Library.Areas.Admin.Controllers
                     }
                 }
                 //------####################------ End Uploadin Images -------#########################
-                if (model.BookImage==null)
+                if (model.BookImage == null)
                 {
                     model.BookImage = "defaultpic.png";
                 }

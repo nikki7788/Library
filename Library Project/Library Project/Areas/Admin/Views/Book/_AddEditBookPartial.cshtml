@@ -71,10 +71,22 @@
         <!-- Uploding files -->
         <div class="form-group row">
             <label asp-for="BookImage" class="col-3 col-form-label"></label>
-            <div class="col-9">
-                <input type="file" id="files" name="files" class="form-control-file"  />
-                @*<span asp-validation-for="BookImage" class="text-danger"></span>*@
+            <div class="col-3">
+                <input type="file" id="files" name="files" class="form-control-file" />
             </div>
+            <div class="col-6" id="image-holder">
+
+                @* اگر درحالت افزودن بودیم این تگ را نمایش نمیدهد *@
+                @if (Model.BookId != 0)
+                {
+                    <!-- we are in updating mode-->
+                    <!-- showin book picture from action-->
+                    <img src=" @ViewBag.imgRoot@Model.BookImage" alt="bookImg"  class="img-fluid" style=" width:60px;height:60px;" />
+                }
+
+            </div>
+        </div>
+        <div class="form-group row">
         </div>
 
         <input type="hidden" asp-for="BookId" />
@@ -89,15 +101,48 @@
     {
         //  @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
         <div class="modal-footer">
+            <button type="button" class="btn ml-2" data-dismiss="modal">برگشت </button>
             <input type="button" id="submitdata" value="ویرایش کتاب" class="btn btn-success" />
+
         </div>
     }
     else
     {
         //  @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
         <div class="modal-footer">
+            <button type="button" class="btn ml-2" data-dismiss="modal">برگشت </button>
             <input type="button" id="submitdata" value="افزودن کتاب" class="btn btn-success" />
+
         </div>
     }
 
 </form>
+
+<script>
+    //پیش نمایش تصویر قبل از اپلود
+    $(document).ready(function () {
+
+        $("#files").on('change', function () {
+
+            if (typeof (FileReader) != "undefined") {
+                var image_holder = $("#image-holder");
+                image_holder.empty();
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("<img />", {
+                        "src": e.target.result,
+                        "class": "img-fluid",
+                        "style": "width:60px;height:60px;"
+                    }).appendTo(image_holder);
+
+                }
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+            } else {
+                alert("This browser does not support FileReader.");
+            }
+
+        });
+    });
+</script>
