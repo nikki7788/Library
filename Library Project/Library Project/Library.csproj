@@ -397,8 +397,8 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Model\" />
     <Folder Include="Areas\User\Model\" />
-    <Folder Include="wwwroot\upload\thumbnailImages\" />
-    <Folder Include="wwwroot\upload\normalImages\" />
+    <Folder Include="wwwroot\upload\thumbnailimage\" />
+    <Folder Include="wwwroot\upload\normalimage\" />
   </ItemGroup>
 
   <ItemGroup>

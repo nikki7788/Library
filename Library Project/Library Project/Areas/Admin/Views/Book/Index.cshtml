@@ -17,34 +17,37 @@
             </a>
         </div>
 
-        <table class="table table-striped table-sm table-bordered mt-3">
+        <table class="table table-striped table-sm table-bordered table-hover mt-3 text-center">
             <thead>
                 <tr>
                     <!-- Html Helper for dynamic implementing the property titles of the table(class= @@model IEnumerable<BookGroup>)-->
                     <th>@Html.DisplayNameFor(model => model.BookName)</th>
                     <th>@Html.DisplayNameFor(model => model.BookPageCount)</th>
-                    <th>@Html.DisplayNameFor(model => model.BookImage)</th>
                     <th>@Html.DisplayNameFor(model => model.AuthorName)</th>
                     <th>@Html.DisplayNameFor(model => model.BookGroupName)</th>
+                    <th>@Html.DisplayNameFor(model => model.BookImage)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 @foreach (var item in Model)
                 {
                     <tr>
                         <td>@item.BookName</td>
                         <td>@item.BookPageCount</td>
-                        <td>@item.BookImage</td>
+                        
                         <td>@item.AuthorName</td>
                         <td>@item.BookGroupName</td>
-                        <td>
-                            <a class="btn btn-info" data-toggle="modal" id="show-edit-book" asp-action="EditBook"
+                        <td >
+                            <img src="@ViewBag.rootPath@item.BookImage" alt="bookImg" class="img-fluid img-thumbnail img" style="width:70px;height:75px"/>
+                        </td>
+                        <td class="align-middle">
+                            <a class="btn btn-info px-3 py-2" data-toggle="modal" id="show-edit-book" asp-action="EditBook"
                                data-target="#modal-action-book" asp-route-id="@item.BookId">
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
-                            <a class="btn btn-danger" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook">
+                            <a class="btn btn-danger px-4 py-2" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook">
                                 <i class="fa fa-trash"></i>
                                 <span>حذف</span>
                             </a>
@@ -128,7 +131,7 @@ $(document).on("click", "#submitdata", function (ev) {
     $.ajax({
 
         type: "post",
-        url: '@Url.Action("AddEditBook", "Book", new { Area = "Admin"})',
+        url: '@Url.Action("AddEditBook", "Book", new { area = "Admin"})',
        // url: 'Book/AddEditBook',   //if we write these code(=ajax js) external js file ,we should use this
         contentType: false,
         processData: false,    //false : don't proccess any action on my data
@@ -146,7 +149,7 @@ $(document).on("click", "#submitdata", function (ev) {
                     type: 'success',
                     title: res.message,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1000
                 }).then(function () {
                     //for displaying index view after finishing modal
                     window.location.href = '@Url.Action("Index", "Book")';
@@ -162,38 +165,45 @@ $(document).on("click", "#submitdata", function (ev) {
         //alert(res.message);
             } else if (res.status === "error")
             {
-                //برای اینکه لیستی از خطاها را از سمت کنترلر دریافت میکند(2خطا حداکثر)وبرای اینکه همه خطاهارا در یک 
-                // نمایش دهیم swal 
+                //برای اینکه لیستی از خطاها را از سمت کنترلر دریافت میکند(2خطا حداکثر)وبرای اینکه همه خطاهارا در یک
+                // نمایش دهیم swal
                 var c=[];
                 $.each(res.error, function (a, b) {
                     c[i] = b;
                     i++;
                 });
 
-                // اگر یکی از اینپوت ها فقط خطا داشت ارایه سی فقط یک درایه داردو درایه دوم ان میشود تتعریف نشده برای عدم نمایش تعریف نشده در 
-                //ان را بررسی میکنیم swal 
+                // اگر یکی از اینپوت ها فقط خطا داشت ارایه سی فقط یک درایه داردو درایه دوم ان میشود تتعریف نشده برای عدم نمایش تعریف نشده در
+                //ان را بررسی میکنیم swal
                 if (c[1] === undefined) {
                     c[1] = "";
                 };
                 swal({
-
                         position: 'center',
                         type: 'error',
-                    title: c[0] + "\n" + c[1],
-                        //text: b,
-                        showConfirmButton: true,
-                        //timer: 1500
-                    });
+                    title: "خطا:",
+                  //  html: "<P> c[0]</P>" + "<P> c[1]</P>",
+                   text: c[0] +'\n'+"\n"+  c[1],
+                    showConfirmButton: true,
+                    confirmButtonText: 'فهمیدم',
+                    confirmButtonColor: '#55d5b2',
+
+                });
                   //alert(b);
 
         }
         //when data isn't sent into the server and occured an error in the client side or at the beginig of entry into the sever
         })
-        //.fail(function (xhr, b, error) {
+        .fail(function (xhr, b, error) {
+            swal({
+                position: 'center',
+                type: 'error',
+                title: "خطا!:",
+               text: error,
+                showConfirmButton: true,
+            });
         //alert(error);
-        //})
-        ;
-
+        });
 });
 
     </script>

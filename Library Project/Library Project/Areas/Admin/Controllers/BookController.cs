@@ -19,9 +19,9 @@ namespace Library.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _iServiceProvider;
-        private readonly IHostingEnvironment _appEnvironment;
+        private readonly IHostingEnvironment _appEnvironment;   /// for accessing to the root project(wwwroot)
         //   private readonly IMapper _mapper;
-        public BookController(ApplicationDbContext context, IServiceProvider iServiceProvider, IHostingEnvironment appEnvironment  /*,IMapper mapper*/ )
+        public BookController(ApplicationDbContext context, IServiceProvider iServiceProvider, IHostingEnvironment appEnvironment)
         {
             _context = context;
             _iServiceProvider = iServiceProvider;
@@ -81,6 +81,7 @@ namespace Library.Areas.Admin.Controllers
                 model.Add(obj);
 
             }
+            ViewBag.rootPath= "/upload/thumbnailimage/";
 
             return View(model);
         }
@@ -159,40 +160,49 @@ namespace Library.Areas.Admin.Controllers
             return PartialView("_AddEditBookPartial", model);
 
         }
+
         //برای  قسمت خواندن(گت) افزودن و ویرایش دو اکشن نوشتیم که اکشن ما طولانی نشود
         //چون برای قسمت پست پیرایش و افزودن یک پارشال ویو تعریف کرده ایم باید یک اکشن برای هر دوحالت بنویسیم
         [HttpPost]
-       // [ValidateAntiForgeryToken]      // this statement does'nt allow run ajax-jquery
+        // [ValidateAntiForgeryToken]      // this statement does'nt allow run ajax-jquery
 
-        public async Task<IActionResult> AddEditBook(int bookId, AddEditBookViewModel model, IEnumerable<IFormFile> files  /* ,string redirectUrl*/ )
+        public async Task<IActionResult> AddEditBook(int bookId, AddEditBookViewModel model, IEnumerable<IFormFile> files)
         {
             if (ModelState.IsValid)
             {
-                //------###################------ Uploadin Images -------#############################
 
-                var uploads = Path.Combine(_appEnvironment.WebRootPath, "uplaod\\normalImages\\");
+                //------################### *** Upload Image *** ------###################
+                var uploads = Path.Combine(_appEnvironment.WebRootPath, "upload\\normalimage\\");
                 foreach (var item in files)
                 {
                     if (item != null && item.Length > 0)
                     {
-                        var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(item.FileName);
-                        using (FileStream fileStream =  new FileStream(Path.Combine(uploads, fileName), FileMode.CreateNew))
+                        //creating a unique name for each file and then atach the format of each file to the unique name
+                        var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(item.FileName);
+
+                        //for saving path of file in data base and saving file in root project(wwwroot)
+                        using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
                         {
-                            await item.CopyToAsync(fileStream);
-                            model.BookImage = fileName;
+                            await item.CopyToAsync(fs);
+                            
+                            model.BookImage = filename;
                         }
                         //---------------------------resize Image ---------------------------------
+
+                        //for creating a smaller size copying of uploading photo
                         InsertShowImage.ImageResizer img = new InsertShowImage.ImageResizer();
-                        img.Resize(uploads + fileName, _appEnvironment.WebRootPath + "\\upload\\thumbnailImages\\" + fileName);
-
+                        img.Resize(uploads + filename, _appEnvironment.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
                     }
-
+                }
+                //------####################------ End Uploadin Images -------#########################
+                if (model.BookImage==null)
+                {
+                    model.BookImage = "defaultpic.png";
                 }
 
-                //------####################------ End Uploadin Images -------#########################
                 if (bookId == 0)
                 {
-                    //Insert
+                    //Inserting
                     using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                     {
                         //برای گفتن صریح اینکه ویو مدل ما همان کلاس بوک مااست به ام وی سی و بتواند ان را روی جدول بوک ذخیره کند
@@ -205,7 +215,7 @@ namespace Library.Areas.Admin.Controllers
                 }
                 else
                 {
-                    //Update
+                    //Updating
                     using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                     {
                         //برای گفتن صریح اینکه ویو مدل ما همان کلاس بوک مااست به ام وی سی و بتواند ان را روی جدول بوک ذخیره کند
@@ -237,7 +247,7 @@ namespace Library.Areas.Admin.Controllers
             }
 
             return Json(new { status = "error", error = list });
-   
+
 
 
 
