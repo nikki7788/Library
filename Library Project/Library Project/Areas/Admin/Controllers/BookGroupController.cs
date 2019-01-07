@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Library.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Areas.Admin.Controllers
@@ -27,21 +28,21 @@ namespace Library.Areas.Admin.Controllers
         #endregion #####---------------------------------------- ######
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            List<BookGroup> model = new List<BookGroup>();
-
-            model = _context.BookGroups.Select(bg => new BookGroup
-            {
-                BookGroupId = bg.BookGroupId,
-                BookGroupName = bg.BookGroupName,
-                BookGroupDescription = bg.BookGroupDescription
-
-            }).ToList();
-
-
+            var model = await _context.BookGroups.Include(bg => bg.Books).ToListAsync();
             return View(model);
+            //or
+
+            //List<BookGroup> model = new List<BookGroup>();
+            //model = _context.BookGroups.Select(bg => new BookGroup
+            //{
+            //    BookGroupId = bg.BookGroupId,
+            //    BookGroupName = bg.BookGroupName,
+            //    BookGroupDescription = bg.BookGroupDescription
+            //}).ToList();
+            //return View(model);
         }
 
         [HttpGet]
@@ -55,7 +56,7 @@ namespace Library.Areas.Admin.Controllers
                     bookgroup = _context.BookGroups.Where(b => b.BookGroupId == id).SingleOrDefault();
                     if (bookgroup == null)
                     {
-                      return  RedirectToAction("Index");
+                        return RedirectToAction("Index");
                     }
 
                 }
@@ -65,7 +66,7 @@ namespace Library.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddEditBookGroup(BookGroup model, int id,string redirectUrl)
+        public IActionResult AddEditBookGroup(BookGroup model, int id, string redirectUrl)
         {
             //برای چک کرن ولیدیشن هایی که در کلاس 
             // دادیم که همان اتریبیوت هاهستند bookgroup
@@ -83,7 +84,7 @@ namespace Library.Areas.Admin.Controllers
                     }
                     //return RedirectToAction("Index");
                     return PartialView("_SuccessfullyResponsePartial", redirectUrl);
-                 
+
                 }
                 //updating mode
                 else
@@ -106,5 +107,86 @@ namespace Library.Areas.Admin.Controllers
                 return PartialView("_AddEditBookGroupPartial", model);
             }
         }
+
+
+        //--------------------------------************* Delete Get **********--------------------------------
+
+        //این روش بهتر است
+        //[HttpGet]
+        //public async Task<IActionResult> DeleteBookGroup(int? id)        //آی دی را قابل نال بودن در نظر گرفتیم
+        //{
+        //    BookGroup bookGroup = new BookGroup();
+        //    if (id == null)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+        //    {
+        //        bookGroup = await db.BookGroups.SingleOrDefaultAsync(bg => bg.BookGroupId == id);
+        //        if (bookGroup == null)
+        //        {
+        //            return RedirectToAction("Index");
+        //        }
+        //        return PartialView("_DeleteBookGroupPartial", bookGroup.BookGroupName);
+        //    }
+        //}
+
+
+        [HttpGet]
+        public IActionResult DeleteBookGroup(int id)
+        {
+            BookGroup bookGroup = new BookGroup();
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                //bookGroup = db.BookGroups.SingleOrDefault(bg => bg.BookGroupId == id);                  روش  ۱  
+                bookGroup = db.BookGroups.Where(bg => bg.BookGroupId == id).SingleOrDefault();          //  روش 2
+                if (bookGroup == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                //نام گروه را که از نوع رشته است برای پپارشال ویو ارسال میکنیم
+                return PartialView("_DeleteBookGroupPartial", bookGroup.BookGroupName);
+            }
+        }
+
+        //--------------------------------************* Delete Get **********--------------------------------
+
+        //روش بهتر
+        //[HttpPost, ActionName("DeleteBookGroup")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirm(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+        //    {
+        //        var bookGroup =await db.BookGroups.SingleOrDefaultAsync(bg => bg.BookGroupId == id);
+        //        db.BookGroups.Remove(bookGroup);
+        //        await db.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
+        [HttpPost, ActionName("DeleteBookGroup")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirm(int id)
+        {
+            if (id == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                //var bookGroup = db.BookGroups.SingleOrDefault(bg => bg.BookGroupId == id);
+                var bookGroup = db.BookGroups.Where(bg => bg.BookGroupId == id).SingleOrDefault();
+
+                db.BookGroups.Remove(bookGroup);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
+
     }
 }

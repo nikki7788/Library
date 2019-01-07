@@ -24,12 +24,12 @@
                     <th>عملیات</th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 @foreach (var item in Model)
                 {
 
                     <tr>
-                        <td >@item.AuthorName</td>
+                        <td>@item.AuthorName</td>
                         <td>@item.AuthorDescription</td>
                         <td>
                             <div>
@@ -38,10 +38,15 @@
                                     <i class="fa fa-pen"></i>
                                     <span>ویرایش نویسنده</span>
                                 </a>
-                                <a class="btn btn-danger " data-toggle="modal" id="show-delete-author" asp-action="DeleteAuthor">
-                                    <i class="fa fa-trash "></i>
-                                    <span>حذف نویسنده</span>
-                                </a>
+                                <!--اگر کتابی با گروه بندی مورد نظر وجود نداشت دکمه حذف را نشان می دهد-->
+                                @if (item.Books.Count() == 0)
+                                {
+                                    <a class="btn btn-danger " data-toggle="modal" id="show-delete-author" asp-action="DeleteAuthor"
+                                       data-target="#modal-action-author" asp-route-id="@item.AuthorId">
+                                        <i class="fa fa-trash "></i>
+                                        <span>حذف نویسنده</span>
+                                    </a>
+                                }
                             </div>
 
                         </td>
