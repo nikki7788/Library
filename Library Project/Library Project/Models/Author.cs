@@ -23,9 +23,5 @@ namespace Library.Models
         [Display(Name ="توضیحات نویسنده")]
         [Required(ErrorMessage = "لطفا توضیحات نویسنده را وارد کنید")]
         public string AuthorDescription { get; set; }
-
-        //نیاز به ماگریشن ندارد اضافه کردن این پراپرتی
-        //کتاب های هرگروه بندی را می دهد
-        public virtual ICollection<Book> Books { get; set; }
     }
 }

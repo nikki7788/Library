@@ -29,7 +29,7 @@ namespace Library.Areas.Admin.Controllers
             //   _mapper = mapper;
         }
 
-        //--------------------------------************* index ***********--------------------------------------------------------
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -86,8 +86,6 @@ namespace Library.Areas.Admin.Controllers
             return View(model);
         }
 
-        //--------------------------------************* Add Book Get***********--------------------------------------------------------
-
         [HttpGet]
         public IActionResult AddBook()
         {
@@ -118,11 +116,9 @@ namespace Library.Areas.Admin.Controllers
                 Text = bg.BookGroupName,
                 Value = bg.BookGroupId.ToString()
             }).ToList();
-
+           
             return PartialView("_AddEditBookPartial", model);
         }
-
-        //--------------------------------************* Edit Book Get ***********--------------------------------------------------------
 
         [HttpGet]
         public IActionResult EditBook(int id)
@@ -164,20 +160,18 @@ namespace Library.Areas.Admin.Controllers
                 }
             }
             //برای ارسال مسیر عکس ها برای نمایش در مودال ویرایش  کتاب و پیش نمایش ان 
-            ViewBag.imgRoot = "/upload/thumbnailimage/";
+            ViewBag.imgRoot= "/upload/thumbnailimage/";
 
             return PartialView("_AddEditBookPartial", model);
 
         }
-
-        //------------------------------------------#### Add Edit Post ######-------------------------------------------
 
         //برای  قسمت خواندن(گت) افزودن و ویرایش دو اکشن نوشتیم که اکشن ما طولانی نشود
         //چون برای قسمت پست پیرایش و افزودن یک پارشال ویو تعریف کرده ایم باید یک اکشن برای هر دوحالت بنویسیم
         [HttpPost]
         // [ValidateAntiForgeryToken]      // this statement does'nt allow run ajax-jquery
 
-        public async Task<IActionResult> AddEditBook(int bookId, AddEditBookViewModel model, IEnumerable<IFormFile> files, string imgName)
+        public async Task<IActionResult> AddEditBook(int bookId, AddEditBookViewModel model, IEnumerable<IFormFile> files)
         {
             if (ModelState.IsValid)
             {
@@ -206,16 +200,14 @@ namespace Library.Areas.Admin.Controllers
                     }
                 }
                 //------####################------ End Uploadin Images -------#########################
+                if (model.BookImage == null)
+                {
+                    model.BookImage = "defaultpic.png";
+                }
 
-                //Inserting
                 if (bookId == 0)
                 {
-                    //اگر کاربر تصویری برای کتاب مشخص نکرد نصویر پیش فرض ما ذخیره شود
-                    if (model.BookImage == null)
-                    {
-                        model.BookImage = "defaultpic.png";
-                    }
-
+                    //Inserting
                     using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                     {
                         //برای گفتن صریح اینکه ویو مدل ما همان کلاس بوک مااست به ام وی سی و بتواند ان را روی جدول بوک ذخیره کند
@@ -226,10 +218,9 @@ namespace Library.Areas.Admin.Controllers
                     }
                     return Json(new { status = "success", message = "کتاب با موفقیت اضافه شد" });
                 }
-                //Updating
-
                 else
                 {
+<<<<<<< HEAD
 
                     //اگر کاربر درحالت ویرایش تصویری وارد نکرد تصویر قبلی ذخیره شده ان دوباره به ان منتصب شود
                     if (model.BookImage == null)
@@ -237,6 +228,9 @@ namespace Library.Areas.Admin.Controllers
                         model.BookImage = imgName;
                     }
 
+=======
+                    //Updating
+>>>>>>> parent of 7058873... completing the delete action(post and get) and it's partialview
                     using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                     {
                         //برای گفتن صریح اینکه ویو مدل ما همان کلاس بوک مااست به ام وی سی و بتواند ان را روی جدول بوک ذخیره کند
