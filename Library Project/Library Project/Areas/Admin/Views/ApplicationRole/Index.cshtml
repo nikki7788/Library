@@ -1,0 +1,73 @@
+﻿
+@model IEnumerable<ApplicationRoleViewModel>
+
+@{
+    ViewData["Title"] = "لیست نقش ها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card mt-3">
+    <div class="card-header bg-primary text-light">
+        لیست نقش ها
+    </div>
+    <div class="card-body">
+        <div class="btn-group">
+            <a class="btn btn-primary" id="show-add-role" data-toggle="modal" data-target="#modal-action-application-role"
+               asp-action="AddEditRole">
+                <i class="fa fa-plus"></i>
+                <span> افزودن نقش جدید</span>
+            </a>
+        </div>
+        <div></div>
+        <table class="table table-striped table-bordered table-sm mt-3">
+            <thead class="thead-light ">
+                <tr>
+                    <th>نام نقش</th>
+                    <th>توضیحات</th>
+                    <th>تعداد کاربر</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.NumberOfUsers</td>
+                        <td>
+                            <div>
+                                <!--asp-route-id for sending the id of the item to the action
+                                برای ارسال ای دی هر رکورد و ایتم به اکشن-->
+                                <a class="btn btn-info" id="show-edit-role" data-toggle="modal" asp-action="AddEditRole"
+                                   data-target="#modal-action-application-role" asp-route-id="@item.Id">
+                                    <i class="fa fa-pen"></i>
+                                    <span>ویرایش نقش</span>
+                                </a>
+                                @*اگر کاربری از نوع نقش موزد نظر نداشته باشیم دکمه حذف را نمایش بدهد*@
+                                @if (item.NumberOfUsers == 0)
+                                {
+                                    <a class="btn btn-danger" id="show-delete-role" data-toggle="modal" asp-action="DeleteRole"
+                                           data-target="#modal-action-application-role" asp-route-id="@item.Id">
+                                            <i class="fa fa-trash"></i>
+                                            <span>حذف نقش</span>
+                                        </a>
+                                   
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("_ModalPartial", new BootstrapModel { Id = "modal-action-application-role", Size = ModalSize.Medium })
+
+<!--adding your js files when you use _layout,this code is replaced insted of @@RenderSection-->
+@section Scripts{
+    <script src="~/js/Modal-js/application-role-index.js"></script>
+}
+

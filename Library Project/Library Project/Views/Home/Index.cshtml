@@ -13,7 +13,7 @@
 
 
         <!--start main-right-panel-->
-        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" style="background-color:#ffd800">
+        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" >
 
 
             <!--start right-panel-lastnews-->
@@ -21,22 +21,16 @@
 
                 @* استفاده از پارشیال ویو *@
                 @Html.Partial("_LastNewsPartial")
-
-
-
             </div>  @*end right-panel-lastnews*@
-
-
 
             <!--start right-panel-user-->
             <div id="right-panel-lastregisteruser" class="divStyle">
 
                 @Html.Partial("_LastRegisterUserPartial")
 
+
+
             </div>  @*End right-panel-user*@
-
-
-
 
         </div> @*end main-right-panel*@
 
@@ -44,9 +38,13 @@
 
         <!--start main-content-->
         @*برای این است که مطمین شویم این دیو حتا سمت چپ میماند float-left*@
-        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 float-left" style="background-color:#b6ff00">
-            div-main
+        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 float-left" >
 
+            @Html.Partial("_LastBookPartial")
+
+        @Html.Partial("_MostViewedBookPartial")
+
+            @Html.Partial("_ScientificBookPartial")
 
         </div>  @*End main-content*@
 
@@ -55,3 +53,12 @@
     </div> @*End row*@
 
 </div>  @*End main-div*@
+
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".owl-carousel").owlCarousel();
+    });
+</script>

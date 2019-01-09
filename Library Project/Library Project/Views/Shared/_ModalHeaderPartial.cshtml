@@ -1,0 +1,15 @@
+﻿<!--partial view for the modal header shared with the whole  project
+    -->
+@model ModalHeader
+
+<div class="modal-header">
+    <!--initializing header dynamically-->
+    <h4 class="modal-title">@Model.Heading</h4>
+
+    <div class="d-flex">
+        <button class="close justify-content-end" data-dismiss="modal" aria-label="close">
+            @*<span aria-hidden="true" class="fa fa-times fa-1x "></span>*@
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>

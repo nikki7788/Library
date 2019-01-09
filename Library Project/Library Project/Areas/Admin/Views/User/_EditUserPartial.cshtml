@@ -1,0 +1,54 @@
+﻿
+@model EditUserViewModel
+<form asp-controller="User" asp-action="EditUser" id="formedit-user" data-ajax-method="POST"
+      data-ajax="true" data-ajax-update="#formedit-user" data-ajax-mode="replace">
+    <!--Modal header-->
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کاربر" })
+
+    <!--Modal Body-->
+    <div class="modal-body">
+
+        <div class="form-group row">
+            <label asp-for="FirstName" class="col-form-label col-lg-4 col-sm-5"></label>
+            <div class="col-lg-7 col-sm-6">
+                <input asp-for="FirstName" class="form-control " />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="LastName" class="col-form-label col-lg-4 col-sm-5"></label>
+            <div class="col-lg-7 col-sm-6">
+                <input asp-for="LastName" class="form-control " />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Email" class="col-lg-4 col-sm-5 col-form-label"></label>
+            <div class="col-lg-7 col-sm-6">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="ApplicationReleId" class="col-lg-4 col-sm-5 col-form-label"></label>
+            <div  class="col-lg-7 col-sm-6">
+                <select asp-for="ApplicationReleId" asp-items="@Model.ApplicationRoles" class="form-control"></select>
+            </div>
+        </div>
+
+        <!-- فقط در حالت ویرایش این کار نیاز است د کلاس های عادی ن ایدنتیتی
+            در ایدنتیتی نیازی به این کار نیست ولی در کلاس های عادی نیاز است در -->
+        <!---don't need this code because identity does it (sending id to update user in the database)-->
+        <!--رل و یوزر نیازی ب ارسال آی دی نداریم خودش در پشت پرده ارسال میشوددرحالت ویرایش---->
+       @*<div class="form-group row d-none">
+            <label asp-for="Id" class="col-form-label col-6"></label>
+            <div class="col-6">
+                <input asp-for="Id" class="form-control " />
+            </div>
+        </div>*@
+
+        <input type="hidden" name="redirectUrl" value="@Url.Action("Index","User")" />
+    </div>
+    <!--Modal footer-->
+    @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش اطالاعات" })
+</form>

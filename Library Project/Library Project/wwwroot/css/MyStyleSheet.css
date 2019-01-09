@@ -3,12 +3,21 @@
     margin: 0;
     padding: 0;
     border: 0;
+    font-size: 12px;
 }
 
 /*برای ریست کردن صفحه وکلاس مربوط  در وت استرپ*/
-.container-fluid , .container {
+.container-fluid, .container {
     /*margin: 0 auto !important;*/
     padding: 0;
+}
+
+#main-div {
+    background-color: white;
+    background: linear-gradient(whitesmoke,rgb(220,220,220));
+    border-radius: 3px;
+    padding: 5px !important;
+    box-shadow: 2px 2px 9px 3px black;
 }
 
 a {
@@ -31,7 +40,7 @@ a {
 }
 
 body {
-    background-image: url(../images/background2.jpeg)
+    background-image: url(../images/background2.jpeg);
 }
 
 .divStyle {
@@ -43,7 +52,7 @@ body {
 .div-header {
     color: rgb(0,0,200);
     margin-right: 10px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .my-hr {
@@ -76,10 +85,18 @@ body {
     .newsPartial span:hover {
         color: green;
     }
-
-    .newsPartial span {
+    /*دیو کلی با کلاس
+        newspartial
+        داخل ان دیو فرزند مستفیم ان که کلاس
+        div-header
+        دارد.
+        سپس اولین دیو بعد از دیو با کلاس
+        div header
+        اسپن های داخل ان
+            */
+    .newsPartial > div.div-header + div span {
         margin-right: 10px;
-        font-size: 14px;
+        font-size: 12px;
         color: black;
     }
 
@@ -87,6 +104,60 @@ body {
     margin-bottom: 10px;
 }
 
-#main-div{
-    margin-top:15px;
+#main-div {
+    margin-top: 15px;
 }
+
+
+.book-hr {
+    background-color: rgb(200,200,220);
+    height: 1px;
+    width: 90%;
+    margin: 8px auto;
+    border-radius: 15px;
+}
+
+.main-last-book, .most-viewed {
+    border-radius: 2px;
+    background-color: white;
+    border: 1px solid rgb(220,220,200);
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.owl-last-book {
+    direction: ltr;
+    padding-left: 30px;
+}
+
+    .owl-last-book img, .most-viewed-content img {
+        width: 180px;
+        height: 200px;
+        box-shadow: 2px 2px 5px 1px black;
+        margin-bottom: 7px;
+    }
+
+
+
+    .owl-last-book a, .most-viewed a {
+        color: black;
+        text-align: center;
+    }
+
+        .owl-last-book a:hover, .most-viewed a:hover {
+            color: blue;
+        }
+
+.most-viewed-content {
+    margin-bottom: 12px;
+}
+
+/* برای اینکه فاصله بین دیوهای عکس ایجاد شود  و بین دیو عکس با
+    img-thumbnail
+    و دیو پدر ان پدینگ نیفتد.
+*/
+.img-thumbnail {
+    display: inline-block;
+}
+/*----------------------------*/
+

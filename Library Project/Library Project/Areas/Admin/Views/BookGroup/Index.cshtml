@@ -1,0 +1,68 @@
+﻿
+@model IEnumerable<BookGroup>
+
+@{
+    ViewData["Title"] = "لیست گروه بندی کتابها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mt-3">
+    <div class="card-header bg-primary text-light">لیست گروه بندی کتابها</div>
+    <div class="card-body">
+        <div>
+            <a class="btn btn-primary" data-toggle="modal" id="show-add-bookgroup" asp-action="AddEditBookGroup"
+               data-target="#modal-action-bookgroup">
+                <i class="fa fa-plus"></i>
+                <span>افزودن گروه کتاب</span>
+            </a>
+        </div>
+
+        <table class="table table-striped table-sm table-bordered mt-3">
+            <thead>
+                <tr>
+                    <!-- Html Helper for dynamic implementing the property titles of the table(class= @@model IEnumerable<BookGroup>)-->
+                    <th>@Html.DisplayNameFor(model => model.BookGroupName)</th>
+                    <th>@Html.DisplayNameFor(model => model.BookGroupDescription)</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.BookGroupName</td>
+                        <td>@item.BookGroupDescription</td>
+                        <td>
+                            <a class="btn btn-info" data-toggle="modal" id="show-edit-bookgroup" asp-action="AddEditBookGroup"
+                               data-target="#modal-action-bookgroup" asp-route-id="@item.BookGroupId">
+                                <i class="fa fa-pen"></i>
+                                <span>ویرایش</span>
+                            </a>
+
+                            <!--اگر کتابی با گروه بندی مورد نظر وجود نداشت دکمه حذف را نشان می دهد-->
+                            @if (item.Books.Count()==0)
+                            {
+                                <a class="btn btn-danger" data-toggle="modal" id="show-delete-bookgroup" asp-action="DeleteBookGroup"
+                                   data-target="#modal-action-bookgroup" asp-route-id="@item.BookGroupId">
+                                    <i class="fa fa-trash"></i>
+                                    <span>حذف</span>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@Html.Partial("_ModalPartial", new BootstrapModel { Id = "modal-action-bookgroup", Size = ModalSize.Medium })
+
+@section Scripts{
+    @*<script src="~/js/Modal-js/all-index.js"></script>*@
+    <script src="~/js/Modal-js/bookgroup-index.js"></script>
+}
+
+

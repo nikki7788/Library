@@ -25,6 +25,7 @@
       "Library Project/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.All": "2.0.9",
+          "Microsoft.EntityFrameworkCore.Tools": "2.0.3",
           "Microsoft.NETCore.App": "2.0.0"
         },
         "runtime": {

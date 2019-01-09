@@ -1,0 +1,154 @@
+﻿
+@model AddEditBookViewModel
+
+<form method="post" enctype="multipart/form-data">
+
+    <!--Modal Header-->
+    @if (Model.BookId != 0)
+    {
+        @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش کتاب" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن کتاب" })
+
+    }
+
+    @Html.AntiForgeryToken();     <!--insed of [ValidateAntiForgeryToken]  in action -->
+    <!--Modal Body-->
+    <div class="modal-body">
+
+        <div class="form-group row">
+            <label asp-for="BookName" class="col-3 col-form-label"></label>
+            <div class="col-9">
+                <input asp-for="BookName" class="form-control" />
+                <span asp-validation-for="BookName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="BookDescription" class="col-3 col-form-label"></label>
+            <div class="col-9 ">
+                <textarea asp-for="BookDescription" id="BookDescription" name="BookDescription" class="form-control"></textarea>
+                <span asp-validation-for="BookDescription" class="text-danger"></span>
+                <script type="text/javascript">
+                    var myEditor;
+                    ClassicEditor
+                        .create(document.querySelector('#BookDescription'))
+                        .then(editor => {
+                            console.log(editor);
+                            myEditor = editor;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                </script>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="BookGroupId" class="col-3 col-form-label"></label>
+            <div class="col-9 ">
+                <select asp-for="BookGroupId" asp-items="@Model.BookGroups" class="form-control"></select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="AuthorId" class="col-3 col-form-label"></label>
+            <div class="col-9">
+                <select asp-for="AuthorId" asp-items="@Model.Authors" class="form-control"></select>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label asp-for="BookPageCount" class="col-3 col-form-label"></label>
+            <div class="col-9">
+                <input asp-for="BookPageCount" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Uploding files -->
+        <div class="form-group row">
+            <label asp-for="BookImage" class="col-3 col-form-label"></label>
+            <div class="col-9">
+                <input type="file" id="files" name="files" class="form-control-file" />
+                <div class="mt-3 " id="image-holder">
+
+                    @* اگر درحالت ویرایش بودیم  *@
+                    @if (Model.BookId != 0)
+                    {
+                        <!-- we are in updating mode-->
+                        <!-- showin book picture from action-->
+                       <img src=" @ViewBag.imgRoot@Model.BookImage" alt="bookImg" class="img-fluid img-thumbnail" style="border:solid 1px" />
+
+                        //      نام تصویر را اگر در حالت ویرایش تصویری را انتخاب نکردیم به اکشن مورد نطر که
+                        //  است میفرستد تا در پراپرتی نام تصویر دوباره ذخیره شود و تصویر پیش فرض  قرار نگیرد AddEditBook 
+                       <input type="hidden" name="imgName" value="@Model.BookImage" />
+                    }
+
+                </div>
+
+            </div>
+        </div>
+       
+        <div class="form-group row">
+        </div>
+
+        <input type="hidden" asp-for="BookId" />
+
+        @*<input type="hidden" name="redirectUrl" value="@Url.Action("Index","Book")" />*@
+    </div>
+
+
+
+    <!--Modal Footer-->
+    @if (Model.BookId != 0)
+    {
+        //  @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش کتاب" })
+        <div class="modal-footer">
+            <button type="button" class="btn ml-2" data-dismiss="modal">برگشت </button>
+            <input type="button" id="submitdata" value="ویرایش کتاب" class="btn btn-success" />
+
+        </div>
+    }
+    else
+    {
+        //  @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن کتاب" })
+        <div class="modal-footer">
+            <button type="button" class="btn ml-2" data-dismiss="modal">برگشت </button>
+            <input type="button" id="submitdata" value="افزودن کتاب" class="btn btn-success" />
+
+        </div>
+    }
+
+</form>
+
+<script>
+    //پیش نمایش تصویر قبل از اپلود
+    $(document).ready(function () {
+
+        $("#files").on('change', function () {
+
+            if (typeof (FileReader) != "undefined") {
+                var image_holder = $("#image-holder");
+                image_holder.empty();
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("<img />", {
+                        "src": e.target.result,
+                        "class": "img-fluid",
+                        "style": "width:150px;height:150px;border:solid 1px"
+                    }).appendTo(image_holder);
+
+                }
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+            } else {
+                alert("This browser does not support FileReader.");
+            }
+
+        });
+    });
+</script>

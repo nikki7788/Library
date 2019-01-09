@@ -1,0 +1,26 @@
+﻿
+@model ModalFooter
+
+<div class="modal-footer">
+    <button type="button" class="btn ml-2" id="@Model.CancelbuttonId" data-dismiss="modal"> @Model.CancelbuttonText </button>
+
+    <!--برای اینکه اگر مودال فقط یک دکمه داشت که همان برگشت است دیگر دکمه ارسال اطلاعات را نسازد
+        اگر فقط بخواهیم یک دکمه اشته باشیم باید در اتریبیوت های دکمه قبل پراپرتی
+       @Model.OnlyButton
+         را بنویسیم و در ویو که این پارشال را فراخوانی میکنیم مقدار این پارپرتی را برابر 
+        true
+        قرار دهیم-->
+    <!-- چون
+        onlyButton
+        از نوع 
+        bool
+        است مقدار پیش فرض آن 
+        false
+        است-->
+
+    @if (!Model.OnlyButton)
+    {
+        <button type="submit" class="btn btn-success" id="@Model.SubmitButtonId" data-target="@Model.SubmitButtonId"> @Model.SubmitButtonText </button>
+    }
+
+</div>

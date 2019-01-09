@@ -1,0 +1,29 @@
+﻿
+
+@model string
+
+<form asp-controller="User" asp-action="DeleteUser">
+    <!--modal header -->
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "حذف کاربر" })
+
+
+    <!--modal body -->
+    <div class="modal-body">
+        <P class="text-center text-danger"><i class="fa fa-times-circle fa-3x"></i></P>
+        <p class="text-center font-weight-bold">
+            آیا از حذف 
+            <span class="p-1 text-danger">"@Model"</span>
+            مطمئن هستید؟
+        </p>
+    </div>
+
+
+
+    <!--modal footer -->
+    @*@await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "حذف نقش" })*@
+    <div class="modal-footer justify-content-center">
+        <button type="button" class="btn ml-2" data-dismiss="modal"> برگشت</button>
+        <input type="submit" id="btn-submit" class="btn btn-danger" value="حذف کاربر" />
+    </div>
+</form>
+
