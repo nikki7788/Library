@@ -1,5 +1,6 @@
 ﻿using Library.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,21 +25,21 @@ namespace Library.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
-            List<Author> model = new List<Author>();
-
-            model = _contex.Authors.Select(a => new Author
-            {
-                AuthorId = a.AuthorId,
-                AuthorName = a.AuthorName,
-                AuthorDescription = a.AuthorDescription
-
-            }).ToList();
-
-
+            var model = await _contex.Authors.Include(a => a.Books).ToListAsync();
             return View(model);
+
+            //or
+            //متد غیر همزمان نباشد دستورات زیراست وگرنه باید دستورات زیر را غیر همزمان بنویسیم 
+            //List<Author> model = new List<Author>();
+            //model = _contex.Authors.Select(a => new Author
+            //{
+            //    AuthorId = a.AuthorId,
+            //    AuthorName = a.AuthorName,
+            //    AuthorDescription = a.AuthorDescription
+            //}).ToList();
+            //return View(model);
         }
 
 
@@ -103,7 +104,6 @@ namespace Library.Areas.Admin.Controllers
             }
         }
 
-<<<<<<< HEAD
         //---------------------------########### Delete Get  ###########--------------------------
         [HttpGet]
         public IActionResult DeleteAuthor(int id)
@@ -185,13 +185,6 @@ namespace Library.Areas.Admin.Controllers
         //        return RedirectToAction("Index");
         //    }
         //}
-=======
-
-
-
-
-
->>>>>>> parent of 7058873... completing the delete action(post and get) and it's partialview
 
     }
 }

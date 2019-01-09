@@ -38,10 +38,16 @@
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
-                            <a class="btn btn-danger" data-toggle="modal" id="show-delete-bookgroup" asp-action="DeleteBookGroup">
-                                <i class="fa fa-trash"></i>
-                                <span>حذف</span>
-                            </a>
+
+                            <!--اگر کتابی با گروه بندی مورد نظر وجود نداشت دکمه حذف را نشان می دهد-->
+                            @if (item.Books.Count()==0)
+                            {
+                                <a class="btn btn-danger" data-toggle="modal" id="show-delete-bookgroup" asp-action="DeleteBookGroup"
+                                   data-target="#modal-action-bookgroup" asp-route-id="@item.BookGroupId">
+                                    <i class="fa fa-trash"></i>
+                                    <span>حذف</span>
+                                </a>
+                            }
                         </td>
                     </tr>
                 }
@@ -58,3 +64,5 @@
     @*<script src="~/js/Modal-js/all-index.js"></script>*@
     <script src="~/js/Modal-js/bookgroup-index.js"></script>
 }
+
+

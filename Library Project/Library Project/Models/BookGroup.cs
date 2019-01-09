@@ -24,5 +24,9 @@ namespace Library.Models
         [Required(ErrorMessage = "لطفا توضیحات گروه بندی را وارد کیند")]
         public string BookGroupDescription { get; set; }
 
+        //نیاز به ماگریشن ندارد اضافه کردن این پراپرتی
+        //کتاب های هرگروه بندی را می دهد
+        public virtual ICollection<Book> Books { get; set; }
+
     }
 }

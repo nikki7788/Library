@@ -1,0 +1,36 @@
+﻿
+<!-- نوع رشته از اکشن ارسال میشود به این پارشال-->
+@model string
+
+<form asp-controller="BookGroup" asp-action="DeleteBookGroup">
+
+    <!--modal header -->
+    @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "حذف گروه بندی" })
+
+    <!-- modal body-->
+    <div class="modal-body">
+        <p class="text-center">
+            <i class="fa fa-times-circle fa-3x  text-danger"></i>
+        </p>
+        <p class="font-weight-bold font text-center">
+
+            آیا از حذف گروه بندی
+            <!--دریافت نام ارسالی از اکشن -->
+            <span class="text-danger p-1">" @Model "</span>
+            مطمئن هستید؟
+        </p>
+    </div>
+
+
+    <!--modal footer-->
+    @* @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "حذف گروه بندی" }*@
+    <div class="modal-footer justify-content-center">
+        <button type="button" class="btn ml-2" data-dismiss="modal">برگشت </button>
+        <input type="submit" id="btn-submit" value="حذف گروه بندی" class="btn btn-danger " />
+    </div>
+
+</form>
+
+
+
+
