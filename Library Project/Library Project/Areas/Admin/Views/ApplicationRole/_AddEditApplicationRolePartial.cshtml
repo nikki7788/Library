@@ -13,42 +13,31 @@
     @if (!string.IsNullOrEmpty(Model.Id))
     {
         @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "ویرایش نقش سیستمی" })
-
     }
     else
     {
         @await Html.PartialAsync("_ModalHeaderPartial", new ModalHeader { Heading = "افزودن نقش سیستمی" })
-
     }
-
     <!--Modal Body-->
     <div class="modal-body">
-
-
         <div class="form-group row ">
-
             <!-- col-form-label for adjusting vertically label and input placeholder in horizontally forms-->
             <!--if vertically adhustment dosen't matter you should use the form-control class-->
             <!--Added new .col-form-label class to vertically center labels with .form-controls.-->
-
             <label class="col-3 col-form-label" asp-for="Name"></label>
             <div class="col-6">
                 <input asp-for="Name" class=" form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
-
         <!--row for setting the label and the input horizontally insted of vertically-->
-
         <div class="form-group row">
-
             <label class="col-3 col-form-label" asp-for="Description"></label>
             <div class="col-6">
                 <input asp-for="Description" class=" form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
-
         <!---don't need this code because identity does it (sending id to update user in the database)-->
         <!--رل و یوزر نیازی ب ارسال آی دی نداریم خودش در پشت پرده ارسال میشود---->
         <!--   <div class="form-group row d-none">
@@ -58,21 +47,16 @@
             </div>
         </div> -->
         <input type="hidden" name="redirectUrl" value="@Url.Action("Index","ApplicationRole")" />
-
     </div>
-
     <!--Modal Footer-->
     <!--اگر ای دی وجود داشت و نال و خالی نبود متن دکمه را به ویرایش تغییر بده-->
     @if (!String.IsNullOrEmpty(Model.Id))
     {
         @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "ویرایش نقش" })
-
     }
     else
     {
         @await Html.PartialAsync("_ModalFooterPartial", new ModalFooter { SubmitButtonText = "افزودن نقش" })
     }
 </form>
-
-
 

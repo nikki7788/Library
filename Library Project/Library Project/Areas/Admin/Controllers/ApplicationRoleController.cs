@@ -26,15 +26,19 @@ namespace Library.Areas.Admin.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
 
-            //to count number of users in each role------we must access to the ASpNetUserRoles table is sql 
+            //to count number of users in each role------we must access to the ASpNetUserRoles table in sql 
             _context = context;
             _iServiceProvider = iServiceProvider;
         }
 
+
+        //---------------------------*************    index action    *************---------------------------
+
+
         public IActionResult Index()
         {
-            //to count number of users in each role------we must access to the ASpNetUserRoles table is sql
-            List<IdentityUserRole<string>> listUserRoles = _context.UserRoles.ToList();
+            //to count number of users in each role------we must access to the ASpNetUserRoles table in sql
+            //  List<IdentityUserRole<string>> listUserRoles = _context.UserRoles.ToList();
 
             List<ApplicationRoleViewModel> model = new List<ApplicationRoleViewModel>();
             model = _roleManager.Roles.Select(r => new ApplicationRoleViewModel
@@ -42,14 +46,16 @@ namespace Library.Areas.Admin.Controllers
                 Id = r.Id,
                 Name = r.Name,
                 Description = r.Description,
-                //to count number of users in each role------we must access to the ASpNetUserRoles table is sql
+                //to count number of users in each role------we must access to the ASpNetUserRoles table in sql
                 NumberOfUsers = _context.UserRoles.Count(ur => ur.RoleId == r.Id)
             }).ToList();
-
-
-
             return View(model);
         }
+
+
+
+        //---------------------------*************    Add Edit Get     *************---------------------------
+
         //وقتی روی افزودن نقش جدید و ویرایش کلیک میکنیم مودال مربوط به رول را باز میکند
         [HttpGet]
         public async Task<IActionResult> AddEditRole(string id)
@@ -79,6 +85,9 @@ namespace Library.Areas.Admin.Controllers
             return PartialView("_AddEditApplicationRolePartial", model);
 
         }
+
+
+        //---------------------------*************    add Edit Post     *************---------------------------
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -110,6 +119,55 @@ namespace Library.Areas.Admin.Controllers
             //showing addedit modal and it's values and errors
             return PartialView("_AddEditApplicationRolePartial", model);
         }
-    }
+
+        //---------------------------*************    Delete Get     *************---------------------------
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                ////string appRole ="";
+                //string appRole = string.Empty;
+
+                ApplicationRole role = await _roleManager.FindByIdAsync(id);
+                if (role != null)
+                {
+
+                    return PartialView("_DeleteRolePartial", role.Name);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        //---------------------------*************    Delete Post     *************---------------------------
+
+        [HttpPost, ActionName("DeleteRole")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                ApplicationRole appRole = await _roleManager.FindByIdAsync(id);
+                if (appRole != null)
+                {
+                    IdentityResult roleResult =await _roleManager.DeleteAsync(appRole);
+                    if (roleResult.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+
+            }
+
+            // return View();
+            return NotFound();
+        }
+
+
+
 
     }
+
+}

@@ -105,46 +105,46 @@ namespace Library.Areas.Admin.Controllers
         }
 
         //---------------------------########### Delete Get  ###########--------------------------
-
-        //the best way
         [HttpGet]
-        public async Task<IActionResult> DeleteAuthor(int? id)
+        public IActionResult DeleteAuthor(int id)
         {
             Author author = new Author();
-            if (id == null)
-            {
-                return RedirectToAction("Index");
-            }
             using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
             {
-                //author =await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id); 
-                author = await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id);
-                if (author == null)
+                //author = db.Authors.SingleOrDefault(a => a.AuthorId == id);                  روش  ۱  
+                author = db.Authors.Where(a => a.AuthorId == id).SingleOrDefault();          //  روش 2
+                if (author != null)
                 {
-                    return RedirectToAction("Index");
+                    //نام گروه را که از نوع رشته است برای پارشال ویو ارسال میکنیم
+                    return PartialView("_DeleteAuthorPartial", author.AuthorName);
                 }
+                return RedirectToAction("Index");
             }
-            return PartialView("_DeleteAuthorPartial", author.AuthorName);
-            //return PartialView("_DeleteAuthorPartial", author);
         }
+        ////the best way
+        //[HttpGet]
+        //public async Task<IActionResult> DeleteAuthor(int? id)
+        //{
+
+        //    if (id != null)
+        //    {
+        //        Author author = new Author();
+        //        using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+        //        {
+        //            //author =await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id); 
+        //            author = await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id);
+        //            if (author != null)
+        //            {
+        //                return PartialView("_DeleteAuthorPartial", author.AuthorName);
+        //                //return PartialView("_DeleteAuthorPartial", author);
+        //            }
+        //        }
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
         //or
-        //[HttpGet]
-        //public IActionResult DeleteAuthor(int id)
-        //{
-        //    Author author = new Author();
-        //    using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
-        //    {
-        //        //author = db.Authors.SingleOrDefault(a => a.AuthorId == id);                  روش  ۱  
-        //        author = db.Authors.Where(a => a.AuthorId == id).SingleOrDefault();          //  روش 2
-        //        if (author == null)
-        //        {
-        //            return RedirectToAction("Index");
-        //        }
-        //        //نام گروه را که از نوع رشته است برای پارشال ویو ارسال میکنیم
-        //        return PartialView("_DeleteBookGroupPartial", author.AuthorId);
-        //    }
-        //}
+
 
 
         //---------------------------########### Delete Post  ###########--------------------------
@@ -153,27 +153,27 @@ namespace Library.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            if (id == 0)
+            if (id != 0)
             {
-                return RedirectToAction("Index");
+                using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+                {
+                    //author = db.Authors.Where(a => a.AuthorId == id).SingleOrDefault();
+                    var author = await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id);
+                    db.Authors.Remove(author);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             }
-            using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
-            {
-                //author = db.Authors.Where(a => a.AuthorId == id).SingleOrDefault();
-                var author =await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id);
-                db.Authors.Remove(author);
-               await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
 
         //or
 
         //[HttpPost, ActionName("DeleteAuthor")]
         //[ValidateAntiForgeryToken]
-        //public  IActionResult DeleteConfirm(int id)
+        //public  IActionResult DeleteConfirm(int? id)
         //{
-        //    if (id == 0)
+        //    if (id==null)
         //    {
         //        return RedirectToAction("Index");
         //    }

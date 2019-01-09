@@ -39,21 +39,25 @@
                         <td>
                             <div>
                                 <!--asp-route-id for sending the id of the item to the action
-                                    برای ارسال ای دی هر رکورد و ایتم به اکشن-->
+                                برای ارسال ای دی هر رکورد و ایتم به اکشن-->
                                 <a class="btn btn-info" id="show-edit-role" data-toggle="modal" asp-action="AddEditRole"
                                    data-target="#modal-action-application-role" asp-route-id="@item.Id">
                                     <i class="fa fa-pen"></i>
                                     <span>ویرایش نقش</span>
                                 </a>
-                                <a class="btn btn-danger" id="show-delete-role" data-toggle="modal" asp-action="DeleteRole">
-                                    <i class="fa fa-trash"></i>
-                                    <span>حذف نقش</span>
-                                </a>
+                                @*اگر کاربری از نوع نقش موزد نظر نداشته باشیم دکمه حذف را نمایش بدهد*@
+                                @if (item.NumberOfUsers == 0)
+                                {
+                                    <a class="btn btn-danger" id="show-delete-role" data-toggle="modal" asp-action="DeleteRole"
+                                           data-target="#modal-action-application-role" asp-route-id="@item.Id">
+                                            <i class="fa fa-trash"></i>
+                                            <span>حذف نقش</span>
+                                        </a>
+                                   
+                                }
                             </div>
                         </td>
                     </tr>
-
-
                 }
             </tbody>
         </table>
@@ -64,13 +68,6 @@
 
 <!--adding your js files when you use _layout,this code is replaced insted of @@RenderSection-->
 @section Scripts{
-
     <script src="~/js/Modal-js/application-role-index.js"></script>
-
-    <!--both script can be used-->
-
-    @*<script src="~/js/Modal-js/all-index.js"></script>*@
-
-
 }
 

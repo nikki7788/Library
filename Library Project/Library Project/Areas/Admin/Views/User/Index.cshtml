@@ -39,7 +39,8 @@
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
-                            <a class="btn btn-danger " id="show-delete-user" data-toggle="modal" asp-action="DeleteUser">
+                            <a class="btn btn-danger " id="show-delete-user" data-toggle="modal" asp-action="DeleteUser"
+                               data-target="#modal-action-user" asp-route-id="@item.Id">
                                 <i class="fa fa-trash"></i>
                                 <span>حذف</span>
                             </a>

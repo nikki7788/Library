@@ -47,7 +47,10 @@
                                 <i class="fa fa-pen"></i>
                                 <span>ویرایش</span>
                             </a>
-                            <a class="btn btn-danger px-4 py-2" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook">
+
+
+                            <a class="btn btn-danger px-4 py-2" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook"
+                               data-target="#modal-action-book" asp-route-id="@item.BookId">
                                 <i class="fa fa-trash"></i>
                                 <span>حذف</span>
                             </a>

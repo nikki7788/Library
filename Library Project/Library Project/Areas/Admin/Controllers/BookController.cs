@@ -230,7 +230,7 @@ namespace Library.Areas.Admin.Controllers
 
                 else
                 {
-                    
+
                     //اگر کاربر درحالت ویرایش تصویری وارد نکرد تصویر قبلی ذخیره شده ان دوباره به ان منتصب شود
                     if (model.BookImage == null)
                     {
@@ -323,5 +323,83 @@ namespace Library.Areas.Admin.Controllers
 
             //    return PartialView("_AddEditBookPartial", model);
         }
+
+
+        //-------------------************** Delete Get ***********--------------------------------------
+
+        [HttpGet]
+        public IActionResult DeleteBook(int id)
+        {
+            var model = new Book();
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                model = db.Books.Where(b => b.BookId == id).SingleOrDefault();
+                if (model == null)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return PartialView("_DeleteBookPartial", model.BookName);
+        }
+
+        //the best way
+        //[HttpGet]
+        //public IActionResult DeleteBook(int? id)
+        //{
+        //    if (id != null)
+        //    {
+        //        Book book = new Book();
+        //        using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+        //        {
+        //            //author =await db.Authors.SingleOrDefaultAsync(a => a.AuthorId == id); 
+        //            book = db.Books.SingleOrDefault(b => b.BookId == id);
+        //            if (book != null)
+        //            {
+        //                return PartialView("_DeleteBookPartial", book.BookId);
+        //                //return PartialView("_DeleteAuthorPartial", author);
+        //            }
+        //        }
+        //    }
+        //    return RedirectToAction("Index");
+        //}
+
+        //-------------------************** Delete Post ***********--------------------------------------
+        [HttpPost, ActionName("DeleteBook")]
+        public IActionResult DeleteConfirm(int id)
+        {
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                //var book = db.Books.SingleOrDefault(b => b.BookId==id);
+                var book = db.Books.Where(b => b.BookId == id).SingleOrDefault();
+
+
+                //--------------delete image ------------------
+                if (book.BookImage != "defaultpic.png")        //برای جلوگیری از حذف تصویر پیش فرض
+                {
+                    //مسیر عکس سایزاورجینال
+                    var pathNormal = Path.Combine(_appEnvironment.WebRootPath, "upload\\normalimage\\") + book.BookImage;
+                    //مسیر عکس سایز کوچک شده
+                    var pathThumbnail = Path.Combine(_appEnvironment.WebRootPath, "upload\\thumbnailimage\\") + book.BookImage;
+
+                    if (System.IO.File.Exists(pathNormal)) 
+                    {
+                        //اگر عکس وجود داشت پاک شود
+                        System.IO.File.Delete(pathNormal);
+                    }
+                    if (System.IO.File.Exists(pathThumbnail))
+                    {
+                        System.IO.File.Delete(pathThumbnail);
+                    }
+                   
+                }
+                //--------------####---------------------------
+
+                db.Books.Remove(book);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+        }
+
     }
 }

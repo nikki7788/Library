@@ -230,7 +230,43 @@ namespace Library.Area.Admin.Controllers
 
         }
 
+        //-----------****** Delete Get ******----------------------
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            //string name ="";
+            // string name = string.Empty;
+            if (!String.IsNullOrEmpty(id))
+            {
+                ApplicationUser appUser = await _userManager.FindByIdAsync(id);
+                if (appUser != null)
+                {
+                    //  name= appUser.FirstName + " " + appUser.LastName
+                    return PartialView("_DeleteUserPartial", appUser.FirstName + " " + appUser.LastName);
+                }
+            }
+            return RedirectToAction("Index");
+        }
 
+        //-----------****** Delete Post ******----------------------
+        [HttpPost, ActionName("DeleteUser")]
+        public async Task<IActionResult> DeleteConfirm(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                ApplicationUser appUser = await _userManager.FindByIdAsync(id);
+                if (appUser != null)
+                {
+                    IdentityResult userResult = await _userManager.DeleteAsync(appUser);
+                    if (userResult.Succeeded)
+                    {
+                        return RedirectToAction("index");
+                    }
+                }
+            }
+            return View();
+            //return NotFound();
+        }
 
 
     }
