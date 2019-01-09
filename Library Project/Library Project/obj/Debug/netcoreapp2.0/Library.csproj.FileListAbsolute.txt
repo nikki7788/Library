@@ -19,3 +19,4 @@ D:\MVC Projects\Backup-Project\Library Project-backup\Library Project-11 S.80\Li
 D:\MVC Projects\Backup-Project\Library Project-backup\Library Project-11 S.80\Library Project\obj\Debug\netcoreapp2.0\Library.AssemblyInfo.cs
 D:\MVC Projects\Backup-Project\Library Project-backup\Library Project-11 S.80\Library Project\obj\Debug\netcoreapp2.0\Library.dll
 D:\MVC Projects\Backup-Project\Library Project-backup\Library Project-11 S.80\Library Project\obj\Debug\netcoreapp2.0\Library.pdb
+D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library.csprojAssemblyReference.cache
