@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Library.Models;
 using Library.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Library.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class BookController : Controller
     {
         private readonly ApplicationDbContext _context;

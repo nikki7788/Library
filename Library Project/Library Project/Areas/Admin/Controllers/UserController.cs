@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Library.Models;
 using Library.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Library.Area.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]          //باید دقیقا مانند نامی که در نقش ها دادیم باشد.به کوچک و بزرگ بودن حروف حساس است
     public class UserController : Controller
     {
         //Dependency injection for identity role and identity user
@@ -65,21 +67,21 @@ namespace Library.Area.Admin.Controllers
                 //مقدار دهی یوزر از روی اطالاعات ورودی ب جز نقش و پسورد ان
                 ApplicationUser applicationUser = new ApplicationUser
                 {
-                    UserName = model.UserName,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
+                    UserName = model.UserName,
+                    Email = model.Email,
                 };
 
                 //for saving password in the database
                 //یوزر را به همراه پسورد ان که هش شد توسط خود ام وی سی در داخل دیتابیس ثبت و ذخیره میکند ونتیجه ان که موفقیت امیز است یا خیر را در متغیر
                 //ذخیره میکند userResult 
                 //نوع از داده است که نتیجه را که یا موفقیت اکیز است یا با شکست همراه است را ذخیره میکند identityResult
-                IdentityResult userResult = await _userManager.CreateAsync(applicationUser, model.Password);
+                IdentityResult result = await _userManager.CreateAsync(applicationUser, model.Password);
 
                 //اگر عمل ثبت موفیت امیز بود
-                if (userResult.Succeeded)
+                if (result.Succeeded)
                 {
                     //for saving User's role
                     //باید نقش و رل یوزر که در صفحه مودال توسط کاربر وارد شده است را در جدول رل ها(نقشها) پیداکنیم سپس ان را داخل متغیری از نوع 

@@ -1,0 +1,64 @@
+﻿
+@model LoginViewModel
+<!--        برای اینکه ازظر عمودی وسط قرار بگیرد و رنگ پس زمینه ان
+    که به خاطر کلاس جامپ ایجاد شده با کلاس ترنسپرنت از بین میرود   jumbotron bg-transparent-->
+<div class="jumbotron bg-transparent">
+    <div class="container  ">
+        <div class="row justify-content-center">
+            <div class="col-6 ">
+                <div class="card font-weight-bold ">
+                    <div class="card-header bg-primary text-light">
+                        <span>فرم ورود</span>
+                    </div>
+                    <div class="card-body">
+
+                        <section>
+                            <form asp-controller="Account" asp-action="Login" method="post" asp-route-returnUrl="@ViewData["returnUrl"]">
+                                <div class="card-title">
+                                    <h4>فرم ورود به سیستم</h4>
+                                    <hr />
+                                </div>
+
+                                <div class="form-group row justify-content-center">
+                                    <label asp-for="UserName" class="col-lg-3 col-md-4 col-sm-12 col-form-label"></label>
+                                    <div class="col-lg-7 col-md-8 col-sm-12">
+                                        <input asp-for="UserName" class="form-control" />
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row justify-content-center">
+                                    <label asp-for="Password" class="col-lg-3 col-md-4 col-sm-12  col-form-label"></label>
+                                    <div class="col-lg-7 col-md-8 col-sm-12 ">
+                                        <input asp-for="Password" class="form-control" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row justify-content-center">
+                                    <div class="form-check col-lg-7 offset-lg-4 px-lg-2 col-md-6 offset-md-4 col-sm-12 offset-sm-3  col-12 offset-3 px-1">
+                                        <input asp-for="RememberMe" class="form-check-input ml-1" />
+                                        <label asp-for="RememberMe" class="form-check-label"></label>
+
+                                        @*//or*@
+                                        @*<label asp-for="RememberMe" class="form-check-label">
+                                                <input asp-for="RememberMe" class="form-check-input " />
+                                                @Html.DisplayNameFor(m => m.RememberMe)
+                                            </label>*@
+                                    </div>
+                                </div>
+
+                                <div class="form-group row justify-content-center">
+                                    <div class="form-check col-lg-7 offset-lg-3 col-md-7 offset-md-3 ">
+                                        <button type="submit" class="btn btn-success font-weight-bold">ورود به سیستم</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,56 +6,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="row">
 
-<div class="card mt-3">
-    <div class="card-header bg-primary text-light">لیست نویسندگان</div>
-    <div class="card-body">
-        <a class="btn btn-primary" data-toggle="modal" id="show-add-author" asp-action="AddEditAuthor"
-           data-target="#modal-action-author">
-            <i class="fa fa-plus"></i>
-            <span>افزودن نویسندگان</span>
-        </a>
-        <div></div>
-        <table class="table table-bordered table-striped table-sm mt-3">
-            <thead class="thead-light">
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.AuthorName)</th>
-                    <th>@Html.DisplayNameFor(model => model.AuthorDescription)</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    @await Html.PartialAsync("_AdminPanelPartial")   <!--پنل ادمین-->
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-9">
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-light">لیست نویسندگان</div>
+            <div class="card-body">
+                <a class="btn btn-primary" data-toggle="modal" id="show-add-author" asp-action="AddEditAuthor"
+                   data-target="#modal-action-author">
+                    <i class="fa fa-plus"></i>
+                    <span>افزودن نویسندگان</span>
+                </a>
+                <div></div>
+                <table class="table table-bordered table-striped table-sm mt-3">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.AuthorName)</th>
+                            <th>@Html.DisplayNameFor(model => model.AuthorDescription)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
 
-                    <tr>
-                        <td>@item.AuthorName</td>
-                        <td>@item.AuthorDescription</td>
-                        <td>
-                            <div>
-                                <a class="btn btn-info mb-1" data-toggle="modal" id="show-edit-author" asp-action="AddEditAuthor"
-                                   data-target="#modal-action-author" asp-route-id="@item.AuthorId">
-                                    <i class="fa fa-pen"></i>
-                                    <span>ویرایش نویسنده</span>
-                                </a>
-                                <!--اگر کتابی با گروه بندی مورد نظر وجود نداشت دکمه حذف را نشان می دهد-->
-                                @if (item.Books.Count() == 0)
-                                {
-                                    <a class="btn btn-danger " data-toggle="modal" id="show-delete-author" asp-action="DeleteAuthor"
-                                       data-target="#modal-action-author" asp-route-id="@item.AuthorId">
-                                        <i class="fa fa-trash "></i>
-                                        <span>حذف نویسنده</span>
-                                    </a>
-                                }
-                            </div>
+                            <tr>
+                                <td>@item.AuthorName</td>
+                                <td>@item.AuthorDescription</td>
+                                <td>
+                                    <div>
+                                        <a class="btn btn-info mb-1" data-toggle="modal" id="show-edit-author" asp-action="AddEditAuthor"
+                                           data-target="#modal-action-author" asp-route-id="@item.AuthorId">
+                                            <i class="fa fa-pen"></i>
+                                            <span>ویرایش نویسنده</span>
+                                        </a>
+                                        <!--اگر کتابی با گروه بندی مورد نظر وجود نداشت دکمه حذف را نشان می دهد-->
+                                        @if (item.Books.Count() == 0)
+                                        {
+                                            <a class="btn btn-danger " data-toggle="modal" id="show-delete-author" asp-action="DeleteAuthor"
+                                               data-target="#modal-action-author" asp-route-id="@item.AuthorId">
+                                                <i class="fa fa-trash "></i>
+                                                <span>حذف نویسنده</span>
+                                            </a>
+                                        }
+                                    </div>
 
-                        </td>
-                    </tr>
-                }
+                                </td>
+                            </tr>
+                        }
 
-            </tbody>
+                    </tbody>
 
-        </table>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -63,4 +69,6 @@
 
 @section Scripts{
     <script src="~/js/Modal-js/author-index.js"></script>
+    <script src="~/js/admin-panel.js"></script>
+
 }

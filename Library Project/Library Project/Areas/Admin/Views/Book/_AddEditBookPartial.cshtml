@@ -14,11 +14,11 @@
 
     }
 
-    @Html.AntiForgeryToken();     <!--insed of [ValidateAntiForgeryToken]  in action -->
+    @Html.AntiForgeryToken()    <!--insed of [ValidateAntiForgeryToken]  in action -->
     <!--Modal Body-->
     <div class="modal-body">
 
-        <div class="form-group row">
+        <div class="form-group row ">
             <label asp-for="BookName" class="col-3 col-form-label"></label>
             <div class="col-9">
                 <input asp-for="BookName" class="form-control" />
