@@ -1,0 +1,38 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+@if (signInManager.IsSignedIn(User))
+{
+    <form asp-area="" asp-controller="Account" asp-action="LogOut">
+
+        <ul class="navbar-nav ">
+            <li class="nav-item ">
+                <a class="nav-link  font-weight-bold" aria-hidden="true">
+                    <span class="text-success"> @userManager.GetUserName(User)</span>
+                    خوش آمدید.
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link text-info font-weight-bold" aria-hidden="true">
+                    پنل کاربری
+                </a>
+            </li>
+            <li class="nav-item">
+                <button type="submit" class="btn btn-link nav-link font-weight-bold " aria-hidden="true" style="text-decoration:none">خروج</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a asp-area="" asp-controller="Account" asp-action="Login" class="nav-link" aria-hidden="true">
+                ورود
+                <span class="fa fa-arrow-left"></span>
+            </a>
+        </li>
+    </ul>
+}

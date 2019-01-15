@@ -4,6 +4,7 @@
     padding: 0;
     border: 0;
     font-size: 12px;
+    list-style: none;
 }
 
 /*برای ریست کردن صفحه وکلاس مربوط  در وت استرپ*/
@@ -173,9 +174,9 @@ body {
     box-shadow: rgb(200,200,220) 2px 1px;
 }
 
-    .menu li {
+    /*.menu li {
         list-style: none;
-    }
+    }*/
 
 .dashboard {
     /*display: block;*/
@@ -225,12 +226,9 @@ body {
 }
 
 /*وسظ چین کردن عمودی*/
-/*.menu ul li.main-li a span {
-    /*display:flex;
-    justify-content:center;
-    align-items:center;
+.menu ul li.main-li a i {
 
-}*/
+}
 
 /*------------------------------------
-/*------------------------------------*/
+/*------------------------------------/**/

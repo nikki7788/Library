@@ -58,6 +58,17 @@ namespace Library.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+
+
+
+
+
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))        //اگر یک مسیر از قبل وجود داشت
