@@ -1,4 +1,6 @@
-﻿@{
+﻿
+@model MultiModelsViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 <!--start Main-div-->
@@ -13,7 +15,7 @@
 
 
         <!--start main-right-panel-->
-        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12" >
+        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 
 
             <!--start right-panel-lastnews-->
@@ -38,11 +40,13 @@
 
         <!--start main-content-->
         @*برای این است که مطمین شویم این دیو حتا سمت چپ میماند float-left*@
-        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 float-left" >
+        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pb-1 float-left">
 
-            @Html.Partial("_LastBookPartial")
 
-        @Html.Partial("_MostViewedBookPartial")
+            @Html.Partial("_LastBookPartial", Model.LastBook)
+
+
+            @Html.Partial("_MostViewedBookPartial")
 
             @Html.Partial("_ScientificBookPartial")
 
