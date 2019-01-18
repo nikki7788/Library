@@ -72,6 +72,7 @@ namespace Library.Area.Admin.Controllers
                     PhoneNumber = model.PhoneNumber,
                     UserName = model.UserName,
                     Email = model.Email,
+                    Gender=model.Gender
                 };
 
                 //for saving password in the database
@@ -153,6 +154,7 @@ namespace Library.Area.Admin.Controllers
                     model.FirstName = user.FirstName;
                     model.LastName = user.LastName;
                     model.Email = user.Email;
+                    model.Gender = user.Gender;
                     //برای نمایش نقش و رل کاربر انتخاب شده برای ویرایش در کمبو باکس
                     model.ApplicationReleId = _roleManager.Roles.Single(r => r.Name == _userManager.GetRolesAsync(user).Result.Single()).Id;
                 }
@@ -177,6 +179,7 @@ namespace Library.Area.Admin.Controllers
                         applicationUser.FirstName = model.FirstName;
                         applicationUser.LastName = model.LastName;
                         applicationUser.Email = model.Email;
+                        applicationUser.Gender = model.Gender;
 
                         //
                         string isExistingRole = _userManager.GetRolesAsync(applicationUser).Result.Single();

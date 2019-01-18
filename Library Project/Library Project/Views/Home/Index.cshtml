@@ -28,7 +28,7 @@
             <!--start right-panel-user-->
             <div id="right-panel-lastregisteruser" class="divStyle">
 
-                @Html.Partial("_LastRegisterUserPartial")
+                @Html.Partial("_LastRegisterUserPartial",Model.LastRegistedUser)
 
 
 
@@ -48,7 +48,7 @@
 
             @Html.Partial("_MostViewedBookPartial")
 
-            @Html.Partial("_ScientificBookPartial")
+            @Html.Partial("_ScientificBookPartial", Model.ScientificBook)
 
         </div>  @*End main-content*@
 

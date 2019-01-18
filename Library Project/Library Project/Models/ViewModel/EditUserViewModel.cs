@@ -20,6 +20,9 @@ namespace Library.Models.ViewModel
         [Required(ErrorMessage = "لطفا نام خانوادگی را وارد نمایید")]
         public string LastName { get; set; }
 
+        [Display(Name = "جنسیت ")]
+        public byte Gender { get; set; }
+
         [Display(Name ="ایمیل")]
         [Required(ErrorMessage = "لطفا ایمیل را وارد نمایید")]
        // [DataType(DataType.EmailAddress,ErrorMessage = "لطفا ایمیل را به طور صحیح وارد نمایید")]         

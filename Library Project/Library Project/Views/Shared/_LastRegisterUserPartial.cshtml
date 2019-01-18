@@ -1,4 +1,5 @@
 ﻿
+@model IEnumerable<ApplicationUser>
 <div  class="divStyle newsPartial">
     <div class="div-header">
         <span>
@@ -10,44 +11,23 @@
 
     <div>
 
+        @foreach (var item in Model)
+        {
+            if (item.Gender == 1)       //اگر مرد بود آواتار مرد نمایش دهد
+            {
+                <img src="~/images/manicon.png" />
+            }
+            else
+            {
+                <img src="~/images/woman-icon.png" />
 
-        <img src="~/images/manicon.png" />
-        <span>
-            بابک خرمدین
-        </span>
+            }
+            <span>
+                @item.FirstName @item.LastName
+            </span>
 
-        <div class="minhr"></div>
-
-        <img src="~/images/woman-icon.png" />
-        <span>
-            آریو رزن
-        </span>
-
-        <div class="minhr"></div>
-        <img src="~/images/manicon.png" />
-        <span>
-            بابک خرمدین
-        </span>
-
-        <div class="minhr"></div>
-
-        <img src="~/images/woman-icon.png" />
-        <span>
-            آریو رزن
-        </span>
-
-        <div class="minhr"></div>
-        <img src="~/images/manicon.png" />
-        <span>
-            بابک خرمدین
-        </span>
-
-        <div class="minhr"></div>
-
-        <img src="~/images/woman-icon.png" />
-        <span>
-            آریو رزن
-        </span>
+            <div class="minhr"></div>
+        }
 
     </div>
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Library.Models;
 using Library.Models.ViewModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace Library.Controllers
 {
@@ -14,20 +15,48 @@ namespace Library.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _serviceProvider;
-        public HomeController(ApplicationDbContext context, IServiceProvider serviceProvider)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(ApplicationDbContext context, IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _serviceProvider = serviceProvider;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            //  شش کتاب اخر وارد شده را برمیکرداند  
+            // --------------------------------- شش کتاب اخر وارد شده را برمیکرداند  -----------------------------
             var model = new MultiModelsViewModel();
             model.LastBook = (from b in _context.Books orderby b.BookId descending select b).Take(6).ToList();
 
-            //ارسال تصویر به ویو
+            ///---------------------------نمایش اخرین کتاب های رمان ثبت شده----------------------------------------
+
+
+            //model.ScientificBook = _context.Books.Where(b => b.BookGroupId == 4).OrderByDescending(b => b.BookId).Take(6).ToList();
+            //or
+            //model.ScientificBook = (from b in _context.Books where b.BookGroupId == 3 orderby b.BookId descending select b).Take(6).ToList();
+            //or
+            //model.ScientificBook = _context.BookGroups.Join
+            //     (_context.Books, b => b.BookGroupId, b => b.BookGroupId, (bg, b)
+            //     => b)
+            //     .Where(b=>b.BookGroups.BookGroupName == "رمان").OrderByDescending(b => b.BookId).Take(4).ToList();
+            //or
+
+            model.ScientificBook = (from b in _context.Books
+                                    join bg in _context.BookGroups
+                                    on b.BookGroupId equals bg.BookGroupId
+                                    where bg.BookGroupName == "رمان"
+                                    orderby b.BookId descending
+                                    select b).Take(6).ToList();
+
+            //--------------------------نمایش اخرین کاربران ثبت شده---------------------------------------------------
+            model.LastRegistedUser = _userManager.Users.OrderByDescending(u => u.Id).Take(10).ToList();
+            //model.LastRegistedUser=(from u in _userManager.Users orderby u.Id descending select u).Take(10).ToList();
+
+
+            //-----------------------------------ارسال تصویر به ویو---------------------------------------------
             ViewBag.imgPath = "/upload/normalimage/";
+
             return View(model);
         }
 

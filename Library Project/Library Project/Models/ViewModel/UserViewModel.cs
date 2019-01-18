@@ -24,9 +24,10 @@ namespace Library.Models.ViewModel
         [Required(ErrorMessage = "لطفا  نام خانوادگی را وارد کنید")]
         public string LastName { get; set; }
 
+        [Display(Name = " جنیست")]
+        public byte Gender { get; set; }
 
         [Display(Name = " تلفن")]
-       
         public string PhoneNumber { get; set; }
 
         [Display(Name = "ایمیل")]
