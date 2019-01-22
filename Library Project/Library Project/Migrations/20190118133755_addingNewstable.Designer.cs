@@ -11,9 +11,10 @@ using System;
 namespace Library.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190118133755_addingNewstable")]
+    partial class addingNewstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,26 +160,6 @@ namespace Library.Migrations
                     b.HasKey("BookGroupId");
 
                     b.ToTable("BookGroups");
-                });
-
-            modelBuilder.Entity("Library.Models.News", b =>
-                {
-                    b.Property<int>("NewsId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("NewsContent")
-                        .IsRequired();
-
-                    b.Property<string>("NewsDate");
-
-                    b.Property<string>("NewsImage");
-
-                    b.Property<string>("NewsTitle")
-                        .IsRequired();
-
-                    b.HasKey("NewsId");
-
-                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

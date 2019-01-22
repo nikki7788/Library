@@ -21,6 +21,6 @@ namespace Library.Models
 
         public DbSet<Book> Books { get; set; }
         #endregion
-
+        public DbSet<News> News { get; set; }
     }
 }

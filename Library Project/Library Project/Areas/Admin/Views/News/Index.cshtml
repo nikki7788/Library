@@ -1,0 +1,140 @@
+﻿
+@model IEnumerable<News>
+@{
+    ViewData["Title"] = "لیست اخبار";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    @await Html.PartialAsync("_AdminPanelPartial")   <!--پنل ادمین-->
+
+    <div class="col-md-9">
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-light">لیست اخبار</div>
+            <div class="card-body">
+                <a class="btn btn-primary mb-1" asp-action="AddEditNews" id="show-add-news" data-toggle="modal"
+                   data-target="#modal-action-news">
+                    <i class="fa fa-plus"></i>
+                    <span>افزودن خبر</span>
+                </a>
+
+                <table class="table table-bordered table-hover table-striped table-sm mt-3">
+                    <thead class="text-center thead-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.NewsTitle)</th>
+                            <th>@Html.DisplayNameFor(model => model.NewsDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.NewsImage)</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.NewsTitle</td>
+                                <td>@item.NewsDate</td>
+                                <td> <img src="@ViewBag.imgPath@item.NewsImage" alt="newsImg" class="img-fluid img-thumbnail img" style="width:80px;height:80px"  /></td>
+                                <td>
+                                    <div>
+                                        <a class="btn btn-info " asp-action="AddEditNews" data-toggle="modal" id="show-edit-news"
+                                           data-target="#modal-action-news" asp-route-id="@item.NewsId">ویرایش خبر</a>
+
+                                        <a class="btn btn-danger " asp-action="DeleteNews" data-toggle="modal" id="show-delete-news"
+                                           data-target="#modal-action-news" asp-route-id="@item.NewsId">حذف خبر</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_ModalPartial", new BootstrapModel { Id = "modal-action-news", Size = ModalSize.Large })
+
+@section Scripts{
+    <script src="~/js/Modal-js/news-index.js"></script>
+    @*   <script src="~/js/Modal-js/all-index.js"></script>*@
+    <script src="~/js/admin-panel.js"></script>
+    <script src="~/js/ckeditor5/ckeditor.js"></script>
+    <script src="~/js/ckeditor5/translations/fa.js"></script>
+
+    <script>
+        $(document).on("click", "#submitdata", function (e) {
+            e.preventDefault();
+            var myData = new FormData();
+
+            //----------uplading file--------------
+            var fileUpload = $("#files").get(0);
+            var myFiles = fileUpload.files;
+
+            //append("the name attr of the tag ",the tag value )
+            for (var i = 0; i < myFiles.length; i++) {
+                myData.append("files", myFiles[i]);
+            }
+            //---------- --------------
+
+            $("input").each(function (x, y) {
+                myData.append($(y).attr("name"), $(y).val());
+            });
+            //----############----CKEDITOR دریافت مقادیر   ---##############----------------
+            var editorVal = myEditor.getData();
+            if (editorVal == "<p>&nbsp;</p>") {
+                editorVal = "";
+            }
+            myData.append("NewsContent", editorVal);
+            //-------------------------##########################--------------------------------------
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("AddEditNews", "News", new { area = "Admin"})',
+                contentType: false,
+                processData: false,    //false : don't proccess any action on my data
+                data: myData,         //sending data
+                dataType: "json"
+            }).done(
+                function (res) {
+                    //checking ajax result (in data type and being successful )
+                    if (res.status === "success") {
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: res.message,
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function () {
+                            //for displaying index view after finishing modal
+                            window.location.href = '@Url.Action("Index", "News")';
+                        });
+                    } else if (res.status === "error") {
+                        var c = [];
+                        $.each(res.error, function (a, b) {
+                            c[i] = b;
+                            i++;
+                        });
+                        if (c[1] === undefined) {
+                            c[1] = "";
+                        };
+                        swal({
+                            position: 'center',
+                            type: 'error',
+                            title: "خطا:",
+                            text: c[0] + '\n' + "\n" + c[1],
+                            showConfirmButton: true,
+                            confirmButtonText: 'فهمیدم',
+                            confirmButtonColor: '#55d5b2',
+                        });
+                    }
+                    //when data isn't sent into the server and occured an error in the client side or at the beginig of entry into the sever
+                })
+                .fail(function (xhr, b, error) {
+                    swal({
+                        position: 'center',
+                        type: 'error',
+                        title: "خطا!:",
+                        text: error,
+                        showConfirmButton: true,
+                    });
+                });
+        });
+    </script>
+}

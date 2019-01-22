@@ -12,9 +12,6 @@
                 </span>
                 <i class="fa fa-times "></i>
             </a>
-
-
-
             <ul>
                 <li><a asp-controller="User" asp-action="Index">مدیریت کاربران</a></li>
                 <li><a asp-controller="ApplicationRole" asp-action="Index">مدیریت نقش ها</a></li>
@@ -24,28 +21,28 @@
             </ul>
         </li>
 
-        <li class=" main-li ">
+        <li class=" main-li cllo">
             <a href="#" class="clearfix text-left ">
-                <span class="float-right">  مدیریت مالی</span>
+                <span class="float-right">  مدیریت خبر ها</span>
                 <i class="fa fa-plus"></i>
             </a>
             <ul>
-                <li><a href="#">مدیریت اطلاعیه ها</a></li>
+                <li><a asp-controller="News" asp-action="Index">مدیریت خبر ها</a></li>
             </ul>
         </li>
 
-        <li class="main-li">
+        @*<li class="main-li cllo">
             <a href="#" class="clearfix text-left">
                 <span class="float-right">مدیریت مجلات  </span>
 
                 <i class="fa fa-plus"></i>
             </a>
 
-            <ul>
+            <ul >
                 <li><a href="#">درخواست نشریه جدید</a></li>
                 <li><a href="#">مدیریت  نشریه ها</a></li>
             </ul>
-        </li>
+        </li>*@
 
     </ul>
 

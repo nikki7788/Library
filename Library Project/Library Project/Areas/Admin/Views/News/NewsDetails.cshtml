@@ -1,0 +1,54 @@
+﻿@model News
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "جزییات خبر";
+}
+
+
+<div class="card mt-3" id="news-details">
+    <div class="card-header bg-primary text-light"><h4>اخبار و اطلاعیه ها</h4></div>
+    <div class="card-body  ">
+        <table class="table table-borderless table-responsive-sm border-bottom">
+            <thead class="thead-light ">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.NewsTitle)</th>
+                    <th>@Html.DisplayNameFor(model => model.NewsContent)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="px-5"> @Html.DisplayFor(model => model.NewsTitle)</td>
+                    <td class="text-justify"> @Html.Raw(Model.NewsContent)</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div class="text-left" style="font-size:16px">
+            <span class="text-black-50 ">@Html.DisplayNameFor(model => model.NewsDate):</span>
+            <span class="text-info ">@Html.DisplayFor(mode => Model.NewsDate)</span>
+        </div>
+
+        @*<div class="col-md-2 text-black-50 text-center"><h5>@Html.DisplayNameFor(model => model.NewsTitle)</h5></div>
+        <div class="col-md-10 text-black-50 text-center"><h5>@Html.DisplayNameFor(model => model.NewsContent)</h5></div>
+
+        <br />
+        <hr class="bg-purple w-100  mx-5" />
+        <br />
+
+        <div class="col-md-2 details-news-title font-weight-bold text-center" >
+            @Html.DisplayFor(model => model.NewsTitle)
+        </div>
+        <div class="col-md-10 details-news-content justify-content-center"><span class="text-justify">@Html.Raw(Model.NewsContent)</span></div>
+
+        <hr class="bg-purple w-100  mx-5" />
+
+        <div class="col-12 text-left" style="font-size:16px">
+            <span class="text-black-50 ">@Html.DisplayNameFor(model => model.NewsDate):</span>
+            <span class="text-info ">@Html.DisplayFor(mode => Model.NewsDate)</span>
+        </div>*@
+
+    </div>
+
+</div>

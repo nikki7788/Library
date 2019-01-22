@@ -3,9 +3,18 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
+
+@*دکمه و اینپوت سرچ*@
+@section SearchSection{
+    <form class="form-inline ">
+        <input type="text" name="txtSearch" id="txtSearch" class="form-control ml-sm-2" placeholder="جست و جو..." />
+        <button asp-controller="Home" asp-action="Search" class="btn btn-secondary"><i class="fa fa-search"></i></button>
+    </form>
+}
+
 <!--start Main-div-->
 <div id="main-div">
-
     <!--start row-->
     @* برای استفاده از کلاس
         باید از کلاس   float
@@ -22,13 +31,13 @@
             <div id="right-panel-lastnews">
 
                 @* استفاده از پارشیال ویو *@
-                @Html.Partial("_LastNewsPartial")
+                @Html.Partial("_LastNewsPartial", Model.LastNews)
             </div>  @*end right-panel-lastnews*@
 
             <!--start right-panel-user-->
             <div id="right-panel-lastregisteruser" class="divStyle">
 
-                @Html.Partial("_LastRegisterUserPartial",Model.LastRegistedUser)
+                @Html.Partial("_LastRegisterUserPartial", Model.LastRegistedUser)
 
 
 

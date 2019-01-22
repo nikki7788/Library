@@ -53,9 +53,13 @@ namespace Library.Controllers
             model.LastRegistedUser = _userManager.Users.OrderByDescending(u => u.Id).Take(10).ToList();
             //model.LastRegistedUser=(from u in _userManager.Users orderby u.Id descending select u).Take(10).ToList();
 
+            //--------------------------نمایش اخرین خبرهای ثبت شده---------------------------------------------------
+            model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
+            // model.LastNews = (from n in _context.News orderby n.NewsId descending select n).Take(6).ToList();  
 
             //-----------------------------------ارسال تصویر به ویو---------------------------------------------
             ViewBag.imgPath = "/upload/normalimage/";
+
 
             return View(model);
         }
@@ -78,5 +82,35 @@ namespace Library.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        public IActionResult Search(string txtSearch)
+        {
+            MultiModelsViewModel model = new MultiModelsViewModel();
+            model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
+            model.LastRegistedUser = _userManager.Users.OrderByDescending(u => u.Id).Take(6).ToList();
+            string tSearch;
+            ///search
+            if (txtSearch != null)
+            {
+                //پاک کردن فضای خالی قبل و بعد
+                 tSearch = txtSearch.TrimEnd().TrimStart();
+            }
+            else
+            {
+                tSearch = txtSearch;
+            }
+           model.SearchBooks = _context.Books.Where(b => b.BookName.Contains(tSearch))
+                             .OrderByDescending(b => b.BookId).Take(15).ToList();
+
+
+            //-------------sending img------------
+            ViewBag.imgPath = "/upload/normalimage/";
+            ViewBag.searchWord = txtSearch;
+
+            return View(model);
+
+        }
+
     }
 }

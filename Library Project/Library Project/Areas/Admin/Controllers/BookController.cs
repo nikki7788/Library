@@ -191,20 +191,20 @@ namespace Library.Areas.Admin.Controllers
                     if (item != null && item.Length > 0)
                     {
                         //creating a unique name for each file and then atach the format of each file to the unique name
-                        var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(item.FileName);
+                        var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(item.FileName);
 
                         //for saving path of file in data base and saving file in root project(wwwroot)
-                        using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+                        using (var fs = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
                         {
                             await item.CopyToAsync(fs);
 
-                            model.BookImage = filename;
+                            model.BookImage = fileName;
                         }
                         //---------------------------resize Image ---------------------------------
 
                         //for creating a smaller size copying of uploading photo
                         InsertShowImage.ImageResizer img = new InsertShowImage.ImageResizer();
-                        img.Resize(uploads + filename, _appEnvironment.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+                        img.Resize(uploads + fileName, _appEnvironment.WebRootPath + "\\upload\\thumbnailimage\\" + fileName);
                     }
                 }
                 //------####################------ End Uploadin Images -------#########################

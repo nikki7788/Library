@@ -1,6 +1,6 @@
 ﻿
-
-<div  class="divStyle newsPartial">
+@model IEnumerable<News>
+<div class="divStyle newsPartial">
     <div class="div-header">
         <span>
             آخرین اخبار و اطلاعیه ها
@@ -9,42 +9,19 @@
         </div>
     </div>
 
-    <div>
+    <div class="lst-news-partial">
+        @foreach (var item in Model)
+        {
+            <a asp-area="Admin" asp-controller="News" asp-action="NewsDetails" asp-route-id="@item.NewsId">
+                <img src="@ViewBag.imgPath@item.NewsImage" alt="LstNewsImg" />
+                <span>
+                    @item.NewsTitle
+                </span>
+            </a>
+            <div class="minhr"></div>
+        }
 
-        <a href="#">
-            <img src="~/images/pic-small1.jpg" />
-            <span>
-                طلاعیه شماره دو
-            </span>
-        </a>
-        <div class="minhr"></div>
-        <a href="#">
-            <img src="~/images/pic-small2.jpg" />
-            <span>
-                طلاعیه شماره دو
-            </span>
-        </a>
-        <div class="minhr"></div>
-        <a href="#">
-            <img src="~/images/pic-small3.jpg" />
-            <span>
-                روش آسان یادگرفتن جدول ضرب
-            </span>
-        </a>
-        <div class="minhr"></div>
-        <a href="#">
-            <img src="~/images/pic-small4.jpg" />
-            <span>
-                طلاعیه شماره دو
-            </span>
-        </a>
-        <div class="minhr"></div>
-        <a href="#">
-            <img src="~/images/pic-small5.jpg" />
-            <span>
-                روش آسان یادگرفتن جدول ضرب
-            </span>
-        </a>
+
 
     </div>
 

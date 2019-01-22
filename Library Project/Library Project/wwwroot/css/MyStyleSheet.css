@@ -62,7 +62,8 @@ body {
     margin: 8px auto;
     width: 100%;
 }
-
+/*----------------------------************************-----------------------------------*/
+/*----------------------------********** last news **************-----------------------------------*/
 .minhr {
     background-color: rgb(200,200,225);
     margin: 6px 15px;
@@ -79,14 +80,19 @@ body {
         border: 1px solid rgb(200,200,20);
     }
 
-    .newsPartial a {
-        color: black;
-    }
+.lst-news-partial img {
+    width: 55px;
+    height: 55px;
+}
 
-    .newsPartial span:hover {
-        color: green;
-    }
-    /*دیو کلی با کلاس
+.newsPartial a span {
+    color: black;
+}
+
+.lst-news-partial span:hover {
+    color: green !important;
+}
+/*دیو کلی با کلاس
         newspartial
         داخل ان دیو فرزند مستفیم ان که کلاس
         div-header
@@ -95,12 +101,13 @@ body {
         div header
         اسپن های داخل ان
             */
-    .newsPartial > div.div-header + div span {
-        margin-right: 10px;
-        font-size: 12px;
-        color: black;
-    }
-
+.newsPartial > div.div-header + div span {
+    margin-right: 10px;
+    font-size: 12px;
+    color: black;
+}
+/*-------------------**********************-------------------------------*/
+/*-------------------**********************-------------------------------*/
 #right-panel-lastnews {
     margin-bottom: 10px;
 }
@@ -174,7 +181,7 @@ body {
     box-shadow: rgb(200,200,220) 2px 1px;
 }
 
-    /*.menu li {
+/*.menu li {
         list-style: none;
     }*/
 
@@ -227,8 +234,13 @@ body {
 
 /*وسظ چین کردن عمودی*/
 .menu ul li.main-li a i {
-
 }
 
 /*------------------------------------
 /*------------------------------------/**/
+#news-details table tr th{
+    font-size: 16px;
+}
+#news-details table td *, #news-details table td {
+    font-size: 17px;
+}

@@ -1,0 +1,83 @@
+﻿
+@model MultiModelsViewModel
+
+@{
+    ViewData["Title"] = "جست و جو";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*دکمه و اینپوت سرچ*@
+@section SearchSection{
+    <form class="form-inline ">
+        <input type="text" name="txtSearch" id="txtSearch" class="form-control ml-sm-2" placeholder="جست و جو..." />
+        <button asp-controller="Home" asp-action="Search" class="btn btn-secondary"><i class="fa fa-search"></i></button>
+    </form>
+}
+
+<!--start Main-div-->
+<div id="main-div">
+    <!--start row-->
+    <div class="row clearfix ">
+        <!--start main-right-panel-->
+        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+
+            <!--start right-panel-lastnews-->
+            <div id="right-panel-lastnews">
+                @Html.Partial("_LastNewsPartial", Model.LastNews)
+            </div>
+
+            <!--start right-panel-user-->
+            <div id="right-panel-lastregisteruser" class="divStyle">
+                @Html.Partial("_LastRegisterUserPartial", Model.LastRegistedUser)
+            </div>
+        </div>
+
+        <!--start main-content-->
+        @*برای این است که مطمین شویم این دیو حتا سمت چپ میماند float-left*@
+        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pb-1 float-left">
+            <div class="most-viewed">
+                <div class="div-header">
+                    <span class="text-black-50" style="font-size:17px;">
+                        موارد جست و جو شده برای:
+                        <span class="text-danger" style="font-size:16px;">
+                            @ViewBag.searchWord
+                        </span>
+                    </span>
+                    <div class="my-hr"></div>
+                </div>
+                <div class="container">
+                    <div class="row text-center">
+
+                        @if (Model.SearchBooks.Count() > 0)
+                        {
+                            foreach (var item in Model.SearchBooks)
+                            {
+                                <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 ">
+                                    <div class="img-thumbnail d-inline-block">
+                                        <a href="#">
+                                            <!--using img-fluid to responsive img and prevent img from being out of it 's parent  -->
+                                            <img class="img-fluid" src="@ViewBag.imgPath@item.BookImage" />
+                                            <div class="book-hr"></div>
+                                            <span> @item.BookName</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-12 p-3">
+                                <span class="text-danger" style="font-size:16px;">جستجو نتیجه ای را در بر نداشت...</span>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> @*End row*@
+
+
+</div>  @*End main-div*@
+
