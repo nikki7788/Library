@@ -9,6 +9,7 @@ using Library.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,12 +23,14 @@ namespace Library.Areas.Admin.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IServiceProvider _iServiceProvider;
         private readonly IHostingEnvironment _appEnvironment;   /// for accessing to the root project(wwwroot)
-        //   private readonly IMapper _mapper;
-        public BookController(ApplicationDbContext context, IServiceProvider iServiceProvider, IHostingEnvironment appEnvironment)
+        private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly IMapper _mapper;
+        public BookController(ApplicationDbContext context, IServiceProvider iServiceProvider, IHostingEnvironment appEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _iServiceProvider = iServiceProvider;
             _appEnvironment = appEnvironment;
+            _userManager = userManager;
             //   _mapper = mapper;
         }
 
@@ -175,7 +178,7 @@ namespace Library.Areas.Admin.Controllers
         //------------------------------------------#### Add Edit Post ######-------------------------------------------
 
         //برای  قسمت خواندن(گت) افزودن و ویرایش دو اکشن نوشتیم که اکشن ما طولانی نشود
-        //چون برای قسمت پست پیرایش و افزودن یک پارشال ویو تعریف کرده ایم باید یک اکشن برای هر دوحالت بنویسیم
+        //چون برای قسمت پست ویرایش و افزودن یک پارشال ویو تعریف کرده ایم باید یک اکشن برای هر دوحالت بنویسیم
         [HttpPost]
         // [ValidateAntiForgeryToken]      // this statement does'nt allow run ajax-jquery
 
@@ -383,7 +386,7 @@ namespace Library.Areas.Admin.Controllers
                     //مسیر عکس سایز کوچک شده
                     var pathThumbnail = Path.Combine(_appEnvironment.WebRootPath, "upload\\thumbnailimage\\") + book.BookImage;
 
-                    if (System.IO.File.Exists(pathNormal)) 
+                    if (System.IO.File.Exists(pathNormal))
                     {
                         //اگر عکس وجود داشت پاک شود
                         System.IO.File.Delete(pathNormal);
@@ -392,7 +395,7 @@ namespace Library.Areas.Admin.Controllers
                     {
                         System.IO.File.Delete(pathThumbnail);
                     }
-                   
+
                 }
                 //--------------####---------------------------
 
@@ -402,6 +405,52 @@ namespace Library.Areas.Admin.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult BookDetails(int id)
+        {
+            if (id==0)
+            {
+                return RedirectToAction("NotFounds");
+            }
+            var model = new MultiModelsViewModel();
+            //--------------------------نمایش اخرین کاربران ثبت شده---------------------------------------------------
+            model.LastRegistedUser = _userManager.Users.OrderByDescending(u => u.Id).Take(10).ToList();
+
+            //--------------------------نمایش اخرین خبرهای ثبت شده---------------------------------------------------
+            model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
+            //--------------------------نمایش اخرین خبرهای ثبت شده---------------------------------------------------
+            model.BookDetails = (from b in _context.Books
+                                 join a in _context.Authors on b.AuthorId equals a.AuthorId
+                                 join bg in _context.BookGroups on b.BookGroupId equals bg.BookGroupId
+                                 where b.BookId == id         //اگر ننویسیم تمام کتاب هارا برمیگرداند
+                                 select new BookDetailsViewModel
+                                 {
+                                     BookId = b.BookId,
+                                     BookName = b.BookName,
+                                     BookDescription = b.BookDescription,
+                                     BookPageCount = b.BookPageCount,
+                                     BookImage = b.BookImage,
+                                     AuthorName = a.AuthorName,
+                                     BookGroupName = bg.BookGroupName,
+                                     BookLikeCount=b.BookLikeCount,
+                                     BookStock=b.BookStock,
+                                     BookViews=b.BookViews
+
+                                 }).ToList();
+            //-----------------------------------ارسال تصویر به ویو---------------------------------------------
+            ViewBag.imgPath = "/upload/normalimage/";
+            return View(model);
+        }
+
+        public IActionResult NotFounds()
+        {
+            return View("NotFounds"); 
+        }
+
+
 
     }
 }

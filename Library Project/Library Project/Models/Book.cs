@@ -26,6 +26,11 @@ namespace Library.Models
 
         public string BookImage { get; set; }
 
+        public int BookStock { get; set; }                //تعداد کتاب های موجود
+
+        public int BookViews { get; set; }             //تعدا بازدید کتاب
+
+        public int BookLikeCount { get; set; }             //تعداد لایک
 
         #region##---------#######-----   ForeignKeys and thier references   --------######-----------###
 

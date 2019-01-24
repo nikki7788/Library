@@ -1,0 +1,105 @@
+﻿
+@model MultiModelsViewModel
+
+@{
+    ViewData["Title"] = "جزییات کتاب";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--start Main-div-->
+<div id="main-div">
+    <!--start row-->
+    <div class="row clearfix ">
+        <!-------------------------------start main-right-panel-------------------------------------------------->
+        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+
+            <!---------------------------start right-panel-lastnews---------------------------------------------->
+            <div id="right-panel-lastnews">
+                @Html.Partial("_LastNewsPartial", Model.LastNews)
+            </div>
+
+            <!---------------------------start right-panel-user-------------------------------------------------->
+            <div id="right-panel-lastregisteruser" class="divStyle">
+                @Html.Partial("_LastRegisterUserPartial", Model.LastRegistedUser)
+            </div>
+        </div>
+
+        <!-------------------------------start main-content------------------------------------------------------->
+        <!----------------------Book Details------------------->
+        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pb-1 float-left mt-md-0 mt-sm-2 ">
+            <div class="bg-light " style="border:1px solid black; box-shadow:1px 2px 9px 1px black">
+                @foreach (var item in Model.BookDetails)
+                {
+                    <div class="div-header p-2">
+                        <span class="font-weight-bold text-dark" style="font-size:17px;">
+                            عنوان کتاب:
+                            <span class="text-success" style="font-size:16px;">
+                                @item.BookName
+                            </span>
+                        </span>
+                        <div class="my-hr"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="p-2 mr-3 book-details-style">
+                                <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.BookGroupName) :</span><span> @item.BookGroupName</span>
+                                </div>
+                                <br />
+                                <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.AuthorName) :</span><span> @item.AuthorName</span>
+                                </div>
+                                <br />
+                                <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.BookPageCount) :</span><span> @item.BookPageCount</span>
+                                </div>
+                                <br />
+                                <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.BookGroupName) :</span><span> @item.BookGroupName</span>
+                                </div>
+                                <br />
+                                <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.BookStock) :</span><span> @item.BookStock</span>
+                                </div>
+                                <br />
+                                <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.BookViews) :</span><span> @item.BookViews</span>
+                                </div>
+                                <br />
+                                <div>
+                                    <button class="btn btn-success ml-3 font-weight-bold" id="boo-borrow">به امانت بردن کتاب</button>
+                                    <a id="btnlike">
+                                        <i class="fa fa-thumbs-down btn btn-danger"></i>
+                                    </a>
+                                    <span id="likecounter" class="mx-1 font-weight-bold">@item.BookLikeCount</span>
+                                    <a id="btnlike">
+                                        <i class="fa fa-thumbs-up btn btn-success"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <img src="@ViewBag.imgPath@item.BookImage" class="img-thumbnail" alt="bookImg" style="width:280px; height:280px" />
+                        </div>
+                        
+                        <div class="col-md-12 mt-1"><div class="my-hr w-75 "></div></div>
+                        <div class="col-md-12">
+                            <div class="p-2 mx-3 book-details-style">
+                                <span class="font-weight-bold">@Html.DisplayNameFor(model=>item.BookDescription):</span>
+                                <div class="p-1 text-justify"><span >@Html.Raw(item.BookDescription)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div> @*End row*@
+
+
+</div>  @*End main-div*@
+

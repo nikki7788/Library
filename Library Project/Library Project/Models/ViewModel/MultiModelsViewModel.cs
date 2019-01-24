@@ -17,5 +17,7 @@ namespace Library.Models.ViewModel
 
         public List<Book> SearchBooks { get; set; }
 
+        public List<BookDetailsViewModel> BookDetails { get; set; }
+
     }
 }

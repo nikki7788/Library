@@ -6,20 +6,20 @@
 }
 
 
-<div class="card mt-3" id="news-details">
+<div class="card mt-3" id="news-details" style="box-shadow:2px 2px 19px 2px #282626;">
     <div class="card-header bg-primary text-light"><h4>اخبار و اطلاعیه ها</h4></div>
     <div class="card-body  ">
-        <table class="table table-borderless table-responsive-sm border-bottom">
-            <thead class="thead-light ">
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.NewsTitle)</th>
-                    <th>@Html.DisplayNameFor(model => model.NewsContent)</th>
+        <table class="table table-borderless  border-bottom">
+            <thead class="thead-light">
+                <tr class="row">
+                    <th class="text-right col-3 text-center">@Html.DisplayNameFor(model => model.NewsTitle)</th>
+                    <th class="col-9 text-center">@Html.DisplayNameFor(model => model.NewsContent)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="px-5"> @Html.DisplayFor(model => model.NewsTitle)</td>
-                    <td class="text-justify"> @Html.Raw(Model.NewsContent)</td>
+                <tr class="row">
+                    <td class="col-3 text-center"> @Html.DisplayFor(model => model.NewsTitle)</td>
+                    <td class="col-9 text-center">  @Html.Raw(Model.NewsContent)</td>
                 </tr>
             </tbody>
 
