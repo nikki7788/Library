@@ -19,5 +19,7 @@ namespace Library.Models.ViewModel
 
         public List<BookDetailsViewModel> BookDetails { get; set; }
 
+        public List<Book> MostViewedBook { get; set; }
+
     }
 }

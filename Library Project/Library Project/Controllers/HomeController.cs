@@ -57,6 +57,9 @@ namespace Library.Controllers
             model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
             // model.LastNews = (from n in _context.News orderby n.NewsId descending select n).Take(6).ToList();  
 
+            //--------------------------نمایش پربازدید ترین کتاب ها---------------------------------------------------
+            model.MostViewedBook = _context.Books.OrderByDescending(b => b.BookViews).Take(6).ToList(); 
+
             //-----------------------------------ارسال تصویر به ویو---------------------------------------------
             ViewBag.imgPath = "/upload/normalimage/";
 

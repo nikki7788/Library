@@ -1,4 +1,5 @@
 ﻿
+@model IEnumerable<Book>
 <div class="most-viewed">
     <div class="div-header">
         <span>
@@ -10,55 +11,20 @@
 
     <div class="container">
         <div class="row  text-center ">
-            <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 col-12">
-                <div class="img-thumbnail d-inline-block">
-                    <a href="#">
+            @foreach (var item in Model)
+            {
+                <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 col-12">
+                    <div class="img-thumbnail d-inline-block">
+                        <a asp-area="Admin" asp-controller="Book" asp-action="BookDetails" asp-route-id="@item.BookId">
 
-                       <!--using img-fluid to responsive img and prevent img from being out of it 's parent  -->
-                        <img class="img-fluid" src="~/images/book14.jpg" />
-                        <div class="book-hr"></div>
-                        <span> بالهای شکسته</span>
-                    </a>
+                            <!--using img-fluid to responsive img and prevent img from being out of it 's parent  -->
+                            <img class="img-fluid" src="@ViewBag.imgPath@item.BookImage" />
+                            <div class="book-hr"></div>
+                            <span>@item.BookName</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 col-12">
-                <div class="img-thumbnail ">
-                    <a href="#">
-                        <img class="img-fluid" src="~/images/book11.jpg" />
-                        <div class="book-hr"></div>
-                        <span> بالهای شکسته</span>
-                    </a>
-                </div>
-            </div>
-            <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 ">
-                <div class="img-thumbnail ">
-                    <a href="#">
-                        <img class="img-fluid" src="~/images/book15.jpg" />
-                        <div class="book-hr"></div>
-                        <span> بالهای شکسته</span>
-                    </a>
-                </div>
-            </div>
-            <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 col-12">
-                <div  class="img-thumbnail ">
-                    <a href="#">
-                        <img  class="img-fluid" src="~/images/book13.jpg" />
-                        <div class="book-hr"></div>
-                        <span> بالهای شکسته</span>
-                    </a>
-                </div>
-            </div>
-            <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 col-12">
-                <div class="img-thumbnail ">
-                    <a href="#">
-                        <img class="img-fluid"  src="~/images/book10.jpg" />
-                        <div class="book-hr"></div>
-                        <span> بالهای شکسته</span>
-                    </a>
-                </div>
-            </div>
-
-
+            }
 
         </div>
     </div>

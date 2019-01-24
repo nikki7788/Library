@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Library.Areas.Admin.Controllers
@@ -440,6 +441,23 @@ namespace Library.Areas.Admin.Controllers
                                      BookViews=b.BookViews
 
                                  }).ToList();
+            //-----------------------------------count views---------------------------------------------
+            using (var db=_iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                var result = db.Books.Where(b => b.BookId == id);
+                var currentBook = result.FirstOrDefault();
+                if (result.Count()!=0) //اگر کتاب با ایدی مورد نظر پیدا شد
+                {
+                    currentBook.BookViews++;
+                    db.Books.Attach(currentBook);
+                    db.Entry(currentBook).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+
+
+
             //-----------------------------------ارسال تصویر به ویو---------------------------------------------
             ViewBag.imgPath = "/upload/normalimage/";
             return View(model);

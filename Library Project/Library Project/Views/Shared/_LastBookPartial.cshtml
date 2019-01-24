@@ -23,7 +23,7 @@
         @foreach (var item in Model)
         {
             <div class="img-thumbnail text-center mr-lg-5 mr-sm-2 mr-1 mb-1">
-                <a href="#">
+                <a asp-area="Admin" asp-controller="Book" asp-action="BookDetails" asp-route-id="@item.BookId">
                     <img src="@ViewBag.imgPath@item.BookImage" />           <!--نمایش تصویر کتاب-->
                     <div class="book-hr"></div>
                     <span>@item.BookName</span>                             <!--نمایش نام کتاب-->

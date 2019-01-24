@@ -54,7 +54,7 @@
                             {
                                 <div class="most-viewed-content col-lg-4 col-md-6 col-sm-6 ">
                                     <div class="img-thumbnail d-inline-block">
-                                        <a href="#">
+                                        <a asp-area="Admin" asp-controller="Book" asp-action="BookDetails" asp-route-id="@item.BookId">
                                             <!--using img-fluid to responsive img and prevent img from being out of it 's parent  -->
                                             <img class="img-fluid" src="@ViewBag.imgPath@item.BookImage" />
                                             <div class="book-hr"></div>
