@@ -27,6 +27,8 @@ namespace Library.Models.ViewModel
 
         public int BookLikeCount { get; set; }
 
+        public int BookDislike { get; set; }
+
         [Display(Name = "تصویرکتاب")]
         public string BookImage { get; set; }
 

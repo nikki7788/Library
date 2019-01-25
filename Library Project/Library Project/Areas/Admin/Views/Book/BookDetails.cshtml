@@ -69,13 +69,15 @@
                                 <br />
                                 <div>
                                     <button class="btn btn-success ml-3 font-weight-bold" id="boo-borrow">به امانت بردن کتاب</button>
-                                    <a id="btnlike">
-                                        <i class="fa fa-thumbs-down btn btn-danger"></i>
-                                    </a>
-                                    <span id="likecounter" class="mx-1 font-weight-bold">@item.BookLikeCount</span>
-                                    <a id="btnlike">
+                                    <a  asp-controller="Book" asp-action="Like" asp-route-id="@item.BookId" class="btnlike">
                                         <i class="fa fa-thumbs-up btn btn-success"></i>
                                     </a>
+                                    <span id="likecounter" class="mx-1 font-weight-bold">@item.BookLikeCount</span>
+
+                                    <a  asp-controller="Book" asp-action="Dislike" asp-route-id="@item.BookId" class="btnlike">
+                                        <i class="fa fa-thumbs-down btn btn-danger"></i>
+                                    </a>
+                                    <span id="likecounter" class="mx-1 font-weight-bold">@item.BookDislike</span>
                                 </div>
                             </div>
                         </div>
@@ -83,12 +85,12 @@
                         <div class="col-md-5">
                             <img src="@ViewBag.imgPath@item.BookImage" class="img-thumbnail" alt="bookImg" style="width:280px; height:280px" />
                         </div>
-                        
+
                         <div class="col-md-12 mt-1"><div class="my-hr w-75 "></div></div>
                         <div class="col-md-12">
                             <div class="p-2 mx-3 book-details-style">
-                                <span class="font-weight-bold">@Html.DisplayNameFor(model=>item.BookDescription):</span>
-                                <div class="p-1 text-justify"><span >@Html.Raw(item.BookDescription)</span></div>
+                                <span class="font-weight-bold">@Html.DisplayNameFor(model => item.BookDescription):</span>
+                                <div class="p-1 text-justify"><span>@Html.Raw(item.BookDescription)</span></div>
                             </div>
                         </div>
                     </div>

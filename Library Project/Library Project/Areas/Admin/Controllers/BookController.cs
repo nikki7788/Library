@@ -35,6 +35,8 @@ namespace Library.Areas.Admin.Controllers
             //   _mapper = mapper;
         }
 
+
+        #region ################################ Index #################################
         //--------------------------------************* index ***********--------------------------------------------------------
         [HttpGet]
         public IActionResult Index()
@@ -91,7 +93,9 @@ namespace Library.Areas.Admin.Controllers
 
             return View(model);
         }
+        #endregion ###################################################################################### 
 
+        #region---############################# Add & Edit Book ######################################
         //--------------------------------************* Add Book Get***********--------------------------------------------------------
 
         [HttpGet]
@@ -329,8 +333,9 @@ namespace Library.Areas.Admin.Controllers
 
             //    return PartialView("_AddEditBookPartial", model);
         }
+        #endregion  #############################################################
 
-
+        #region---------###################### Delete Book ##########################################
         //-------------------************** Delete Get ***********--------------------------------------
 
         [HttpGet]
@@ -407,12 +412,14 @@ namespace Library.Areas.Admin.Controllers
 
         }
 
+        #endregion############################################################################
 
+        #region------############################## BookDetails #####################################
         [HttpGet]
         [AllowAnonymous]
         public IActionResult BookDetails(int id)
         {
-            if (id==0)
+            if (id == 0)
             {
                 return RedirectToAction("NotFounds");
             }
@@ -436,36 +443,291 @@ namespace Library.Areas.Admin.Controllers
                                      BookImage = b.BookImage,
                                      AuthorName = a.AuthorName,
                                      BookGroupName = bg.BookGroupName,
-                                     BookLikeCount=b.BookLikeCount,
-                                     BookStock=b.BookStock,
-                                     BookViews=b.BookViews
+                                     BookLikeCount = b.BookLikeCount,
+                                     BookDislike = b.BookDislike,
+                                     BookStock = b.BookStock,
+                                     BookViews = b.BookViews
 
                                  }).ToList();
             //-----------------------------------count views---------------------------------------------
-            using (var db=_iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
             {
+
                 var result = db.Books.Where(b => b.BookId == id);
-                var currentBook = result.FirstOrDefault();
-                if (result.Count()!=0) //اگر کتاب با ایدی مورد نظر پیدا شد
+                var currentBook = result.FirstOrDefault();                //مانند تولیست است ولی فقط مقدار اول را برمیگرداند
+                if (result.Count() != 0) //اگر کتاب با ایدی مورد نظر پیدا شد
                 {
-                    currentBook.BookViews++;
+                    currentBook.BookViews++;        //بازدید کتاب را با هربار رفرش یا بازشدن جزییات کتاب یکی زیاد میکند
+
+                    //اپدیت یک فیلد از یک رکورد در دیتابیس
                     db.Books.Attach(currentBook);
                     db.Entry(currentBook).State = EntityState.Modified;
                     db.SaveChanges();
                 }
             }
 
-
-
-
             //-----------------------------------ارسال تصویر به ویو---------------------------------------------
             ViewBag.imgPath = "/upload/normalimage/";
             return View(model);
         }
+        #endregion########################################################################################
+
+
+        #region ################ Like & Dislike New ##################################################
+        [AllowAnonymous]
+        public async Task<IActionResult> Like(int id)  //آی دی کتاب را برمیگردند
+        {
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                var query = await db.Books.Where(b => b.BookId == id).SingleOrDefaultAsync();
+                //checking that the book  exists?
+                if (query == null)
+                {
+                    //return RedirectToAction("‌BookDetails");
+                    return Redirect(Request.Headers["Referer"].ToString());      //go to the last action that is run      میرود به اکشن قبلی که اجرا شده است 
+                }
+                //چک کردن اینکه آیا از قبل کوکی ایجاد شده است یا خیر
+                if (Request.Cookies["_LikeLB"] == null)
+                {
+                    // ای دی باید از نوع استرینگ باشد که میتوانستیم با دستور تواسترینگ به استرینگ تبدیل کنیم یا یک رشته خالی قبل ان بنویسیم
+                    //برای اینکه بعد از ثبت ایدی در کوکی بتوانیم انها را پیدا کنیم بینشان یک کاما میگذاریم
+                    Response.Cookies.Append("_LikeLB", "," + id + ",", new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+                    query.BookLikeCount++; //یکی به لایک اضافه میکند
+                    //------------------*****************-------------------------------
+                    //اگرکوکب برای دیسلایک وجود داته باشد و کتاب مورد نطردیسلایک شده باشد  تعداد تعداد دیسلایک را یکی کم میکند را کم میکند
+                    if (Request.Cookies["_DislikeLB"] != null)
+                    {
+                        if (Request.Cookies["_DislikeLB"].Contains("," + id + ","))
+                        {
+                            query.BookDislike--;
+                        }
+
+                    }
+                    //------------------*****************-------------------------------
+
+                    db.Update(query);
+                    await db.SaveChangesAsync();
+                    return Redirect(Request.Headers["Referer"].ToString());
+
+
+                }
+                else       //اگر کوکی وجود داشت
+                {
+                    string cookieContent = Request.Cookies["_LikeLB"].ToString();
+                    //چک میکند درکوکی ای دی کتاب مورد نطرکه داخل ان قرار داریم وجود دارد یانه 
+                    if (cookieContent.Contains("," + id + ","))
+                    {
+                        //اخرین اکشن اجرا ده را برمیکرداند که اینجا 
+                        //bookdetails است 
+                        return Redirect(Request.Headers["Referer"].ToString());
+                    }
+                    else   //اگر ای دی کتاب مورد نظر یافت نشد در کوکی
+                    {
+                        cookieContent += "," + id + ",";
+                        //کوکی را ست میکنیم در کوکی که نام ان را لایک دادیم و.ای دی کتاب را در ان به صورت استرینگ ذخیره کردیم و تاریخ انقضا کوکی را ۵سال دادیم
+                        Response.Cookies.Append("_LikeLB", cookieContent, new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+                        query.BookLikeCount++;
+                        //------------------*****************-------------------------------
+
+                        if (Request.Cookies["_DislikeLB"] != null)
+                        {
+                            if (Request.Cookies["_DislikeLB"].Contains("," + id + ","))
+                            {
+                                query.BookDislike--;
+                            }
+                        }
+                        //------------------*****************-------------------------------
+
+                        db.Update(query);
+                        await db.SaveChangesAsync();
+                        return Redirect(Request.Headers["Referer"].ToString());
+
+                    }
+                }
+            }
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> Dislike(int id)  //آی دی کتاب را برمیگردند
+        {
+            using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                var query = await db.Books.Where(b => b.BookId == id).SingleOrDefaultAsync();
+                //checking that the book  exists?
+                if (query == null)
+                {
+                    //return RedirectToAction("‌BookDetails");
+                    return Redirect(Request.Headers["Referer"].ToString());      //go to the last action that is run      میرود به اکشن قبلی که اجرا شده است 
+                }
+                //چک کردن اینکه آیا از قبل کوکی ایجاد شده است یا خیر
+                if (Request.Cookies["_DislikeLB"] == null)
+                {
+                    // ای دی باید از نوع استرینگ باشد که میتوانستیم با دستور تواسترینگ به استرینگ تبدیل کنیم یا یک رشته خالی قبل ان بنویسیم
+                    //برای اینکه بعد از ثبت ایدی در کوکی بتوانیم انها را پیدا کنیم بینشان یک کاما میگذاریم
+                    Response.Cookies.Append("_DislikeLB", "," + id + ",", new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+
+                    query.BookDislike++; //یکی به لایک اضافه میکند
+
+                    //----------------******************----------------------------------
+                    //اگرکوکب برای لایک وجود داته باشد و کتاب مورد نطرلایک شده باشد  تعداد تعداد لایک را یکی کم میکند را کم میکند
+
+                    if (Request.Cookies["_LikeLB"] != null)
+                    {
+                        if (Request.Cookies["_LikeLB"].Contains("," + id + ","))
+                        {
+                            query.BookLikeCount--;
+                        }
+                    }
+                    //------------------*****************-------------------------------
+
+                    db.Update(query);
+                    await db.SaveChangesAsync();
+                    return Redirect(Request.Headers["Referer"].ToString());
+
+
+                }
+                else       //اگر کوکی وجود داشت
+                {
+                    string cookieContent = Request.Cookies["_DislikeLB"].ToString();
+                    //چک میکند درکوکی ای دی کتاب مورد نطرکه داخل ان قرار داریم وجود دارد یانه 
+                    if (cookieContent.Contains("," + id + ","))
+                    {
+                        //اخرین اکشن اجرا ده را برمیکرداند که اینجا 
+                        //bookdetails است 
+                        return Redirect(Request.Headers["Referer"].ToString());
+                    }
+                    else   //اگر ای دی کتاب مورد نظر یافت نشد در کوکی
+                    {
+                        cookieContent += "," + id + ",";
+                        //کوکی را ست میکنیم در کوکی که نام ان را لایک دادیم و.ای دی کتاب را در ان به صورت استرینگ ذخیره کردیم و تاریخ انقضا کوکی را ۵سال دادیم
+                        Response.Cookies.Append("_DislikeLB", cookieContent, new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+                        query.BookDislike++;
+                        //----------------******************----------------------------------
+                        if (Request.Cookies["_LikeLB"] != null)
+                        {
+                            if (Request.Cookies["_LikeLB"].Contains("," + id + ","))
+                            {
+                                query.BookLikeCount--;
+                            }
+                        }
+                        //------------------*****************-------------------------------
+                        db.Update(query);
+                        await db.SaveChangesAsync();
+                        return Redirect(Request.Headers["Referer"].ToString());
+
+                    }
+                }
+            }
+        }
+        #endregion
+
+
+        #region ############################ Like & Dislike old ##########################################
+        //[AllowAnonymous]
+        //public async Task<IActionResult> Like(int id)  //آی دی کتاب را برمیگردند
+        //{
+        //    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+        //    {
+        //        var query = await db.Books.Where(b => b.BookId == id).SingleOrDefaultAsync();
+        //        //checking that the book  exists?
+        //        if (query == null)
+        //        {
+        //            //return RedirectToAction("‌BookDetails");
+        //            return Redirect(Request.Headers["Referer"].ToString());      //go to the last action that is run      میرود به اکشن قبلی که اجرا شده است 
+        //        }
+        //        //چک کردن اینکه آیا از قبل کوکی ایجاد شده است یا خیر
+        //        if (Request.Cookies["_LikeLB"] == null)
+        //        {
+        //            // ای دی باید از نوع استرینگ باشد که میتوانستیم با دستور تواسترینگ به استرینگ تبدیل کنیم یا یک رشته خالی قبل ان بنویسیم
+        //            //برای اینکه بعد از ثبت ایدی در کوکی بتوانیم انها را پیدا کنیم بینشان یک کاما میگذاریم
+        //            Response.Cookies.Append("_LikeLB", "," + id + ",", new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+        //            query.BookLikeCount++; //یکی به لایک اضافه میکند
+        //            db.Update(query);
+        //            await db.SaveChangesAsync();
+        //            return Redirect(Request.Headers["Referer"].ToString());
+
+
+        //        }
+        //        else       //اگر کوکی وجود داشت
+        //        {
+        //            string cookieContent = Request.Cookies["_LikeLB"].ToString();
+        //            //چک میکند درکوکی ای دی کتاب مورد نطرکه داخل ان قرار داریم وجود دارد یانه 
+        //            if (cookieContent.Contains("," + id + ","))
+        //            {
+        //                //اخرین اکشن اجرا ده را برمیکرداند که اینجا 
+        //                //bookdetails است 
+        //                return Redirect(Request.Headers["Referer"].ToString());
+        //            }
+        //            else   //اگر ای دی کتاب مورد نظر یافت نشد در کوکی
+        //            {
+        //                cookieContent += "," + id + ",";
+        //                //کوکی را ست میکنیم در کوکی که نام ان را لایک دادیم و.ای دی کتاب را در ان به صورت استرینگ ذخیره کردیم و تاریخ انقضا کوکی را ۵سال دادیم
+        //                Response.Cookies.Append("_LikeLB", cookieContent, new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+        //                query.BookLikeCount++;
+        //                db.Update(query);
+        //                await db.SaveChangesAsync();
+        //                return Redirect(Request.Headers["Referer"].ToString());
+
+        //            }
+        //        }
+        //    }
+        //}
+        //[AllowAnonymous]
+        //public async Task<IActionResult> Dislike(int id)  //آی دی کتاب را برمیگردند
+        //{
+        //    using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
+        //    {
+        //        var query = await db.Books.Where(b => b.BookId == id).SingleOrDefaultAsync();
+        //        //checking that the book  exists?
+        //        if (query == null)
+        //        {
+        //            //return RedirectToAction("‌BookDetails");
+        //            return Redirect(Request.Headers["Referer"].ToString());      //go to the last action that is run      میرود به اکشن قبلی که اجرا شده است 
+        //        }
+        //        //چک کردن اینکه آیا از قبل کوکی ایجاد شده است یا خیر
+        //        if (Request.Cookies["_disikeLB"] == null)
+        //        {
+        //            // ای دی باید از نوع استرینگ باشد که میتوانستیم با دستور تواسترینگ به استرینگ تبدیل کنیم یا یک رشته خالی قبل ان بنویسیم
+        //            //برای اینکه بعد از ثبت ایدی در کوکی بتوانیم انها را پیدا کنیم بینشان یک کاما میگذاریم
+        //            Response.Cookies.Append("_disikeLB", "," + id + ",", new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+        //            query.BookLikeCount--; //یکی به لایک اضافه میکند
+        //            db.Update(query);
+        //            await db.SaveChangesAsync();
+        //            return Redirect(Request.Headers["Referer"].ToString());
+
+
+        //        }
+        //        else       //اگر کوکی وجود داشت
+        //        {
+        //            string cookieContent = Request.Cookies["_disikeLB"].ToString();
+        //            //چک میکند درکوکی ای دی کتاب مورد نطرکه داخل ان قرار داریم وجود دارد یانه 
+        //            if (cookieContent.Contains("," + id + ","))
+        //            {
+
+        //                //اخرین اکشن اجرا ده را برمیکرداند که اینجا 
+        //                //bookdetails است 
+        //                return Redirect(Request.Headers["Referer"].ToString());
+        //            }
+        //            else   //اگر ای دی کتاب مورد نظر یافت نشد در کوکی
+        //            {
+        //                cookieContent += "," + id + ",";
+        //                //کوکی را ست میکنیم در کوکی که نام ان را لایک دادیم و.ای دی کتاب را در ان به صورت استرینگ ذخیره کردیم و تاریخ انقضا کوکی را ۵سال دادیم
+        //                Response.Cookies.Append("_disikeLB", cookieContent, new CookieOptions() { Expires = DateTime.Now.AddYears(5) });
+        //                query.BookLikeCount--;
+        //                db.Update(query);
+        //                await db.SaveChangesAsync();
+        //                return Redirect(Request.Headers["Referer"].ToString());
+
+        //            }
+        //        }
+        //    }
+        //}
+
+        #endregion
+
 
         public IActionResult NotFounds()
         {
-            return View("NotFounds"); 
+            return View("NotFounds");
         }
 
 
