@@ -1,6 +1,9 @@
 ﻿
 @model MultiModelsViewModel
 
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
 @{
     ViewData["Title"] = "جزییات کتاب";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,6 +15,15 @@
     <div class="row clearfix ">
         <!-------------------------------start main-right-panel-------------------------------------------------->
         <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+
+
+            <!---------------------------start right-panel-shopping cart---------------------------------------------->
+            @if (signInManager.IsSignedIn(User))
+            {
+                <div id="right-panel-lastnews">
+                    @Html.Partial("_BorrowCartPartial")
+                </div>
+            }
 
             <!---------------------------start right-panel-lastnews---------------------------------------------->
             <div id="right-panel-lastnews">
@@ -26,7 +38,7 @@
 
         <!-------------------------------start main-content------------------------------------------------------->
         <!----------------------Book Details------------------->
-        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pb-1 float-left mt-md-0 mt-sm-2 ">
+        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pb-1 float-left mt-md-0 mt-sm-2 mt-2 ">
             <div class="bg-light " style="border:1px solid black; box-shadow:1px 2px 9px 1px black">
                 @foreach (var item in Model.BookDetails)
                 {
@@ -68,21 +80,42 @@
                                 </div>
                                 <br />
                                 <div>
-                                    <button class="btn btn-success ml-3 font-weight-bold" id="boo-borrow">به امانت بردن کتاب</button>
-                                    <a  asp-controller="Book" asp-action="Like" asp-route-id="@item.BookId" class="btnlike">
+
+                                    <!--------------------------------------->
+                                    <!--نمایش دکمه امانت برای کابرانی که لاگین کرده اند-->
+                                    @if (signInManager.IsSignedIn(User))
+                                    {
+                                        //    < a asp-controller="Book" asp-action="BookBarrow" class="btn btn-success ml-lg-3 ml-md-3 ml-1 font-weight-bold" id="boo-borrow">به امانت بردن کتاب</a>
+                                        <a class="btn btn-success ml-lg-3 ml-md-3 ml-1 font-weight-bold" id="btn-borrow">به امانت بردن کتاب</a>
+
+                                    }
+
+                                    <!--------------------------------------->
+                                    <!--without ajx-->
+                                    @* <a  asp-controller="Book" asp-action="Like" asp-route-id="@item.BookId" class="btnlike">*@
+                                    <!--without ajx-->
+                                    <a id="btn-like">
                                         <i class="fa fa-thumbs-up btn btn-success"></i>
                                     </a>
-                                    <span id="likecounter" class="mx-1 font-weight-bold">@item.BookLikeCount</span>
+                                    <span id="like-counter" class="mx-1 font-weight-bold">@item.BookLikeCount</span>
+                                    <!--without ajx-->
+                                    @*<a asp-controller="Book" asp-action="Dislike" asp-route-id="@item.BookId" class="btnlike">*@
 
-                                    <a  asp-controller="Book" asp-action="Dislike" asp-route-id="@item.BookId" class="btnlike">
+                                    <!--without ajx-->
+                                    <a id="btn-dislike">
                                         <i class="fa fa-thumbs-down btn btn-danger"></i>
                                     </a>
-                                    <span id="likecounter" class="mx-1 font-weight-bold">@item.BookDislike</span>
+                                    <span id="dislike-counter" class="mx-1 font-weight-bold">@item.BookDislike</span>
+
+                                    <!--without ajx   ارسال آی دی به اکشن لایک و دیسلایک-->
+                                    <span class="d-none" id="bookId">@item.BookId</span>
+                                    <!--با بالایی یکیست فقط در ایجکس باید ولیو تگ را ارسال کنیم-->
+                                    @* <input type="hidden" asp-for="@item.BookId" id="bookId"/>*@
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-5 col-sm-12 text-sm-center">
                             <img src="@ViewBag.imgPath@item.BookImage" class="img-thumbnail" alt="bookImg" style="width:280px; height:280px" />
                         </div>
 
@@ -95,9 +128,6 @@
                         </div>
                     </div>
                 }
-
-
-
             </div>
         </div>
     </div> @*End row*@
@@ -105,3 +135,92 @@
 
 </div>  @*End main-div*@
 
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+           $("#btn-like").click(function () {
+               var post_data = $('#bookId').text();   //آی دی کتاب ازتگ اسپن خوانده ودرمتغیر  ذخیره و در ایجکس فرستاده میشود
+//               var post_data = $('#bookId').val();   //آی دی کتاب را ذخیره و در ایجکس فرستاده میشود برای تگ اینپوت
+                     $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Like","Book")',
+                    data: { "bookId": post_data },  //نامی ک در ورودی اکشن دریافت میکنیم را در اینجا مقدارش را میفرستیم bookid
+                    success: function (msg) {
+                        if (msg.status === "success") {
+                            swal({
+                                position: "center",
+                                type: "success",
+                                title: msg.message,
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+                            $("#like-counter").text(msg.result);
+                        }
+                    }
+                });
+            });
+            //------#############################################################------------------------------------------------------
+            $("#btn-dislike").click(function () {
+                var post_data = $('#bookId').text();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DisLike","Book")',
+                    data: { "bookId": post_data },
+                    success: function (msg) {
+                        if (msg.status === "success") {
+                            swal({
+                                position: "center",
+                                type: "success",
+                                title: msg.message,
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+                            $("#dislike-counter").text(msg.result);
+                        }
+                    }
+                });
+            });
+            //------#############################################################------------------------------------------------------
+            $("#btn-borrow").click(function () {
+                var post_data = $("#bookId").text();   //آی دی کتاب مورد نظر
+                $.ajax({
+                    type: "POST",
+                    url:'@Url.Action("BookBorrow","Book")',   //نامی ک در ورودی اکشن دریافت میکنیم را در اینجا مقدارش را میفرستیم id
+                    data: { "id": post_data },
+                    success: function (e) {
+                        if (e.status==="success") {
+                            swal({
+                                position: "center",
+                                type: "success",
+                                title:"<p class='' style='font-size:16px; font-weight:bold'>" + e.message + "</p>",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            $("#cart-count").text(e.cart);   //تعداد کتاب های سبد امانات را رفرش واپدیت میکندوقتی در صفحه جزییات کتاب هستیم
+                        }
+                        if (e.status === "done") {
+                            swal({
+                                position: "center",
+                                type: "warning",
+                                title: "<p class='' style='font-size:16px; font-weight:bold'>" + e.message + "</p>",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        if (e.status === "fail") {
+
+                            swal.fire({
+                                position: "center",
+                                type: "error",
+                                title: "<p class='text-danger' style='font-size:16px'>"+e.message+"</p>",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

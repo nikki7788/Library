@@ -1,0 +1,126 @@
+﻿
+@model MultiModelsViewModel
+
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpCookie
+@{
+    ViewData["Title"] = "سبد امانات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--start Main-div-->
+<div id="main-div">
+    <!--start row-->
+    <div class="row clearfix ">
+        <!-------------------------------start main-right-panel-------------------------------------------------->
+        <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+
+            <!---------------------------start right-panel-lastnews---------------------------------------------->
+            <div id="right-panel-lastnews">
+                @Html.Partial("_LastNewsPartial", Model.LastNews)
+            </div>
+
+            <!---------------------------start right-panel-user-------------------------------------------------->
+            <div id="right-panel-lastregisteruser" class="divStyle">
+                @Html.Partial("_LastRegisterUserPartial", Model.LastRegistedUser)
+            </div>
+        </div>
+
+        <!-------------------------------start main-content------------------------------------------------------->
+        <!----------------------Book Details------------------->
+        <div id="main-content" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pb-1 float-left mt-md-0 mt-sm-2 ">
+            <div class="bg-light p-2 mt-5" style="border:1px solid black; box-shadow:1px 2px 9px 1px black">
+                <div class="p-1 mt-2 mb-3">
+                    <h4 class="text-success  text-center">لیست کتاب های درخواستی </h4>
+                    <hr class="w-75 bg-secondary mx-auto" />
+                </div>
+                @if (httpCookie.HttpContext.Request.Cookies["_bb"] != null)
+                {
+                    <table class="table table-bordered table-hover  table-sm">
+                        <thead class="thead-light">
+                            <tr class="p-1">
+                                <th>شماره کتاب</th>
+                                <th>نام کتاب</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="p-1">
+                            @foreach (var item in Model.RequsetedBook)
+                            {
+                                <tr>
+                                    <td>@item.BookId</td>
+                                    <td>@item.BookName</td>
+                                    <td>
+                                        <a asp-controller="Book" asp-action="DeleteRequestedBook" asp-route-id="@item.BookId" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div>
+                        <a id="btn-submit-request" class="btn btn-success text-light" style="width:20%">ثبت کتاب</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-danger text-light" style="width:20%">بازکشت</a>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <h3 class="text-center my-2 mb-2 text-danger">کتابی در لیست شما وجود ندارد</h3>
+                    </div>
+                }
+            </div>
+        </div>
+    </div> @*End row*@
+    @*ایدی یوزر را دریافت و از طریق ایجکس برای اکشن میفرستیم*@
+    <span id="span-userId" class="d-none">@userManager.GetUserId(User)</span>
+
+</div>  @*End main-div*@
+
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btn-submit-request").click(function () {
+            var userId = $("#span-userId").text();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("BorrowRequesteBook", "Book")',
+                data: { 'userid': userId },
+                success: function (msg) {
+                    if (msg.status==="success") {
+                        debugger;
+                        swal({
+                            position: "center",
+                            type: "success",
+                            title: "<p class='' style='font-size:16px; font-weight:bold'>" + msg.message + "</p>",
+                            showConfirmButton: true
+                        }).then(function () {
+                            window.location.href = '@Url.Action("Index","Home", new { Area=""})';
+                            });
+
+                        
+                    }
+
+                     if (msg.status==="warning") {
+                        debugger;
+                         swal({
+                             position: "center",
+                             type: "warning",
+                             title: "<p class='' style='font-size:16px; font-weight:bold'>" + msg.message + "</p>",
+                             showConfirmButton: true,
+                             //timer:1500
+                         });
+                    }
+                }
+
+            });
+
+        });
+    });
+
+
+    </script>
+}

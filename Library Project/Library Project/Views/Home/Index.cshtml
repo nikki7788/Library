@@ -1,5 +1,7 @@
 ﻿
 @model MultiModelsViewModel
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -7,8 +9,8 @@
 
 @*دکمه و اینپوت سرچ*@
 @section SearchSection{
-    <form class="form-inline ">
-        <input type="text" name="txtSearch" id="txtSearch" class="form-control ml-sm-2" placeholder="جست و جو..." />
+    <form class="form-inline">
+        <input type="text" name="txtSearch" id="txtSearch" class="form-control-sm  ml-sm-2" placeholder="جست و جو..." />
         <button asp-controller="Home" asp-action="Search" class="btn btn-secondary"><i class="fa fa-search"></i></button>
     </form>
 }
@@ -22,12 +24,18 @@
     *@
     <div class="row clearfix ">
 
-
         <!--start main-right-panel-->
         <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 
+            <!---------------------------start right-panel-shopping cart---------------------------------------------->
+            @if (signInManager.IsSignedIn(User))
+            {
+                <div id="right-panel-lastnews">
+                    @Html.Partial("_BorrowCartPartial")
+                </div>
+            }
 
-            <!--start right-panel-lastnews-->
+            <!-------------------------------start right-panel-lastnews------------------------------------------------->
             <div id="right-panel-lastnews">
 
                 @* استفاده از پارشیال ویو *@
@@ -55,7 +63,7 @@
             @Html.Partial("_LastBookPartial", Model.LastBook)
 
 
-            @Html.Partial("_MostViewedBookPartial",Model.MostViewedBook)
+            @Html.Partial("_MostViewedBookPartial", Model.MostViewedBook)
 
             @Html.Partial("_ScientificBookPartial", Model.ScientificBook)
 

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -35,7 +36,7 @@
         <div id="main-menu">
 
             @*start nav*@
-            <nav class="navbar navbar-expand-sm bg-light navbar-light">
+            <nav class="navbar navbar-expand-md bg-light navbar-light">
                 <div class="container">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                         <img src="~/images/storeicon1.png" id="brand-icon" />
@@ -43,8 +44,8 @@
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                        <ul class="navbar-nav">
+                    <div class="collapse navbar-collapse  " id="collapsibleNavbar">
+                        <ul class="navbar-nav px-md-2 ">
                             <li class="nav-item">
                                 <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
                                     خانه
@@ -75,9 +76,15 @@
                         @await Html.PartialAsync("_UserStateIconPartial")
 
                     </div>
-                    @RenderSection("SearchSection", false)
+                  
+                        <div class="d-sm-none navbar-collapse justify-content-end " id="collapsibleNavbar">
+                            <ul class="navbar-nav ">
+                                <li class="nav-item text-center">@RenderSection("SearchSection", false)</li>
+                            </ul>
+                        </div>
                 </div>
             </nav> @*End nav*@
+
 
         </div> @*End main-menu*@
         <div class="container">

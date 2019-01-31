@@ -54,11 +54,16 @@ namespace Library.Controllers
             //model.LastRegistedUser=(from u in _userManager.Users orderby u.Id descending select u).Take(10).ToList();
 
             //--------------------------نمایش اخرین خبرهای ثبت شده---------------------------------------------------
-            model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
-            // model.LastNews = (from n in _context.News orderby n.NewsId descending select n).Take(6).ToList();  
+            //چون از لامبدا استفاده کردیم بید حتما از دستور
+            // استفاده کنیمusing
+            //model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();      
+            model.LastNews = (from n in _context.News orderby n.NewsId descending select n).Take(6).ToList();
 
             //--------------------------نمایش پربازدید ترین کتاب ها---------------------------------------------------
-            model.MostViewedBook = _context.Books.OrderByDescending(b => b.BookViews).Take(6).ToList(); 
+            //به جز کلاس های ایدننینی یعنی کلاس هایی خودمان ایجاد کردیم نیاز چون از لامبدا استفاده کردیم بید حتما از دستور
+            // استفاده کنیمusing
+            // model.MostViewedBook = _context.Books.OrderByDescending(b => b.BookViews).Take(6).ToList();
+            model.MostViewedBook = (from b in _context.Books orderby b.BookId descending select b).Take(6).ToList();
 
             //-----------------------------------ارسال تصویر به ویو---------------------------------------------
             ViewBag.imgPath = "/upload/normalimage/";

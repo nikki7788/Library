@@ -1,0 +1,60 @@
+﻿<!--اینجکت کردن کوکی-->
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpCookie
+
+@{
+    <!--تعداد کتاب های سبد امانات را رفرش واپدیت میکندوقتی در صفحه اصلی و جست وجوی  کتاب هستیم-->
+    if (httpCookie.HttpContext.Request.Cookies["_bb"] != null)
+    {
+        string cookieCountent = httpCookie.HttpContext.Request.Cookies["_bb"].ToString();
+
+        string[] requestCount = cookieCountent.Split(",").ToArray();
+
+        requestCount = requestCount.Where(r => r != "").ToArray();
+
+
+
+        <div class="divStyle">
+            <div class="div-header">
+                <span>
+                    سبد امانات
+                </span>
+                <div class="my-hr">
+                </div>
+            </div>
+
+            <div class="mb-2 p-3">
+                <div class="font-weight-bold mb-2 " style="font-size:15px;">
+                    <span>تعداد کتاب های سفارش داده شده:</span>
+                    <span id="cart-count">@requestCount.Count()</span>
+                </div>
+                <div class="p-1"><a asp-area="Admin" asp-controller="Book" asp-action="RequestedBook" class="btn btn-success font-weight-bold text-light">مشاهده لیست</a></div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <!--وقتی کتابی در لیست امانات نباشد صفر را نمایش میدهد -->
+        <div class="divStyle">
+            <div class="div-header">
+                <span>
+                    سبد امانات
+                </span>
+                <div class="my-hr">
+                </div>
+            </div>
+
+            <div class="mb-2 p-3">
+                <div class="font-weight-bold mb-2 " style="font-size:15px;">
+                    <span>تعداد کتاب های سفارش داده شده:</span>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="p-1"><a asp-area="Admin" asp-controller="Book" asp-action="RequestedBook" class="btn btn-success font-weight-bold text-light">مشاهده لیست</a></div>
+            </div>
+        </div>
+    }
+}
+
+
+
+
