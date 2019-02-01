@@ -21,6 +21,14 @@ namespace Library.Models
         //     تایید 2       کنسل3     ۱درخواست داده شده     
         public byte Flag { get; set; }
 
+        [Display(Name = "تاریخ درخواست")]
+        public string RequestDate { get; set; }
+
+        [Display(Name = "تاریخ پاسخ")]
+        public string AnswerDate { get; set; }
+
+        [Display(Name = "تاریخ برگشت")]
+        public string ReturnDate { get; set; }
 
 
     }

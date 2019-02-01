@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -795,37 +796,61 @@ namespace Library.Areas.Admin.Controllers
 
             if (Request.Cookies["_bb"] != null && bookRequset.Count() > 0)      //  اگر کوکی وجود داشت و داخل ان عضوی وجود داشت
             {
-                //بررسی میکند که این در خواست در سرور وجود دارد یا خیر
+                //----------------------بررسی میکند که این در خواست در سرور وجود دارد یا خیر-------
                 //بررسی میکند که در کوکی ای دی های کتاب هایی که وجود دارد مقدار ای دی کتاب و ای دی یوزر در جدول درخواست ها هست یا نه و فلگ را هم بررسی مبکند
                 //که یک باشد یعنی در خواست داده شده
                 var query = (from b in _context.BorrowRequestedBooks
                              where bookRequset.Contains(b.BookId.ToString())
                              && b.UserId == userId
                              && b.Flag == 1
-                             select b).ToList();
-                //اگر مقدار کویری بزرگتر از فر یعنی کتاب هایی در دیتابیس در جدول درخواست وجود داذد
+                             select b);       //میتوان به لیست هم تبدیل کرد
+
+                //نام کتاب هایی که ثبت شده اندودرلیست درخواستی ما بازهم موجود هستند را برمیگرداند
+                var qBookName = (from bo in _context.Books
+                                 join q in query on bo.BookId equals q.BookId
+                                 select bo.BookName).ToList();
+
+                //اگر مقدار کویری بزرگتر از فر یعنی کتاب هایی در دیتابیس در جدول درخواست وجود دارد
                 if (query.Count() > 0)
                 {
-                    return Json(new { status = "warning", message = "کتاب های درخواستی شما شامل کتابی است که قبلا ثبت شده است" });
-
+                    return Json(new { status = "warning", message = " قبلا ثبت شده است", rs = qBookName });
                 }
-
+                //----------------------***********************************-------------------
                 //----------------------------------------------------------------------------
                 //ثبت درخواست کاربر در دیتابیس 
                 using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
+                    //بدست آوردن تاریخ شمسی
+                    var currentDate = DateTime.Now;
+                    PersianCalendar prCal = new PersianCalendar();
+                    int year = prCal.GetYear(currentDate);
+                    int month = prCal.GetMonth(currentDate);
+                    int day = prCal.GetDayOfMonth(currentDate);
+                    string ShamsiDate = string.Format("{0:yyyy/dd/MM}", Convert.ToDateTime(day + "/" + month + "/" + year));
+                    // BorrowRequestedBook bReq = new BorrowRequestedBook();
+
+
                     for (int i = 0; i < bookRequset.Count(); i++)
                     {
                         BorrowRequestedBook bReq = new BorrowRequestedBook
                         {
                             UserId = userId,
                             BookId = Convert.ToInt32(bookRequset[i]),   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
-                            Flag = 1
+                            Flag = 1,
+                            RequestDate = ShamsiDate
                         };
+
+                        //فقط یک کتاب را ثبت میکند در دیتا بیس اگر چند کتاب در لیست باشد
+                        //bReq.UserId = userId;
+                        //bReq.BookId = Convert.ToInt32(bookRequset[i]);   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
+                        //bReq.Flag = 1;
+                        //bReq.RequestDate = ShamsiDate;
+
                         db.Add(bReq);
                     }
                     db.SaveChanges();
                 }
+
                 //----------------------------------------------------------------------------
                 //بعد از ثبت درخواست در دیتابیس کوکی را پاک میکند
                 Response.Cookies.Delete("_bb");

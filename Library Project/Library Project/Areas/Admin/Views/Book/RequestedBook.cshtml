@@ -38,14 +38,14 @@
                 @if (httpCookie.HttpContext.Request.Cookies["_bb"] != null)
                 {
                     <table class="table table-bordered table-hover  table-sm">
-                        <thead class="thead-light">
+                        <thead class="thead-light text-center">
                             <tr class="p-1">
                                 <th>شماره کتاب</th>
                                 <th>نام کتاب</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
-                        <tbody class="p-1">
+                        <tbody class="p-1 text-center">
                             @foreach (var item in Model.RequsetedBook)
                             {
                                 <tr>
@@ -82,7 +82,6 @@
     <script>
 
         $(document).ready(function () {
-
             $("#btn-submit-request").click(function () {
             var userId = $("#span-userId").text();
             $.ajax({
@@ -91,7 +90,6 @@
                 data: { 'userid': userId },
                 success: function (msg) {
                     if (msg.status==="success") {
-                        debugger;
                         swal({
                             position: "center",
                             type: "success",
@@ -100,16 +98,19 @@
                         }).then(function () {
                             window.location.href = '@Url.Action("Index","Home", new { Area=""})';
                             });
-
-                        
                     }
 
-                     if (msg.status==="warning") {
-                        debugger;
+                    if (msg.status === "warning") {
+                        if (msg.rs.length > 1) {
+                            var book = "کتاب های";
+                        } else { var book = "کتاب  " }
                          swal({
                              position: "center",
                              type: "warning",
-                             title: "<p class='' style='font-size:16px; font-weight:bold'>" + msg.message + "</p>",
+                             title:
+                                 "<p class='' style='font-size:16px; font-weight:bold'>" + book +
+                                 "<span class='text-danger px-2 ' style='font-size:16px; font-weight:bold'>" + msg.rs + "</span>" +
+                                 "<span class='' style='font-size:16px; font-weight:600'>" + msg.message + " </span>"+"</p>",
                              showConfirmButton: true,
                              //timer:1500
                          });
