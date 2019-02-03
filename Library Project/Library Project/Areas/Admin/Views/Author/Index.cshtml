@@ -6,12 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
+<div class="row ">
 
     @await Html.PartialAsync("_AdminPanelPartial")   <!--پنل ادمین-->
     <!--برای اینکه کنار پنل داشبورد بیفتد-->
-    <div class="col-md-9">
-        <div class="card mt-3">
+    <div class="col-md-9 ">
+        <div class="card mt-3 ">
             <div class="card-header bg-primary text-light">لیست نویسندگان</div>
             <div class="card-body">
                 <a class="btn btn-primary" data-toggle="modal" id="show-add-author" asp-action="AddEditAuthor"

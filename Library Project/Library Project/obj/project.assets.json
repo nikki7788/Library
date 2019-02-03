@@ -13380,6 +13380,7 @@
       "AutoMapper >= 6.1.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 1.1.0",
       "CoreCompat.System.Drawing.v2 >= 5.2.0-preview1-r131",
+      "Microsoft.ApplicationInsights.AspNetCore >= 2.1.1",
       "Microsoft.AspNetCore.All >= 2.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.3",
       "Microsoft.NETCore.App >= 2.0.0",
@@ -13438,6 +13439,10 @@
           "CoreCompat.System.Drawing.v2": {
             "target": "Package",
             "version": "[5.2.0-preview1-r131, )"
+          },
+          "Microsoft.ApplicationInsights.AspNetCore": {
+            "target": "Package",
+            "version": "[2.1.1, )"
           },
           "Microsoft.AspNetCore.All": {
             "target": "Package",

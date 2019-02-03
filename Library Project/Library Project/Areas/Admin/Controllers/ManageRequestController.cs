@@ -26,6 +26,7 @@ namespace Library.Areas.Admin.Controllers
             _iServicePovider = iServiceProvider;
         }
 
+        #region############################ Index #############################
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -55,9 +56,78 @@ namespace Library.Areas.Admin.Controllers
 
             return View(model);
         }
+        #endregion####################################################
 
+        #region############################ RejectRequest Get #############################
         [HttpGet]
         public IActionResult RejectRequest(int id)
+        {
+            //نام کتاب و کاربر را در پارشال رد د ر خواست نمایش میدهیم
+            List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
+            model = (from br in _contex.BorrowRequestedBooks
+                     join b in _contex.Books on br.BookId equals b.BookId
+                     join u in _contex.Users on br.UserId equals u.Id
+                     where br.Id == id   //ای دی در خواست
+                     select new ManageReqestedBookViewModel
+                     {
+                         UserFullName = u.FirstName + " " + u.LastName,
+                         BookName = b.BookName,
+                     }).ToList();
+
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            //یعنی در حالت رد درخواست پارشال را نمایش دهد
+            ViewBag.partialMode = 1;
+            return PartialView("_RejectRequestPartial", model);
+        }
+        #endregion####################################################
+
+        #region############################ RejectConfirm  Post#############################
+        [HttpPost, ActionName("RejectRequest")]
+        [ValidateAntiForgeryToken]
+        public IActionResult RejectConfirm(int id)
+        {
+            //چون به صورت فرم تعریف شده فرم در متد گت ای دی را گرفتیم و اینجا در اختیار داریم
+            using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+            {
+                var query = db.BorrowRequestedBooks.Where(br => br.Id == id);
+                // var query=(from br in db.BorrowRequestedBooks where br.Id == id select br);
+                var result = query.SingleOrDefault();
+                if (query.Count() > 0)
+                {
+                    if (result != null)
+                    {
+                        //بدست آوردن تاریخ شمسی
+                        var currentDay = DateTime.Now;
+                        PersianCalendar pcalender = new PersianCalendar();
+                        int year = pcalender.GetYear(currentDay);
+                        int month = pcalender.GetMonth(currentDay);
+                        int day = pcalender.GetDayOfMonth(currentDay);
+
+                        string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+
+                        result.Flag = 3; //درخواست رد شد
+                        result.AnswerDate = ShamsiDate;
+
+                        db.BorrowRequestedBooks.Attach(result);
+                        db.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+            return RedirectToAction("Index");
+
+        }
+        #endregion####################################################
+
+        #region############################ AcceptRequest Get #############################
+
+        [HttpGet]
+        public IActionResult AcceptRequest(int id)
         {
             List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
             model = (from br in _contex.BorrowRequestedBooks
@@ -74,47 +144,145 @@ namespace Library.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index");
             }
+            //یعنی در حالت تایید درخواست پارشال را نمایش دهد
+            ViewBag.partialMode = 2;
             return PartialView("_RejectRequestPartial", model);
         }
 
-        [HttpPost, ActionName("RejectRequest")]
-        [ValidateAntiForgeryToken]
-        public IActionResult RejectConfirm(int id)
-        {
+        #endregion####################################################
 
+        #region############################ AcceptRequest Post #############################
+        [HttpPost, ActionName("AcceptRequest")]
+        public IActionResult AcceptConfirm(int id)
+        {
             using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
             {
-                var query = db.BorrowRequestedBooks.Where(br => br.Id == id);
-                // var query=(from br in db.BorrowRequestedBooks where br.Id == id select br);
-                var result = query.SingleOrDefault();
-                if (query.Count() > 0)
+                
+                //string DateString = "1396/12/19";
+                //IFormatProvider culture = new CultureInfo("fa-Ir", true);
+                //DateTime dateVal = DateTime.ParseExact(DateString, "yyyy/MM/dd", culture);
+
+                //بدست آوردن تاریخ شمسی
+                var currentDate = DateTime.Now;
+                PersianCalendar persianCalendar = new PersianCalendar();
+                int year = persianCalendar.GetYear(currentDate);
+                int month = persianCalendar.GetMonth(currentDate);
+                int day = persianCalendar.GetDayOfMonth(currentDate);
+                //0:yyyy/MM/dd این دستوز به شکل زیرعمل میکند
+                //1397/3/5 ==> 1397/03/05
+                //اگر سال چهاررقم نباشد یا ماه وروز دورقم ثبت نشده باشد بجایش صفر میکذارد
+                string sD = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+
+                //برای دسترسی به جدول درخواست ها و برای تایید وردوبرگرداندن کتاب
+                var result = db.BorrowRequestedBooks.Where(br => br.Id == id).SingleOrDefault();
+                //var query = (from br in db.BorrowRequestedBooks where br.Id == id select br);
+                //var result = query.SingleOrDefault();
+
+                //برای دسترسی به موجودی کتاب برای کم و زیاد کردن ان
+                var findBook = db.Books.Where(b => b.BookId == result.BookId).SingleOrDefault();
+                if (findBook != null)
                 {
-                    if (result != null)
-                    {
-                        //بدست آوردن تاریخ شمسی
-                        var currentDate = DateTime.Now;
-                        PersianCalendar prCal = new PersianCalendar();
-                        int year = prCal.GetYear(currentDate);
-                        int month = prCal.GetMonth(currentDate);
-                        int day = prCal.GetDayOfMonth(currentDate);
-                        string ShamsiDate = string.Format("{0:yyyy/dd/MM}", Convert.ToDateTime(day + "/" + month + "/" + year));
-
-                        result.Flag = 3;
-                        result.AnswerDate = ShamsiDate;
-
-                        db.BorrowRequestedBooks.Attach(result);
-                        db.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        db.SaveChanges();
-                    }
-
+                    findBook.BookStock--;
+                    db.Books.Attach(findBook);
+                    db.Entry(findBook).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 }
+
+
+
+
+                //if (query.Count() != 0)
+                //{
+                if (result != null)
+                {
+                    result.Flag = 2; //یعنی درخواست تایید شده است
+                    result.AnswerDate = sD.ToString();
+                    db.BorrowRequestedBooks.Attach(result);
+                    db.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                }
+                //}
+                db.SaveChanges();
             }
             return RedirectToAction("Index");
-
         }
 
+        #endregion####################################################
 
-        //[HttpPost]
+        #region############################ Return Request GET #############################
+        [HttpGet]
+        public IActionResult ReturnRequest(int id)
+        {
+            List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
+            model = (from br in _contex.BorrowRequestedBooks
+                     join b in _contex.Books on br.BookId equals b.BookId
+                     join u in _contex.Users on br.UserId equals u.Id
+                     where br.Id == id
+                     select new ManageReqestedBookViewModel
+                     {
+                         UserFullName = u.FirstName + " " + u.LastName,
+                         BookName = b.BookName,
+                     }).ToList();
+
+            if (model == null)
+            {
+                return RedirectToAction("Index");
+            }
+            //یعنی در حالت برگرداندن درخواست پارشال را نمایش دهد
+            ViewBag.partialMode = 3;
+            return PartialView("_RejectRequestPartial", model);
+        }
+        #endregion####################################################
+
+        #region############################ Return Request POST #############################
+
+
+        [HttpPost, ActionName("ReturnRequest")]
+        public IActionResult ReturnConfirm(int id)
+        {
+            using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
+            {
+                //بدست آوردن تاریخ شمسی
+                var currentDay = DateTime.Now;
+                PersianCalendar pcalender = new PersianCalendar();
+                int year = pcalender.GetYear(currentDay);
+                int month = pcalender.GetMonth(currentDay);
+                int day = pcalender.GetDayOfMonth(currentDay);
+                string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+
+                //برای دسترسی به جدول درخواست هابرای برگرداندن کتاب
+                var result = db.BorrowRequestedBooks.Where(br => br.Id == id).SingleOrDefault();
+                //var query = (from br in db.BorrowRequestedBooks where br.Id == id select br);
+                //var result = query.SingleOrDefault();
+
+                //برای دسترسی به موجودی کتاب برای کم و زیاد کردن ان
+                var findBook = db.Books.Where(b => b.BookId == result.BookId).SingleOrDefault();
+                if (findBook != null)
+                {
+                    findBook.BookStock++;     //کتاب برگردانده شده و موجودی باید اضافه شود
+                    db.Books.Attach(findBook);
+                    db.Entry(findBook).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                }
+
+                //if (query.Count() != 0)
+                //{
+                if (result != null)
+                {
+                    result.Flag = 4; //یعنی درخواست برگردانده شده است
+                    result.ReturnDate = shamsiDate;
+                    db.BorrowRequestedBooks.Attach(result);
+                    db.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                }
+                //}
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+        #endregion####################################################
+
+
+
+
+        //------------------------------------------- for more information it isnot used---------------------------------------------------------
+        #region############################ RejectRequest Post -for more informotion-not use #############################
         //public IActionResult RejectRequest(int id, bool t)
         //{
         //    using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
@@ -143,6 +311,12 @@ namespace Library.Areas.Admin.Controllers
         //    }
         //    return RedirectToAction("Index");
         //}
+        #endregion####################################################
+
+
+
+
+
 
 
 

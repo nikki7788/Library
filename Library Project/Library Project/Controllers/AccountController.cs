@@ -49,7 +49,7 @@ namespace Library.Controllers
                 else
                 {
                     //وقتی نام کاربری یا رمز عبور صحیح نباشد
-                    ModelState.AddModelError(string.Empty, "نا کاربری و یا رمز عبور اشتباه است");
+                    ModelState.AddModelError(string.Empty, "error");
                     return View(model);
                 }
             }

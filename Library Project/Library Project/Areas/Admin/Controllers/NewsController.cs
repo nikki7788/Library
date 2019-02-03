@@ -41,6 +41,7 @@ namespace Library.Areas.Admin.Controllers
             ViewBag.imgPath = "/upload/normalimage/";
             return View(model);
         }
+
         [HttpGet]
         public IActionResult AddEditNews(int id)
         {
@@ -69,8 +70,8 @@ namespace Library.Areas.Admin.Controllers
             //0:yyyy/MM/dd این دستوز به شکل زیرعمل میکند
             //1397/3/5 ==> 1397/03/05
             //اگر سال چهاررقم نباشد یا ماه وروز دورقم ثبت نشده باشد بجایش صفر میکذارد
-            string ShamsiDate = string.Format("{0:yyyy/dd/MM}", Convert.ToDateTime(day + "/" + month + "/" + year));
-            ViewBag.pDate = ShamsiDate;
+            string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+            ViewBag.pDate = shamsiDate;
             ViewData["imgRoot"] = "/upload/normalimage/";
 
             return PartialView("_AddEdiNewsPartial", model);

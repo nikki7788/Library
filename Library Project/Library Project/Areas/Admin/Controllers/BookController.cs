@@ -820,14 +820,17 @@ namespace Library.Areas.Admin.Controllers
                 //ثبت درخواست کاربر در دیتابیس 
                 using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
+
                     //بدست آوردن تاریخ شمسی
                     var currentDate = DateTime.Now;
-                    PersianCalendar prCal = new PersianCalendar();
-                    int year = prCal.GetYear(currentDate);
-                    int month = prCal.GetMonth(currentDate);
-                    int day = prCal.GetDayOfMonth(currentDate);
-                    string ShamsiDate = string.Format("{0:yyyy/dd/MM}", Convert.ToDateTime(day + "/" + month + "/" + year));
-                    // BorrowRequestedBook bReq = new BorrowRequestedBook();
+                    PersianCalendar persianCalendar = new PersianCalendar();
+                    int year = persianCalendar.GetYear(currentDate);
+                    int month = persianCalendar.GetMonth(currentDate);
+                    int day = persianCalendar.GetDayOfMonth(currentDate);
+                    //0:yyyy/MM/dd این دستوز به شکل زیرعمل میکند
+                    //1397/3/5 ==> 1397/03/05
+                    //اگر سال چهاررقم نباشد یا ماه وروز دورقم ثبت نشده باشد بجایش صفر میکذارد
+                    string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime( year+"/"+ month+"/"+ day));
 
 
                     for (int i = 0; i < bookRequset.Count(); i++)
@@ -837,7 +840,7 @@ namespace Library.Areas.Admin.Controllers
                             UserId = userId,
                             BookId = Convert.ToInt32(bookRequset[i]),   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
                             Flag = 1,
-                            RequestDate = ShamsiDate
+                           RequestDate = shamsiDate
                         };
 
                         //فقط یک کتاب را ثبت میکند در دیتا بیس اگر چند کتاب در لیست باشد
