@@ -12,7 +12,7 @@ namespace Library.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class AuthorController : Controller
     {
 
@@ -25,10 +25,17 @@ namespace Library.Areas.Admin.Controllers
             _iServicePovider = iServiceProvider;
         }
 
-
+        #region######################### Index ######################
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            //the include is the navigation prop
+            //جلسه 76  include   بادستور
+            //ما تزریق انجام داده ایم و باید حتا اسینکرون بشد
+            //وبااین دستور پراپرتی آی کالکشن و ویرچوال کتاب را که تعریف کرده بودیم در جدول نویسندگان به ان دسترسی داریم 
+            //یعنی به اطلاعات کتاب دسترسی داریم دراینجا الان
+            //بقیه پراپرتی ها را هم خودش مقداردهی میکند
+            //خود اطلاعات نویسندگان را به همراه اطلاعات کتاب برای ویو میفرستیم تا اگر کتابی برای نویسنده وجود دارد دکمه حذف نمایش داه نشود
             var model = await _contex.Authors.Include(a => a.Books).ToListAsync();
             return View(model);
 
@@ -44,6 +51,25 @@ namespace Library.Areas.Admin.Controllers
             //return View(model);
         }
 
+        #endregion ####################################################
+
+        #region######################### Search User #############################      
+
+        public async Task<IActionResult> SearchAuthor(string authorSearch)
+        {
+            //the include is the  navigation prop
+            var model =  _contex.Authors.Include(a => a.Books);
+
+            //ااگر عبارتی در ر سرچ باکس ووجود داشتت   
+            if (authorSearch != null)
+            {
+                authorSearch = authorSearch.TrimEnd().TrimStart();
+                //براساس عبارت داخل سرچ باکس فیلتر میکند مواذد نمایش داه شده در ویو را
+                model =  _contex.Authors.Where(a => a.AuthorName.Contains(authorSearch)).Include(a => a.Books);
+            }
+            return View("Index",await model.ToListAsync());
+        }
+        #endregion###############################################################
 
 
         //چون دستور ما خرجی 

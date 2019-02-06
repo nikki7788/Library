@@ -6,18 +6,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-
-    @await Html.PartialAsync("_AdminPanelPartial")   <!--پنل ادمین-->
+<div class="row w-100 px-sm-2">
+    <!--پنل ادمین-->
+    <div class="col-md-3 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        @await Html.PartialAsync("_AdminPanelPartial")
+    </div>
     <!--برای اینکه کنار پنل داشبورد بیفتد-->
-    <div class="col-md-9 over">
+    <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
             <div class="card-header bg-primary text-light">لیست درخواست ها</div>
             <div class="card-body ">
                 <div></div>
                 <table class="table table-bordered table-striped table-hover table-sm mt-3 table-responsive-sm ">
                     <thead class="thead-light ">
-                        <tr>
+                        <tr class="tb-pa">
                             <th>ردیف</th>
                             <th>@Html.DisplayNameFor(model => model.UserFullName)</th>
                             <th>@Html.DisplayNameFor(model => model.BookName)</th>
@@ -32,67 +34,72 @@
                     <tbody>
 
                         @{
-                            int counter = 1;
+                            int counter = 1; //شمارش ردیف
                             foreach (var item in Model)
                             {
-                        <tr>
-                            <td>@(counter++)</td>
-                            <td>@item.UserFullName</td>
-                            <td>@item.BookName</td>
-                            <td>@item.BookStock</td>
+                                <tr class="tb-pa">
+                                    <td>@(counter++)</td>
+                                    <td>@item.UserFullName</td>
+                                    <td>@item.BookName</td>
+                                    <td>@item.BookStock</td>
 
-                            @if (item.Flag == 1)
-                            {
-                                <td class="bg-warning ">@item.FlageState</td>
-                            }
-                            @if (item.Flag == 2)
-                            {
-                                <td class="bg-success text-light">@item.FlageState</td>
-                            }
-                            @if (item.Flag == 3)
-                            {
-                                <td class="bg-danger text-light">@item.FlageState</td>
-                            }
-                            @if (item.Flag == 4)
-                            {
-                                <td class="bg-primary text-light">@item.FlageState</td>
-                            }
-                            <td>@item.RequestDate</td>
-                            <td>@item.AnswerDate</td>
-                            <td>@item.ReturnDate</td>
-                            <td>
+                                    @if (item.Flag == 1)
+                                    {
+                                        //درخواست
+                                        <td class="bg-warning ">@item.FlageState</td>
+                                    }
+                                    @if (item.Flag == 2)
+                                    {
+                                        //درخواست تایید شده
+                                        <td class="bg-success text-light">@item.FlageState</td>
+                                    }
+                                    @if (item.Flag == 3)
+                                    {
+                                        //درخواست رد شده
+                                        <td class="bg-danger text-light">@item.FlageState</td>
+                                    }
+                                    @if (item.Flag == 4)
+                                    {
+                                        //کتاب برگردانده شده
 
-                                @if (item.Flag == 1)
-                                {
-                                    <a class="btn btn-success mb-1 px-1" data-toggle="modal" id="show-accept-request" asp-action="AcceptRequest"
-                                       data-target="#modal-action-request" asp-route-id="@item.Id">
-                                        <i class="fa fa-check"></i>
-                                        <span>تایید درخواست</span>
-                                    </a>
-                                    <a asp-controller="ManageRequest" asp-action="RejectRequest" class="btn btn-danger mb-1 " data-toggle="modal"
-                                       data-target="#modal-action-request" asp-route-id="@item.Id">
-                                        <i class="fa fa-minus"></i>
-                                        <span>رد درخواست</span>
-                                    </a>
-                                }
-                                else if (item.Flag == 2)
-                                {
-                                    //برگرداندن کتاب
-                                    <a class="btn btn-info mb-1 px-4" data-toggle="modal" asp-action="ReturnRequest"
-                                       data-target="#modal-action-request" asp-route-id="@item.Id">
-                                        <i class="fas fa-redo"></i>
-                                        <span>برگرداندن</span>
-                                    </a>
-                                }
-                                else if (item.Flag == 3)
-                                {
-                                    //درخواست رد شده است
-                                    <span class="">
-                                        <i class="fas fa-times-circle text-danger" style='font-size:18px'></i>
-                                    </span>
-                                }
-                            </td>
-                        </tr>
+                                        <td class="bg-primary text-light">@item.FlageState</td>
+                                    }
+                                    <td>@item.RequestDate</td>
+                                    <td>@item.AnswerDate</td>
+                                    <td>@item.ReturnDate</td>
+                                    <td>
+
+                                        @if (item.Flag == 1)
+                                        {
+                                            <a class="btn btn-success mb-1 px-1" data-toggle="modal" id="show-accept-request" asp-action="AcceptRequest"
+                                               data-target="#modal-action-request" asp-route-id="@item.Id">
+                                                <i class="fa fa-check"></i>
+                                                <span>تایید درخواست</span>
+                                            </a>
+                                            <a asp-controller="ManageRequest" asp-action="RejectRequest" class="btn btn-danger mb-1 " data-toggle="modal"
+                                               data-target="#modal-action-request" asp-route-id="@item.Id">
+                                                <i class="fa fa-minus"></i>
+                                                <span>رد درخواست</span>
+                                            </a>
+                                        }
+                                        else if (item.Flag == 2)
+                                        {
+                                            //برگرداندن کتاب
+                                            <a class="btn btn-info mb-1 px-4" data-toggle="modal" asp-action="ReturnRequest"
+                                               data-target="#modal-action-request" asp-route-id="@item.Id">
+                                                <i class="fas fa-redo"></i>
+                                                <span>برگرداندن</span>
+                                            </a>
+                                        }
+                                        else if (item.Flag == 3)
+                                        {
+                                            //درخواست رد شده است
+                                            <span class="">
+                                                <i class="fas fa-times-circle text-danger" style='font-size:18px'></i>
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
                             }
                         }
                     </tbody>
@@ -108,82 +115,3 @@
     <script src="~/js/Modal-js/manage-request.js"></script>
     <script src="~/js/admin-panel.js"></script>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*<table class="table table-bordered table-striped table-hover table-sm mt-3 ">
-        <thead class="thead-light text-center">
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.UserFullName)</th>
-                <th>@Html.DisplayNameFor(model => model.BookName)</th>
-                <th>@Html.DisplayNameFor(model => model.BookStock)</th>
-                <th>@Html.DisplayNameFor(model => model.FlageState)</th>
-                <th>@Html.DisplayNameFor(model => model.RequestDate)</th>
-                <th>@Html.DisplayNameFor(model => model.AnswerDate)</th>
-                <th>@Html.DisplayNameFor(model => model.ReturnDate)</th>
-                <th>عملیات</th>
-            </tr>
-        </thead>
-        <tbody class="text-center font-weight-bold">
-            @foreach (var item in Model)
-            {
-
-                <tr>
-                    <td>@item.UserFullName</td>
-                    <td>@item.BookName</td>
-                    <td>@item.BookStock</td>
-                    <td>@item.FlageState</td>
-                    <td>@item.RequestDate</td>
-                    <td>@item.AnswerDate</td>
-                    <td>@item.ReturnDate</td>
-                    <td>
-                        <div>
-                            @if (item.Flag == 1)
-                            {
-                                <a class="btn btn-success mb-1 " data-toggle="modal" id="show-accept-request" asp-action="AcceptRequest"
-                                   data-target="#modal-action-request" asp-route-id="@item.Id">
-                                    <i class="fa fa-check"></i>
-                                    <span>تایید درخواست</span>
-                                </a>
-                                <a asp-controller="ManageRequest" asp-action="RejectRequest" class="btn btn-danger mb-1 " data-toggle="modal"
-                                   data-target="#modal-action-request" asp-route-id="@item.Id">
-                                    <i class="fa fa-minus"></i>
-                                    <span>رد درخواست</span>
-                                </a>
-                            }
-                            else if (item.Flag == 2)
-                            {
-                                <a class="btn btn-info mb-1 " data-toggle="modal" id="show-edit-request" asp-action="AddEditRequest"
-                                   data-target="#modal-action-request" asp-route-id="@item.Id">
-                                    <i class="fas fa-redo"></i>
-                                    <span>برگردانده</span>
-                                </a>
-                            }
-                            else if (item.Flag == 3)
-                            {
-                                //درخواست رد شده است
-                                <span class="">
-                                    <i class="fas fa-times-circle text-danger" style='font-size:18px'></i>
-                                </span>
-                            }
-
-                        </div>
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-    </table>*@

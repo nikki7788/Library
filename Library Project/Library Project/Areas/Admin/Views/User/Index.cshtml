@@ -8,11 +8,34 @@
 }
 
 
-<div class="row">
-    @await Html.PartialAsync("_AdminPanelPartial")   <!--پنل ادمین-->
-    <div class="col-md-9">
+<div class="row w-100 px-sm-2">
+    <!--پنل ادمین-->
+    <div class="col-md-3 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        @await Html.PartialAsync("_AdminPanelPartial")
+    </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
-            <div class="card-header bg-primary text-light">لیست کاربران</div>
+            <div class="card-header bg-primary text-light ">
+                <div class="row justify-content-md-around">
+                    <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
+                    <div class="col-md-8 col-form-label" style="font-weight:400;"> لیست کاربران</div>
+
+                    <div class="col-md-4 my-2">
+                        <form asp-action="SearchUser" method="post">
+
+                            <div class="input-group ">
+                                <input type="search" id="userSearch" name="userSearch" class="form-control" placeholder=" نام کاربر..." />
+                                <div class="input-group-prepend ">
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-search "></i></button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
             <div class="card-body">
                 <div class="btn-group">
                     <a class="btn btn-primary" id="show-add-user" data-toggle="modal" asp-action="AddUser"

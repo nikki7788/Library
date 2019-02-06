@@ -15,12 +15,10 @@ namespace Library.Areas.Admin.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-
-        #region-##- we must access to the ASpNetUserRoles table is sql and dp.injection ######### 
+        //-----------we must access to the ASpNetUserRoles table is sql and dp.injection
         private readonly ApplicationDbContext _context;
-        private readonly IServiceProvider _iServiceProvider;
-        #endregion
-
+        private readonly IServiceProvider _iServiceProvider; 
+       //--------------------------------------------------
         public ApplicationRoleController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ApplicationDbContext context, IServiceProvider iServiceProvider)
         {
             _userManager = userManager;
@@ -31,10 +29,7 @@ namespace Library.Areas.Admin.Controllers
             _iServiceProvider = iServiceProvider;
         }
 
-
-        //---------------------------*************    index action    *************---------------------------
-
-
+        #region####################*************   index action   *************########################
         public IActionResult Index()
         {
             //to count number of users in each role------we must access to the ASpNetUserRoles table in sql
@@ -46,23 +41,21 @@ namespace Library.Areas.Admin.Controllers
                 Id = r.Id,
                 Name = r.Name,
                 Description = r.Description,
+
                 //to count number of users in each role------we must access to the ASpNetUserRoles table in sql
                 NumberOfUsers = _context.UserRoles.Count(ur => ur.RoleId == r.Id)
+
             }).ToList();
             return View(model);
         }
+        #endregion
 
-
-
-        //---------------------------*************    Add Edit Get     *************---------------------------
-
+        #region //---------------------------*************    Add Edit Get     *************---------------------------
         //وقتی روی افزودن نقش جدید و ویرایش کلیک میکنیم مودال مربوط به رول را باز میکند
         [HttpGet]
         public async Task<IActionResult> AddEditRole(string id)
         {
             ApplicationRoleViewModel model = new ApplicationRoleViewModel();
-
-
 
             if (!String.IsNullOrEmpty(id))
             {
@@ -85,9 +78,9 @@ namespace Library.Areas.Admin.Controllers
             return PartialView("_AddEditApplicationRolePartial", model);
 
         }
+        #endregion
 
-
-        //---------------------------*************    add Edit Post     *************---------------------------
+        #region ---------------------------*************    add Edit Post     *************---------------------------
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -119,9 +112,9 @@ namespace Library.Areas.Admin.Controllers
             //showing addedit modal and it's values and errors
             return PartialView("_AddEditApplicationRolePartial", model);
         }
+        #endregion######################################
 
-        //---------------------------*************    Delete Get     *************---------------------------
-
+        #region ---------------------------*************    Delete Get     *************---------------------------
         [HttpGet]
         public async Task<IActionResult> DeleteRole(string id)
         {
@@ -140,9 +133,9 @@ namespace Library.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+        #endregion#################################################
 
-        //---------------------------*************    Delete Post     *************---------------------------
-
+        #region---------------------------*************    Delete Post     *************---------------------------
         [HttpPost, ActionName("DeleteRole")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirm(string id)
@@ -164,6 +157,7 @@ namespace Library.Areas.Admin.Controllers
             // return View();
             return NotFound();
         }
+        #endregion######################################
 
 
 

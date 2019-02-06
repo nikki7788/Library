@@ -14,9 +14,11 @@ namespace Library.Controllers
     {
         //برای لاگین از این کلاس استفاده می شود
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AccountController(SignInManager<ApplicationUser> signInManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
 
@@ -43,13 +45,19 @@ namespace Library.Controllers
 
                 if (result.Succeeded)
                 {
+                    // بدست آوردن نقش کاربر از طریق دیتابیس برای تشخیص نقش کاربر که یوزر است یا ادمین
+                    // ۱ سپس ارسال ان به اکشن 
+                    var user = await _userManager.FindByNameAsync(model.UserName);
+                    string userRole = _userManager.GetRolesAsync(user).Result.Single();
+
+                    //۱
                     //در پایین تعریف شده است RedirectToLocal
-                    return RedirectToLocal(returnUrl);   
+                    return RedirectToLocal(returnUrl, userRole);
                 }
                 else
                 {
                     //وقتی نام کاربری یا رمز عبور صحیح نباشد
-                    ModelState.AddModelError(string.Empty, "error");
+                    ModelState.AddModelError("Password", "نام کاربری یا رکز عبور اشتباه است");
                     return View(model);
                 }
             }
@@ -69,7 +77,7 @@ namespace Library.Controllers
 
 
 
-        private IActionResult RedirectToLocal(string returnUrl)
+        private IActionResult RedirectToLocal(string returnUrl, string roleName)
         {
             if (Url.IsLocalUrl(returnUrl))        //اگر یک مسیر از قبل وجود داشت
             {
@@ -79,9 +87,24 @@ namespace Library.Controllers
             else           //اگر مسیر اشتباه بود یا کاربر فقط می خواهد لاگین کند
             {
 
-                //return RedirectToAction(nameof(HomeController.Index), "Home");
-                return Redirect("/Admin/User");
-                //اگر وی دکمه ورود کلیک کنیم یعنی مسیری همراه خود ندارد و میرود به یوزر
+                if (roleName == "User")
+                {
+                    //کابر به عموان یوزر لاگین کرد
+                    return Redirect("/User/UserProfile");
+                }
+                else if (roleName == "Admin")
+                {
+                    //کاربر به عنوان ادمین لاگین کرد
+                    return Redirect("/Admin/User");       //اگر وی دکمه ورود کلیک کنیم یعنی مسیری همراه خود ندارد و میرود به یوزر
+                    
+
+                    //return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+
+                //هیچوقت اجرا نمیشود چون نقش هایی که دادیم ما از این دوحالت خارج نیستند
+                //برای اینکه اکشن خطا ندهد میدهیم
+                return null;
+
 
             }
 

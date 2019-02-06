@@ -25,6 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\banner1.svg" />
+    <None Include="wwwroot\images\banner2.svg" />
+    <None Include="wwwroot\images\banner3.svg" />
+    <None Include="wwwroot\images\banner4.svg" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\site.min.js" />
     <None Include="wwwroot\lib\bootstrap\.babelrc.js" />
     <None Include="wwwroot\lib\bootstrap\.browserslistrc" />
     <None Include="wwwroot\lib\bootstrap\.editorconfig" />
@@ -336,23 +342,36 @@
     <None Include="wwwroot\lib\bootstrap\site\_includes\icons\slack.svg" />
     <None Include="wwwroot\lib\bootstrap\site\_includes\icons\twitter.svg" />
     <None Include="wwwroot\lib\bootstrap\_config.yml" />
-    <None Include="wwwroot\images\banner1.svg" />
-    <None Include="wwwroot\images\banner2.svg" />
-    <None Include="wwwroot\images\banner3.svg" />
-    <None Include="wwwroot\images\banner4.svg" />
-    <None Include="wwwroot\js\site.js" />
-    <None Include="wwwroot\js\site.min.js" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\.gitignore" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\.jshintrc" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\dist\jquery.tableMobilize.js" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\dist\theme-default.min.css.map" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\gulpfile.js" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\LICENSE" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\readme.md" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\src\theme-default.scss" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\src\_mobile_view.scss" />
+    <None Include="wwwroot\lib\Creating-Responsive-Mobile-friendly-Tables-with-jQuery-Table-Mobilize\src\_variables.scss" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
     <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
     <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
     <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
     <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
     <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
     <None Include="wwwroot\lib\jquery\dist\core.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.slim.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.slim.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.slim.min.map" />
     <None Include="wwwroot\lib\sweetalert2\.eslintignore" />
     <None Include="wwwroot\lib\sweetalert2\.eslintrc.js" />
     <None Include="wwwroot\lib\sweetalert2\BACKERS.md" />
     <None Include="wwwroot\lib\sweetalert2\CHANGELOG.md" />
     <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.all.js" />
+    <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.all.min.js" />
     <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.js" />
     <None Include="wwwroot\lib\sweetalert2\dist\sweetalert2.min.js" />
     <None Include="wwwroot\lib\sweetalert2\LICENSE" />

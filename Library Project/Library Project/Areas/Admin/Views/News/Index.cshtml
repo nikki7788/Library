@@ -4,10 +4,13 @@
     ViewData["Title"] = "لیست اخبار";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
-    @Html.Partial("_AdminPanelPartial")   <!--پنل ادمین-->
-
-    <div class="col-md-9">
+<div class="row w-100 px-sm-2">
+    <!--پنل ادمین-->
+    <div class="col-md-3 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        @await Html.PartialAsync("_AdminPanelPartial")
+    </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
             <div class="card-header bg-primary text-light">لیست اخبار</div>
             <div class="card-body">
@@ -32,7 +35,7 @@
                             <tr>
                                 <td>@item.NewsTitle</td>
                                 <td>@item.NewsDate</td>
-                                <td> <img src="@ViewBag.imgPath@item.NewsImage" alt="newsImg" class="img-fluid img-thumbnail img" style="width:80px;height:80px"  /></td>
+                                <td> <img src="@ViewBag.imgPath@item.NewsImage" alt="newsImg" class="img-fluid img-thumbnail img" style="width:80px;height:80px" /></td>
                                 <td>
                                     <div>
                                         <a class="btn btn-info " asp-action="AddEditNews" data-toggle="modal" id="show-edit-news"

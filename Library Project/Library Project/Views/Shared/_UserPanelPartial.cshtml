@@ -1,0 +1,34 @@
+﻿
+<div class=" menu">
+    <ul class="my-2 p-1">
+        <li ><span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">نام و نام خانوادگی کاربر:
+             </span><span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.userFullName</span></li>
+    </ul>
+    <ul>
+        <li class="dashboard ">داشبورد</li>
+        <li class="main-li first">
+
+            <a href="#" class="clearfix text-left">
+                <span class="float-right">
+                    مدیریت سیستم
+                </span>
+                <i class="fa fa-times "></i>
+            </a>
+            <ul >
+                <li><a asp-controller="UserProfile" asp-action="Index" class="py-3">مدیریت درخواست ها</a></li>
+            </ul>
+        </li>
+
+        <li class=" main-li cllo">
+            <a href="#" class="clearfix text-left ">
+                <span class="float-right "> امکانات</span>
+                <i class="fa fa-plus"></i>
+            </a>
+            <ul>
+                <li><a asp-controller="UserProfile" asp-action="ChangeUserPass" class="py-3">تغییر رمزعبور</a></li>
+            </ul>
+        </li>
+    </ul>
+
+
+</div>

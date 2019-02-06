@@ -1,0 +1,80 @@
+﻿@model IEnumerable<ManageReqestedBookViewModel>
+@{
+    ViewData["Title"] = "پرفایل";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row w-100 px-sm-2">
+    <!--پنل ادمین-->
+    <div class=" col-md-4 col-sm-12  mr-lg-0 mr-md-0 mr-sm-0  mr-2">
+        @await Html.PartialAsync("_UserPanelPartial")
+    </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class=" col-md-8 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-light">لیست درخواست ها</div>
+            <div class="card-body ">
+                <div></div>
+                <table class="table table-bordered table-striped table-hover table-sm mt-3 tableMobilize ">
+                    <thead class="bg-info text-light">
+                        <tr class="tb-pa">
+                            <th>ردیف</th>
+                            <th>@Html.DisplayNameFor(model => model.BookName)</th>
+                            <th>@Html.DisplayNameFor(model => model.FlageState)</th>
+                            <th>@Html.DisplayNameFor(model => model.RequestDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.AnswerDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.ReturnDate)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            int counter = 1; //شمارش ردیف
+                            foreach (var item in Model)
+                            {
+                                <tr class="tb-pa">
+                                    <td>@(counter++)</td>
+                                   
+                                    <td>@item.BookName</td>
+
+                                    @if (item.Flag == 1)
+                                    {
+                                        //درخواست
+                                        <td class="bg-warning ">@item.FlageState</td>
+                                    }
+                                    @if (item.Flag == 2)
+                                    {
+                                        //درخواست تایید شده
+                                        <td class="bg-success text-light">@item.FlageState</td>
+                                    }
+                                    @if (item.Flag == 3)
+                                    {
+                                        //درخواست رد شده
+                                        <td class="bg-danger text-light">@item.FlageState</td>
+                                    }
+                                    @if (item.Flag == 4)
+                                    {
+                                        //کتاب برگردانده شده
+
+                                        <td class="bg-primary text-light">@item.FlageState</td>
+                                    }
+                                    <td>@item.RequestDate</td>
+                                    <td>@item.AnswerDate</td>
+                                    <td>@item.ReturnDate</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/admin-panel.js"></script>
+    <script>
+        $(document).ready(function () {
+            //ریسپانسیو کردن جدول-دستور پلاگین
+            $('table').tableMobilize();
+        });
+    </script>
+}

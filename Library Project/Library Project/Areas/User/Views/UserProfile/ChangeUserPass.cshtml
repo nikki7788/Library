@@ -1,0 +1,69 @@
+﻿
+@model ChangeUserPassViewModel
+@{
+    ViewData["Tite"] = "تغییر رمز عبور";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row w-100 ">
+    <!--پنل ادمین-->
+    <div class="col-md-4 mr-lg-0 mr-sm-0 mr-md-0 mr-3"> @await Html.PartialAsync("_UserPanelPartial")  </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-8 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-light">لیست درخواست ها</div>
+            <div class="card-body">
+
+                @if (ViewBag.success != null)
+                {
+                    //دریافت و نمایش پیام موفقیت امیز تغییر رمزاز ویوبگ
+                    <div class="form-group row justify-content-center bg-success p-2">
+                        <div class=" col-md-4"></div>
+                        <div class="col-md-5  ">
+                            <span class="text-light" style="font-size:16px;font-weight: 500;"> @ViewBag.success</span>
+                        </div>
+                    </div>
+                }
+
+                <form asp-controller="UserProfile" asp-action="ChangeUserPass" method="post">
+                    <div class="form-group row justify-content-center">
+                        <label asp-for="OldPassword" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="OldPassword" class="form-control" />
+                            @*<span asp-validation-for="OldPassword" class="text-danger"></span>*@
+                            <!--نمایش خطای ارسال شده ز اکشن و ویومدل-->
+                            <span class="text-danger">@Html.ValidationMessage("OldPassword")</span>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center ">
+                        <label asp-for="NewPassword" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="NewPassword " class="form-control" />
+                            <span asp-validation-for="NewPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center ">
+                        <label asp-for="ConfirmNewPassword" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="ConfirmNewPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmNewPassword " class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <input asp-for="Id" type="hidden"/>
+
+                    <!--برای اینکه همتراز با اینپوت ها باشد داخل دیو مانند انها قرار دادیم-->
+                    <div class="form-group row justify-content-center">
+                        <div class=" col-md-4"></div>
+                        <div class="col-md-5">
+                            <button type="submit" class="btn btn-success text-center w-100 font-weight-bold">تایید</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/admin-panel.js"></script>
+}

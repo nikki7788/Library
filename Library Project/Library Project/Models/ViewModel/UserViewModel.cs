@@ -32,13 +32,17 @@ namespace Library.Models.ViewModel
 
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا ایمیل را وارد کنید")]
-        [DataType(DataType.EmailAddress)]
+        // [DataType(DataType.EmailAddress,ErrorMessage = "لطفا ایمیل را به طور صحیح وارد نمایید")]         
+        //[EmailAddress(ErrorMessage = "لطفا ایمیل را به طور صحیح وارد نمایید")] 
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "ایمیل معتبر وارد کنید")]
         public string Email { get; set; }
 
         [Display(Name = "رمز عبور")]
         [Required(ErrorMessage = "لطفا رمز عبور را وارد کنید")]
-        [DataType(DataType.Password,ErrorMessage ="رمز عبور باید شامل حروف بزرگ کوچک و کاراکتر و عدد باشد")]
+        //   [DataType(DataType.Password,ErrorMessage ="رمز عبور باید شامل حروف بزرگ کوچک و کاراکتر و عدد باشد")]
+        [DataType(DataType.Password)]
         [StringLength(20,MinimumLength =6,ErrorMessage ="حداقل رمز باید بین 6 تا 20 کاراکتر  باشد")]
+        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$", ErrorMessage = "رمز عبور باید ترکیبی از حروف کوچک و بزرگ و عدد و علامت باشد")]
         public string Password { get; set; }
 
         [Display(Name = "تایید رمز عبور")]

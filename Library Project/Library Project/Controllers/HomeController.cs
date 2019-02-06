@@ -97,18 +97,18 @@ namespace Library.Controllers
             MultiModelsViewModel model = new MultiModelsViewModel();
             model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
             model.LastRegistedUser = _userManager.Users.OrderByDescending(u => u.Id).Take(6).ToList();
-            string tSearch;
+           // string tSearch;
             ///search
             if (txtSearch != null)
             {
                 //پاک کردن فضای خالی قبل و بعد
-                 tSearch = txtSearch.TrimEnd().TrimStart();
+                txtSearch = txtSearch.TrimEnd().TrimStart();
             }
-            else
-            {
-                tSearch = txtSearch;
-            }
-           model.SearchBooks = _context.Books.Where(b => b.BookName.Contains(tSearch))
+            //else
+            //{
+            //    tSearch = txtSearch;
+            //}
+           model.SearchBooks = _context.Books.Where(b => b.BookName.Contains(txtSearch))
                              .OrderByDescending(b => b.BookId).Take(15).ToList();
 
 

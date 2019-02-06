@@ -31,7 +31,11 @@ namespace Library.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
+            //  include   بادستور
+            //ما تزریق انجام داده ایم و باید حتا اسینکرون بشد
+            //وبااین دستور پراپرتی آی کالکشن و ویرچوال کتاب را که تعریف کرده بودیم در جدول گروه بندی به ان دسترسی داریم 
+            //یعنی به اطلاعات کتاب دسترسی داریم دراینجا الان
+            //بقیه پراپرتی ها را هم خودش مقداردهی میکند
             var model = await _context.BookGroups.Include(bg => bg.Books).ToListAsync();
             return View(model);
             //or
@@ -45,6 +49,20 @@ namespace Library.Areas.Admin.Controllers
             //}).ToList();
             //return View(model);
         }
+
+        public async Task<IActionResult> SearchBookGroup(string bookGroupSearch) {
+
+            var model = _context.BookGroups.Include(bg => bg.Books);
+            
+            if (bookGroupSearch != null)
+            {
+                bookGroupSearch = bookGroupSearch.TrimEnd().TrimStart();
+                 model = model.Where(bg=>bg.BookGroupName.Contains(bookGroupSearch)).Include(bg => bg.Books);
+
+            }
+            return View("Index",await model.ToListAsync());
+        }
+
 
         [HttpGet]
         public IActionResult AddEditBookGroup(int id)

@@ -5,10 +5,13 @@
     ViewData["Title"] = "لیست کتابها";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="row">
-    @await Html.PartialAsync("_AdminPanelPartial")   <!--پنل ادمین-->
-    <div class="col-md-9">
+<div class="row w-100 px-sm-2">
+    <!--پنل ادمین-->
+    <div class="col-md-3 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        @await Html.PartialAsync("_AdminPanelPartial")
+    </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
             <div class="card-header bg-primary text-light">لیست  کتابها</div>
             <div class="card-body">

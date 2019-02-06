@@ -44,6 +44,26 @@ namespace Library.Area.Admin.Controllers
             return View(model);
         }
 
+        public IActionResult SearchUser(string userSearch)
+        {
+            List<UserListViewModel> model = new List<UserListViewModel>();
+            model = _userManager.Users.Select(u => new UserListViewModel
+            {
+                Id = u.Id,
+                Name = u.FirstName + " " + u.LastName,     //نمایش نام و نام خانوادگی کاربر باهم
+                Email = u.Email
+            }).ToList();
+            //ااگر عبارتی در ر سرچ باکس ووجود داشتت   
+            if (userSearch != null)
+            {
+                userSearch = userSearch.TrimEnd().TrimStart();
+                //براساس عبارت داخل سرچ باکس فیلتر میکند مواذد نمایش داه شده در ویو را
+                model = model.Where(u => u.Name.Contains(userSearch)).ToList(); 
+            }
+            return View("Index", model);
+        }
+
+
         [HttpGet]
         public IActionResult AddUser()
         {
