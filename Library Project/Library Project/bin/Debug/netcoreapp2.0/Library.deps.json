@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "042298a2fe5a1efaee668e83d159e31b09674fbb"
+    "signature": "8fa1e4af31e92a9c723b97b015153c933ea0122e"
   },
   "compilationOptions": {
     "defines": [
@@ -27,6 +27,7 @@
           "AutoMapper": "6.1.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.1.0",
           "CoreCompat.System.Drawing.v2": "5.2.0-preview1-r131",
+          "MD.BootstrapPersianDateTimePicker": "2.3.1",
           "Microsoft.ApplicationInsights.AspNetCore": "2.1.1",
           "Microsoft.AspNetCore.All": "2.0.9",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.3",
@@ -88,6 +89,11 @@
           "lib/netstandard1.6/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "bootstrap/3.3.1": {
+        "dependencies": {
+          "jQuery": "1.9.0"
+        }
+      },
       "CoreCompat.System.Drawing.v2/5.2.0-preview1-r131": {
         "dependencies": {
           "System.Security.Permissions": "4.4.0-preview1-25305-02"
@@ -102,6 +108,7 @@
           "lib/netstandard2.0/CoreCompat.System.Drawing.dll": {}
         }
       },
+      "jQuery/1.9.0": {},
       "Libuv/1.10.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0"
@@ -147,6 +154,12 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           }
+        }
+      },
+      "MD.BootstrapPersianDateTimePicker/2.3.1": {
+        "dependencies": {
+          "bootstrap": "3.3.1",
+          "jQuery": "1.9.0"
         }
       },
       "Microsoft.ApplicationInsights/2.4.0": {
@@ -4910,6 +4923,13 @@
       "path": "automapper.extensions.microsoft.dependencyinjection/1.1.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.1.1.0.nupkg.sha512"
     },
+    "bootstrap/3.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-frHiYCf5K4stOa6D+kibhmOExG1Zy7T93FxnivRofKU1MLarbFfS8WtRdrHNUN2Qpv0dAEe6pSmgIpjbAOqCsg==",
+      "path": "bootstrap/3.3.1",
+      "hashPath": "bootstrap.3.3.1.nupkg.sha512"
+    },
     "CoreCompat.System.Drawing.v2/5.2.0-preview1-r131": {
       "type": "package",
       "serviceable": true,
@@ -4917,12 +4937,26 @@
       "path": "corecompat.system.drawing.v2/5.2.0-preview1-r131",
       "hashPath": "corecompat.system.drawing.v2.5.2.0-preview1-r131.nupkg.sha512"
     },
+    "jQuery/1.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rl82HRANOh4pSAzCfGUl/7kpKsa1FfyndY/YwC+wm1yBPFgBjmulU6MHba8V8htYnVaT8YfeDtHm1ZifcJGR/w==",
+      "path": "jquery/1.9.0",
+      "hashPath": "jquery.1.9.0.nupkg.sha512"
+    },
     "Libuv/1.10.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-GsCf4q+eyaI49rCPlgYxdxa1SQCysXFFdSJWdstrwxytg4+VPYLYrXD4AT2rjHVJ+UF7SSWX9CapWEYaU4ejVQ==",
       "path": "libuv/1.10.0",
       "hashPath": "libuv.1.10.0.nupkg.sha512"
+    },
+    "MD.BootstrapPersianDateTimePicker/2.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ecCCm2+SKKg251BzlsdsqYDqxthr6v5UnNku6QZxPs1ojX0tIzBGnUqUuQyOR85J8KO+gt6LkZw3mzcdD1Ezxw==",
+      "path": "md.bootstrappersiandatetimepicker/2.3.1",
+      "hashPath": "md.bootstrappersiandatetimepicker.2.3.1.nupkg.sha512"
     },
     "Microsoft.ApplicationInsights/2.4.0": {
       "type": "package",

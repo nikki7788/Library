@@ -4,6 +4,8 @@
     ViewData["Title"] = "لیست اخبار";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- Persian data picker-css-->
+<link href="~/persiandatepicker/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
 <div class="row w-100 px-sm-2">
     <!--پنل ادمین-->
     <div class="col-md-3 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
@@ -12,7 +14,46 @@
     <!--برای اینکه کنار پنل داشبورد بیفتد-->
     <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
-            <div class="card-header bg-primary text-light">لیست اخبار</div>
+
+            <!--start Header & search box-->
+            <div class="card-header bg-primary text-light ">
+                <div class="row justify-content-md-around">
+                    <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
+                    <div class="col-md-4 col-form-label" style="font-weight:400;"> لیست خبرها</div>
+                    <div class="col-md-8 my-2 ">
+                        <form asp-action="SearchNews" method="post">
+                            <div class="row">
+                                <div class="input-group col-md-3">
+                                    <div class="input-group-prepend">
+                                        <span class="btn btn-secondary" id="date4"><i class="far fa-calendar-alt text-light"></i></span>
+                                    </div>
+                                    <input type="text" id="fromDate" name="fromDate" class="form-control" placeholder="ازتاریخ" aria-label="date4"
+                                           aria-describedby="date4">
+                                </div>
+
+                                <div class="input-group col-md-3">
+                                    <div class="input-group-prepend">
+                                        <span class="btn btn-secondary" id="date5"><i class="far fa-calendar-alt text-light"></i></span>
+                                    </div>
+                                    <input type="text" id="toDate" name="toDate" class="form-control" placeholder="تا تاریخ" aria-label="date5"
+                                           aria-describedby="date5">
+                                </div>
+
+                                <div class="input-group col-md-6">
+                                    <input type="text" id="newsTitleSearch" name="newsTitleSearch" class="form-control " placeholder="عنوان خبرها..." />
+                                    <div class="input-group-prepend ">
+                                        <button type="submit" class="btn btn-success " style="border-radius:5px 0 0 5px !important;"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--End Header & search box-->
+
+
+
             <div class="card-body">
                 <a class="btn btn-primary mb-1" asp-action="AddEditNews" id="show-add-news" data-toggle="modal"
                    data-target="#modal-action-news">
@@ -38,7 +79,7 @@
                                 <td> <img src="@ViewBag.imgPath@item.NewsImage" alt="newsImg" class="img-fluid img-thumbnail img" style="width:80px;height:80px" /></td>
                                 <td>
                                     <div>
-                                        <a class="btn btn-info " asp-action="AddEditNews" data-toggle="modal" id="show-edit-news"
+                                        <a class="btn btn-info" asp-action="AddEditNews" data-toggle="modal" id="show-edit-news"
                                            data-target="#modal-action-news" asp-route-id="@item.NewsId">ویرایش خبر</a>
 
                                         <a class="btn btn-danger " asp-action="DeleteNews" data-toggle="modal" id="show-delete-news"
@@ -56,12 +97,28 @@
 @await Html.PartialAsync("_ModalPartial", new BootstrapModel { Id = "modal-action-news", Size = ModalSize.Large })
 
 @section Scripts{
+
     <script src="~/js/Modal-js/news-index.js"></script>
     @*   <script src="~/js/Modal-js/all-index.js"></script>*@
     <script src="~/js/admin-panel.js"></script>
     <script src="~/js/ckeditor5/ckeditor.js"></script>
     <script src="~/js/ckeditor5/translations/fa.js"></script>
-
+    <!--Start Persian data picker-->
+    <script src="~/persiandatepicker/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script>
+        $('#date4').MdPersianDateTimePicker({
+    targetTextSelector: '#fromDate',
+    fromDate: true,
+    groupId: 'rangeSelector1'
+});
+$('#date5').MdPersianDateTimePicker({
+    targetTextSelector: '#toDate',
+    toDate: true,
+    groupId: 'rangeSelector1',
+    placement: 'top'
+});
+    </script>
+    <!--End Persian data picker-->
     <script>
         $(document).on("click", "#submitdata", function (e) {
             e.preventDefault();

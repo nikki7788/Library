@@ -46,6 +46,12 @@
           "lib/netstandard1.6/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "bootstrap/3.3.1": {
+        "type": "package",
+        "dependencies": {
+          "jQuery": "1.9.0"
+        }
+      },
       "CoreCompat.System.Drawing.v2/5.2.0-preview1-r131": {
         "type": "package",
         "dependencies": {
@@ -57,6 +63,9 @@
         "runtime": {
           "lib/netstandard2.0/CoreCompat.System.Drawing.dll": {}
         }
+      },
+      "jQuery/1.9.0": {
+        "type": "package"
       },
       "Libuv/1.10.0": {
         "type": "package",
@@ -96,6 +105,13 @@
             "assetType": "native",
             "rid": "win-x86"
           }
+        }
+      },
+      "MD.BootstrapPersianDateTimePicker/2.3.1": {
+        "type": "package",
+        "dependencies": {
+          "bootstrap": "3.3.1",
+          "jQuery": "1.9.0"
         }
       },
       "Microsoft.ApplicationInsights/2.4.0": {
@@ -5127,6 +5143,29 @@
         "lib/netstandard1.6/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
       ]
     },
+    "bootstrap/3.3.1": {
+      "sha512": "frHiYCf5K4stOa6D+kibhmOExG1Zy7T93FxnivRofKU1MLarbFfS8WtRdrHNUN2Qpv0dAEe6pSmgIpjbAOqCsg==",
+      "type": "package",
+      "path": "bootstrap/3.3.1",
+      "files": [
+        ".signature.p7s",
+        "bootstrap.3.3.1.nupkg.sha512",
+        "bootstrap.nuspec",
+        "content/Content/bootstrap-theme.css",
+        "content/Content/bootstrap-theme.css.map",
+        "content/Content/bootstrap-theme.min.css",
+        "content/Content/bootstrap.css",
+        "content/Content/bootstrap.css.map",
+        "content/Content/bootstrap.min.css",
+        "content/Scripts/bootstrap.js",
+        "content/Scripts/bootstrap.min.js",
+        "content/Scripts/npm.js",
+        "content/fonts/glyphicons-halflings-regular.eot",
+        "content/fonts/glyphicons-halflings-regular.svg",
+        "content/fonts/glyphicons-halflings-regular.ttf",
+        "content/fonts/glyphicons-halflings-regular.woff"
+      ]
+    },
     "CoreCompat.System.Drawing.v2/5.2.0-preview1-r131": {
       "sha512": "+WrScg+skrIiNLBwbl+BFdlSyzUqKOZtAUskW2xfI8vcKQdDJp+UoreUFC9uMSEgSiAR32e5l3fTtFDUKEpRaA==",
       "type": "package",
@@ -5135,6 +5174,24 @@
         "corecompat.system.drawing.v2.5.2.0-preview1-r131.nupkg.sha512",
         "corecompat.system.drawing.v2.nuspec",
         "lib/netstandard2.0/CoreCompat.System.Drawing.dll"
+      ]
+    },
+    "jQuery/1.9.0": {
+      "sha512": "rl82HRANOh4pSAzCfGUl/7kpKsa1FfyndY/YwC+wm1yBPFgBjmulU6MHba8V8htYnVaT8YfeDtHm1ZifcJGR/w==",
+      "type": "package",
+      "path": "jquery/1.9.0",
+      "files": [
+        ".signature.p7s",
+        "Content/Scripts/jquery-1.9.0-vsdoc.js",
+        "Content/Scripts/jquery-1.9.0.js",
+        "Content/Scripts/jquery-1.9.0.min.js",
+        "Content/Scripts/jquery-1.9.0.min.map",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-1.9.0.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.1.9.0.nupkg.sha512",
+        "jquery.nuspec"
       ]
     },
     "Libuv/1.10.0": {
@@ -5153,6 +5210,19 @@
         "runtimes/win-arm/native/libuv.dll",
         "runtimes/win-x64/native/libuv.dll",
         "runtimes/win-x86/native/libuv.dll"
+      ]
+    },
+    "MD.BootstrapPersianDateTimePicker/2.3.1": {
+      "sha512": "ecCCm2+SKKg251BzlsdsqYDqxthr6v5UnNku6QZxPs1ojX0tIzBGnUqUuQyOR85J8KO+gt6LkZw3mzcdD1Ezxw==",
+      "type": "package",
+      "path": "md.bootstrappersiandatetimepicker/2.3.1",
+      "files": [
+        ".signature.p7s",
+        "Content/Content/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.css",
+        "Content/Scripts/MdBootstrapPersianDateTimePicker/jalaali.js",
+        "Content/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.js",
+        "md.bootstrappersiandatetimepicker.2.3.1.nupkg.sha512",
+        "md.bootstrappersiandatetimepicker.nuspec"
       ]
     },
     "Microsoft.ApplicationInsights/2.4.0": {
@@ -13380,6 +13450,7 @@
       "AutoMapper >= 6.1.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 1.1.0",
       "CoreCompat.System.Drawing.v2 >= 5.2.0-preview1-r131",
+      "MD.BootstrapPersianDateTimePicker >= 2.3.1",
       "Microsoft.ApplicationInsights.AspNetCore >= 2.1.1",
       "Microsoft.AspNetCore.All >= 2.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.3",
@@ -13439,6 +13510,10 @@
           "CoreCompat.System.Drawing.v2": {
             "target": "Package",
             "version": "[5.2.0-preview1-r131, )"
+          },
+          "MD.BootstrapPersianDateTimePicker": {
+            "target": "Package",
+            "version": "[2.3.1, )"
           },
           "Microsoft.ApplicationInsights.AspNetCore": {
             "target": "Package",

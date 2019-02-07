@@ -15,6 +15,7 @@
     <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3 ">
 
+            <!--Header & search box-->
             <div class="card-header bg-primary text-light ">
                 <div class="row justify-content-md-around">
                     <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
@@ -34,6 +35,7 @@
 
                 </div>
             </div>
+            <!--End Header & search box-->
 
             <div class="card-body">
                 <a class="btn btn-primary" data-toggle="modal" id="show-add-author" asp-action="AddEditAuthor"
@@ -44,7 +46,7 @@
                 <div></div>
                 <table class="table table-bordered table-striped table-sm mt-3  tableMobilize">
                     <thead class="thead-light">
-                        <tr >
+                        <tr>
                             <th>@Html.DisplayNameFor(model => model.AuthorName)</th>
                             <th>@Html.DisplayNameFor(model => model.AuthorDescription)</th>
                             <th>عملیات</th>
@@ -56,8 +58,8 @@
 
                             <tr>
                                 <td>@item.AuthorName</td>
-                                <td >@item.AuthorDescription</td>
-                                <td >
+                                <td>@item.AuthorDescription</td>
+                                <td>
                                     <div>
                                         <a class="btn btn-info mb-1" data-toggle="modal" id="show-edit-author" asp-action="AddEditAuthor"
                                            data-target="#modal-action-author" asp-route-id="@item.AuthorId">

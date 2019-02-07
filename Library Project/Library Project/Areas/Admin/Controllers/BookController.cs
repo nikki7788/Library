@@ -96,6 +96,72 @@ namespace Library.Areas.Admin.Controllers
         }
         #endregion ###################################################################################### 
 
+        #region####################################### Search Book ##########################################
+
+        public IActionResult SearchBook(string BookSearch, string authorSearch, string bookGroupSearch)
+        {
+            List<BookListViewModel> model = new List<BookListViewModel>();
+            var query = from b in _context.Books
+                        join a in _context.Authors
+                        on b.AuthorId equals a.AuthorId
+                        join bg in _context.BookGroups
+                        on b.BookGroupId equals bg.BookGroupId
+                        select new
+                        {
+                            b.BookId,
+                            b.BookName,
+                            b.BookPageCount,
+                            b.BookImage,
+                            b.AuthorId,
+                            b.BookGroupId,
+                            bg.BookGroupName,
+                            a.AuthorName
+                        };
+            foreach (var item in query)
+            {
+                BookListViewModel obj = new BookListViewModel
+                {
+                    BookId = item.BookId,
+                    BookName = item.BookName,
+                    BookImage = item.BookImage,
+                    BookPageCount = item.BookPageCount,
+                    AuthorId = item.AuthorId,
+                    AuthorName = item.AuthorName,
+                    BookGroupId = item.BookGroupId,
+                    BookGroupName = item.BookGroupName
+                };
+                model.Add(obj);
+            }
+            //ابتدا براساس نام کتاب میگردد بعد . فیلتر میکند بعد اگر نام نویسنده جست و جو شده باشد 
+            //در مدلی که نام کتاب در ان فیلتر شده دنبال ان میگردد
+            //واگر نام گروه بندی وار شده باشد در مدل فیلتر شده نام نویسنده
+            //یعنی هم زمان قابلیت فیلتر سه سرچ باکس را دارد
+            if (BookSearch!=null)
+            {
+                BookSearch = BookSearch.TrimStart().TrimEnd();
+                model = model.Where(b => b.BookName.Contains(BookSearch)).ToList();
+            }
+            if (authorSearch != null)
+            {
+                authorSearch = authorSearch.TrimStart().TrimEnd();
+                model = model.Where(b => b.BookName.Contains(authorSearch)).ToList();
+            }
+            if (bookGroupSearch != null)
+            {
+                bookGroupSearch = bookGroupSearch.TrimStart().TrimEnd();
+                model = model.Where(b => b.BookName.Contains(bookGroupSearch)).ToList();
+            }
+
+            ViewBag.rootPath = "/upload/thumbnailimage/";
+            return View("Index",model);
+
+
+
+        }
+        #endregion
+
+
+
         #region---############################# Add & Edit Book ######################################
         //--------------------------------************* Add Book Get***********--------------------------------------------------------
 

@@ -13,7 +13,33 @@
     <!--برای اینکه کنار پنل داشبورد بیفتد-->
     <div class="col-md-9 col-md-9 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
-            <div class="card-header bg-primary text-light">لیست  کتابها</div>
+
+
+            <!--Header & search box-->
+            <div class="card-header bg-primary text-light ">
+                <div class="row justify-content-md-around">
+                    <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
+                    <div class="col-md-4 col-form-label" style="font-weight:400;"> لیست کتاب ها</div>
+                    <div class="col-md-8 my-2">
+                        <form asp-action="SearchBook" method="post">
+                            <div class="input-group ">
+                                <input type="search" id="bookSearch" name="bookSearch" class="form-control" placeholder=" نام کتاب..." />
+                                <input type="search" id="authorSearch" name="authorSearch" class="form-control" placeholder=" نام نویسنده..." />
+                                <input type="search" id="bookGroupSearch" name="bookGroupSearch" class="form-control" placeholder=" نام گروه بندی کتاب..." />
+
+                                <div class="input-group-prepend" >
+                                    <button type="submit" class="btn btn-success " style="border-radius:5px 0 0 5px !important;"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <!--End Header & search box-->
+
+
             <div class="card-body">
                 <div>
                     <a class="btn btn-primary" data-toggle="modal" id="show-add-book" asp-action="AddBook"

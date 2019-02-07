@@ -26,7 +26,7 @@ namespace Library.Areas.Admin.Controllers
             _iServiceProvider = iServiceProvider;
             _appEnvironment = appEnvironment;
         }
-
+        #region######################## Index ###################################
         public IActionResult Index()
         {
             List<News> model = new List<News>();
@@ -41,7 +41,54 @@ namespace Library.Areas.Admin.Controllers
             ViewBag.imgPath = "/upload/normalimage/";
             return View(model);
         }
+        #endregion#####################
 
+        #region ####################### Search ####################################
+        public IActionResult SearchNews(string fromDate, string toDate, string newsTitleSearch)
+        {
+            List<News> model = new List<News>();
+            model = _context.News.Select(n => new News
+            {
+                NewsId = n.NewsId,
+                NewsTitle = n.NewsTitle,
+                NewsContent = n.NewsContent,
+                NewsDate = n.NewsDate,
+                NewsImage = n.NewsImage
+            }).ToList();
+
+            //  برای مقایسه رشته ها بکارمیرودبراساس کد اسکی حروف مقایسه میکند ومقدار عدد برمیگرداند 0 1 -1  compareto
+            //صفر یعنی مقایسه برابر است   یک یعنی بزرگتر و منفی یک یعنی کوچکتر
+            if (fromDate != null && toDate == null)
+            {
+                //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ های کوچکتر و قبل از تاریخ ارسالی از سرچ را می اورد   compareto 
+                model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0).ToList();
+            }
+
+            if (toDate != null && fromDate == null)
+            {
+                //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ های بعد و بزرگتر از تاریخ ارسالی را میاورد   compareto 
+                model = model.Where(n => n.NewsDate.CompareTo(toDate) <= 0).ToList();
+            }
+
+            if (toDate != null && fromDate != null)
+            {
+                //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ بین تاریخ های ارسالی را می اورد   compareto 
+                model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0 && n.NewsDate.CompareTo(toDate) <= 0).ToList();
+            }
+
+            if (newsTitleSearch != null)
+            {
+                newsTitleSearch = newsTitleSearch.TrimEnd().TrimStart();
+                model = model.Where(n => n.NewsTitle.Contains(newsTitleSearch)).ToList();
+            }
+
+            ViewBag.imgPath = "/upload/normalimage/";
+            return View("Index",model);
+        }
+
+
+
+        #endregion################################################################
         [HttpGet]
         public IActionResult AddEditNews(int id)
         {
