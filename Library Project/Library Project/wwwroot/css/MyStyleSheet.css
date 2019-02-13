@@ -269,8 +269,12 @@ body {
 
 
 /*------------********  manage request book********----------------*/
-.tb-pa td, .tb-pa th{
-    padding:8px 5px;
+.tb-pa th{
+    padding:8px 5px !important;
     font-weight:600;
+}
+.tb-pa {
+    padding: 8px 5px !important;
+    font-weight: 700;
 }
  /*------------****************----------------*/

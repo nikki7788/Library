@@ -1,5 +1,5 @@
-﻿
-@model IEnumerable<News>
+﻿@model PagingList<News>
+@*@model IEnumerable<News>*@
 @{
     ViewData["Title"] = "لیست اخبار";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,7 +21,7 @@
                     <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
                     <div class="col-md-4 col-form-label" style="font-weight:400;"> لیست خبرها</div>
                     <div class="col-md-8 my-2 ">
-                        <form asp-action="SearchNews" method="post">
+                        <form asp-action="SearchNewsAsync" method="post">
                             <div class="row">
                                 <div class="input-group col-md-3">
                                     <div class="input-group-prepend">
@@ -61,7 +61,7 @@
                     <span>افزودن خبر</span>
                 </a>
 
-                <table class="table table-bordered table-hover table-striped table-sm mt-3">
+                <table class="table table-bordered table-hover table-striped table-sm mt-3 tableMobilize">
                     <thead class="text-center thead-light">
                         <tr>
                             <th>@Html.DisplayNameFor(model => model.NewsTitle)</th>
@@ -91,6 +91,12 @@
                     </tbody>
                 </table>
             </div>
+            <!--showing pagination-->
+            <div class="row justify-content-center">
+                <nav>
+                    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+                </nav>
+            </div>
         </div>
     </div>
 </div>
@@ -119,6 +125,13 @@ $('#date5').MdPersianDateTimePicker({
 });
     </script>
     <!--End Persian data picker-->
+   
+    <script>
+        $(document).ready(function () {
+            //ریسپانسیو کردن جدول-دستور پلاگین
+            $('table').tableMobilize();
+        });
+    </script>
     <script>
         $(document).on("click", "#submitdata", function (e) {
             e.preventDefault();

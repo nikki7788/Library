@@ -211,6 +211,36 @@ namespace Library.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("Library.Models.TransactionPayment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("Mobile")
+                        .IsRequired();
+
+                    b.Property<string>("TransactionDate");
+
+                    b.Property<string>("TransactionNo");
+
+                    b.Property<string>("TransactionTime");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TransactionPayments");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -306,6 +336,13 @@ namespace Library.Migrations
                         .WithMany("Books")
                         .HasForeignKey("BookGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Library.Models.TransactionPayment", b =>
+                {
+                    b.HasOne("Library.Models.ApplicationUser", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

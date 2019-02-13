@@ -3,10 +3,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace InsertShowImage
+    // برای تغییر سایز تصویر و کوچک کردن ان برای ذخیره نمونه دوم و کوچکتر از عکس اپلود شده
 {
-    // برای تغییر سایز تصویر و کوچک کردن ان باری ذخیره نمونه دوم و کوچکتر از عکس اپلود شده
     public class ImageResizer
     {
+
+        
         /// <summary>
         /// http://www.blackbeltcoder.com/Articles/graph/programmatically-resizing-an-image
         /// Maximum width of resized image.

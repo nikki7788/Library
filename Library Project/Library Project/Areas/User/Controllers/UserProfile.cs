@@ -3,6 +3,8 @@ using Library.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,34 +27,66 @@ namespace Library.Area.User.Controllers
 
         #region############################ Index #############################
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page=1)
         {
-            List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
-            model = (from br in _contex.BorrowRequestedBooks
-                     join b in _contex.Books on br.BookId equals b.BookId
-                     join u in _contex.Users on br.UserId equals u.Id
+            //بدون صفحه بندی
+            //List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
+            //model = (from br in _contex.BorrowRequestedBooks
+            //         join b in _contex.Books on br.BookId equals b.BookId
+            //         join u in _contex.Users on br.UserId equals u.Id
 
-                     where u.Id == _userManager.GetUserId(HttpContext.User)  //برای اینکه فقط درخواست های مربوط به یوزر لاگین شده رابیاورد نه همه درخواست ها
+            //         where u.Id == _userManager.GetUserId(HttpContext.User)  //برای اینکه فقط درخواست های مربوط به یوزر لاگین شده رابیاورد نه همه درخواست ها
 
-                     select new ManageReqestedBookViewModel
-                     {
-                         Id = br.Id,
-                         BookId = br.BookId,
-                         UserId = br.UserId,
-                         UserFullName = u.FirstName + " " + u.LastName,
-                         BookName = b.BookName,
-                         Flag = br.Flag, //وضعیت درخواست را برمیکرداند
-                         RequestDate = br.RequestDate,
-                         AnswerDate = br.AnswerDate,
-                         ReturnDate = br.ReturnDate,
-                         //وضعیت درخواست را نمایش می دهد
-                         FlageState = (
-                             br.Flag == 1 ? "درخواست امانت" :
-                             br.Flag == 2 ? "امانت برده" :
-                             br.Flag == 3 ? "رد درخواست" :
-                             br.Flag == 4 ? "برگشت داده" : "نامشخص"
-                         )
-                     }).ToList();
+            //         select new ManageReqestedBookViewModel
+            //         {
+            //             Id = br.Id,
+            //             BookId = br.BookId,
+            //             UserId = br.UserId,
+            //             UserFullName = u.FirstName + " " + u.LastName,
+            //             BookName = b.BookName,
+            //             Flag = br.Flag, //وضعیت درخواست را برمیکرداند
+            //             RequestDate = br.RequestDate,
+            //             AnswerDate = br.AnswerDate,
+            //             ReturnDate = br.ReturnDate,
+            //             //وضعیت درخواست را نمایش می دهد
+            //             FlageState = (
+            //                 br.Flag == 1 ? "درخواست امانت" :
+            //                 br.Flag == 2 ? "امانت برده" :
+            //                 br.Flag == 3 ? "رد درخواست" :
+            //                 br.Flag == 4 ? "برگشت داده" : "نامشخص"
+            //             )
+            //         }).ToList();
+
+            //with pagination
+            var model = (from br in _contex.BorrowRequestedBooks
+                         join b in _contex.Books on br.BookId equals b.BookId
+                         join u in _contex.Users on br.UserId equals u.Id
+
+                         where u.Id == _userManager.GetUserId(HttpContext.User)  //برای اینکه فقط درخواست های مربوط به یوزر لاگین شده رابیاورد نه همه درخواست ها
+
+                         select new ManageReqestedBookViewModel
+                         {
+                             Id = br.Id,
+                             BookId = br.BookId,
+                             UserId = br.UserId,
+                             UserFullName = u.FirstName + " " + u.LastName,
+                             BookName = b.BookName,
+                             Flag = br.Flag, //وضعیت درخواست را برمیکرداند
+                             RequestDate = br.RequestDate,
+                             AnswerDate = br.AnswerDate,
+                             ReturnDate = br.ReturnDate,
+                             //وضعیت درخواست را نمایش می دهد
+                             FlageState = (
+                                 br.Flag == 1 ? "درخواست امانت" :
+                                 br.Flag == 2 ? "امانت برده" :
+                                 br.Flag == 3 ? "رد درخواست" :
+                                 br.Flag == 4 ? "برگشت داده" : "نامشخص"
+                             )
+                         }).AsNoTracking().OrderBy(u => u.Id); //AsNoTracking is for pagination
+                                                               //رکورد های صفحه بندی میکند می اورد
+                                                               //  var modelPaging = await PagingList<ManageReqestedBookViewModel>.CreateAsync(model, 4, page);
+            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 4, page); //هر۴رکورد دریک صفحه
+
             //-------------------یافن و ارسال نام کابر به ویو--------------------
             ApplicationUser userFullName = (from u in _contex.Users
                                             where u.Id == _userManager.GetUserId(HttpContext.User)
@@ -62,8 +96,89 @@ namespace Library.Area.User.Controllers
             ViewBag.userFullName = userFullName.FirstName + " " + " " + userFullName.LastName;
             //---------------------------------------------------------------------
 
-            return View(model);
+            return View(modelPaging);
         }
+        #endregion####################################################
+
+        #region############################ SearchInUser #############################
+        // GET: /<controller>/
+        public async Task<IActionResult> SearchInUserAsync(string fromDate, string toDate, string bookSearch, int page = 1)
+        {
+            var model = (from br in _contex.BorrowRequestedBooks
+                         join b in _contex.Books on br.BookId equals b.BookId
+                         join u in _contex.Users on br.UserId equals u.Id
+
+                         where u.Id == _userManager.GetUserId(HttpContext.User)  //برای اینکه فقط درخواست های مربوط به یوزر لاگین شده رابیاورد نه همه درخواست ها
+
+                         select new ManageReqestedBookViewModel
+                         {
+                             Id = br.Id,
+                             BookId = br.BookId,
+                             UserId = br.UserId,
+                             UserFullName = u.FirstName + " " + u.LastName,
+                             BookName = b.BookName,
+                             Flag = br.Flag, //وضعیت درخواست را برمیکرداند
+                             RequestDate = br.RequestDate,
+                             AnswerDate = br.AnswerDate,
+                             ReturnDate = br.ReturnDate,
+                             //وضعیت درخواست را نمایش می دهد
+                             FlageState = (
+                                 br.Flag == 1 ? "درخواست امانت" :
+                                 br.Flag == 2 ? "امانت برده" :
+                                 br.Flag == 3 ? "رد درخواست" :
+                                 br.Flag == 4 ? "برگشت داده" : "نامشخص"
+                             )
+                         }).AsNoTracking().OrderBy(u => u.Id); //AsNoTracking is for pagination
+                                                               //رکورد های صفحه بندی میکند می اورد
+                                                               //  var modelPaging = await PagingList<ManageReqestedBookViewModel>.CreateAsync(model, 4, page);
+            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 4, page); //هر۴رکورد دریک صفحه
+
+            //  برای مقایسه رشته ها بکارمیرودبراساس کد اسکی حروف مقایسه میکند ومقدار عدد برمیگرداند 0 1 -1  compareto
+            //صفر یعنی مقایسه برابر است   یک یعنی بزرگتر و منفی یک یعنی کوچکتر
+            if (fromDate != null)
+            {
+                //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ های کوچکتر و قبل از تاریخ ارسالی از سرچ را می اورد   compareto 
+
+                model = model.Where(m => m.RequestDate.CompareTo(fromDate) >= 0).OrderBy(m => m.Id);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
+            }
+
+            if (toDate != null && fromDate == null)
+            {
+                //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ های بعد و بزرگتر از تاریخ ارسالی را میاورد   compareto 
+
+                model = model.Where(m => m.RequestDate.CompareTo(toDate) <= 0).OrderBy(m => m.Id);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
+
+            }
+
+            //if (toDate != null && fromDate != null)
+            //{
+            //    //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ بین تاریخ های ارسالی را می اورد   compareto 
+            //    model = model.Where(m => m.RequestDate.CompareTo(fromDate) >= 0 &&  m.RequestDate.CompareTo(toDate) <= 0).OrderBy(m => m.Id);
+            //    modelPaging = await PagingList.CreateAsync(model, 4, page);
+            //}
+
+
+            if (bookSearch != null)
+            {
+                bookSearch = bookSearch.TrimEnd().TrimStart();
+                model = model.Where(m => m.BookName.Contains(bookSearch)).OrderBy(m=>m.Id);
+                modelPaging =await PagingList.CreateAsync(model, 4, page);
+            }
+
+            //-------------------یافن و ارسال نام کابر به ویو--------------------
+            ApplicationUser userFullName = (from u in _contex.Users
+                                            where u.Id == _userManager.GetUserId(HttpContext.User)
+                                            select u).SingleOrDefault();
+            //   بنویسیم   HttpContext    میتوانیم بدون      GetUserId(User)
+
+            ViewBag.userFullName = userFullName.FirstName + " " + " " + userFullName.LastName;
+            //---------------------------------------------------------------------
+
+            return View("Index",modelPaging);
+        }
+
         #endregion####################################################
 
         #region ####################   ChangeUserPass   ###################################
@@ -81,6 +196,7 @@ namespace Library.Area.User.Controllers
 
         }
         #endregion
+
         #region ####################   ChangeUserPass   ###################################
 
         [HttpPost]

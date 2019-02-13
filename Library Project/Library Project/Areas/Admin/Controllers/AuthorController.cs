@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Library.Areas.Admin.Controllers
 
         #region######################### Index ######################
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page=1)
         {
             //the include is the navigation prop
             //جلسه 76  include   بادستور
@@ -36,8 +37,8 @@ namespace Library.Areas.Admin.Controllers
             //یعنی به اطلاعات کتاب دسترسی داریم دراینجا الان
             //بقیه پراپرتی ها را هم خودش مقداردهی میکند
             //خود اطلاعات نویسندگان را به همراه اطلاعات کتاب برای ویو میفرستیم تا اگر کتابی برای نویسنده وجود دارد دکمه حذف نمایش داه نشود
-            var model = await _contex.Authors.Include(a => a.Books).ToListAsync();
-            return View(model);
+            //var model = await _contex.Authors.Include(a => a.Books).ToListAsync();
+            //return View(model);
 
             //or
             //متد غیر همزمان نباشد دستورات زیراست وگرنه باید دستورات زیر را غیر همزمان بنویسیم 
@@ -49,25 +50,47 @@ namespace Library.Areas.Admin.Controllers
             //    AuthorDescription = a.AuthorDescription
             //}).ToList();
             //return View(model);
+
+
+
+
+            //with pagination
+            var model =  _contex.Authors.AsNoTracking().Include(a => a.Books).OrderBy(a => a.AuthorId);
+            PagingList<Author> modelPaging =await PagingList.CreateAsync(model, 2, page);
+            return View(modelPaging);
         }
 
         #endregion ####################################################
 
         #region######################### Search User #############################      
 
-        public async Task<IActionResult> SearchAuthor(string authorSearch)
+        public async Task<IActionResult> SearchAuthor(string authorSearch,int page=1)
         {
-            //the include is the  navigation prop
-            var model =  _contex.Authors.Include(a => a.Books);
+            ////the include is the  navigation prop
+            //var model =  _contex.Authors.Include(a => a.Books);
 
-            //ااگر عبارتی در ر سرچ باکس ووجود داشتت   
+            ////ااگر عبارتی در ر سرچ باکس ووجود داشتت   
+            //if (authorSearch != null)
+            //{
+            //    authorSearch = authorSearch.TrimEnd().TrimStart();
+            //    //براساس عبارت داخل سرچ باکس فیلتر میکند مواذد نمایش داه شده در ویو را
+            //    model =  _contex.Authors.Where(a => a.AuthorName.Contains(authorSearch)).Include(a => a.Books);
+            //}
+            //return View("Index",await model.ToListAsync());
+
+
+
+            //---------------------------  **** with pagination ****----------------------------------------------------------------
+            var model = _contex.Authors.AsNoTracking().Include(a => a.Books).OrderBy(a => a.AuthorId);
+            PagingList<Author> modelPaging = await PagingList.CreateAsync(model, 2, page);
             if (authorSearch != null)
             {
                 authorSearch = authorSearch.TrimEnd().TrimStart();
-                //براساس عبارت داخل سرچ باکس فیلتر میکند مواذد نمایش داه شده در ویو را
-                model =  _contex.Authors.Where(a => a.AuthorName.Contains(authorSearch)).Include(a => a.Books);
+                model = model.Where(a => a.AuthorName.Contains(authorSearch)).AsNoTracking().Include(a => a.Books).OrderBy(a=>a.AuthorId);
+                modelPaging =await PagingList.CreateAsync(model, 2, page);
             }
-            return View("Index",await model.ToListAsync());
+            //ViewBag.search = "true";
+            return View("Index", modelPaging);
         }
         #endregion###############################################################
 

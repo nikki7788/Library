@@ -19,6 +19,9 @@
     
     <!--<PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />-->
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="2.4.0" />
+    <PackageReference Include="Zarinpal" Version="2.0.4" />
+    <PackageReference Include="ZarinpalSandbox" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

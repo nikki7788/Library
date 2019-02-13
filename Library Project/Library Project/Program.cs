@@ -14,9 +14,13 @@ namespace Library
     {
         public static void Main(string[] args)
         {
+            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             BuildWebHost(args).Run();
         }
-
+        //private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        //{
+        //    var x = (e.ExceptionObject as Exception).Message;
+        //}
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()

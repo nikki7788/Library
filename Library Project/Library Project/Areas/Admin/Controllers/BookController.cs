@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 
 namespace Library.Areas.Admin.Controllers
 {
@@ -40,123 +41,160 @@ namespace Library.Areas.Admin.Controllers
         #region ################################ Index #################################
         //--------------------------------************* index ***********--------------------------------------------------------
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page=1)
         {
-            List<BookListViewModel> model = new List<BookListViewModel>();
+            //List<BookListViewModel> model = new List<BookListViewModel>();
+            //var query = from b in _context.Books
+            //            join a in _context.Authors
+            //            on b.AuthorId equals a.AuthorId
+            //            join bg in _context.BookGroups
+            //            on b.BookGroupId equals bg.BookGroupId
+            //            select new
+            //            {
+            //                b.BookId,
+            //                b.BookName,
+            //                b.BookPageCount,
+            //                b.BookImage,
+            //                b.AuthorId,
+            //                b.BookGroupId,
+            //                bg.BookGroupName,
+            //                a.AuthorName
+            //            };
+            //foreach (var item in query)
+            //{
 
-            var query = from b in _context.Books
-                        join a in _context.Authors
-                        on b.AuthorId equals a.AuthorId
-                        join bg in _context.BookGroups
-                        on b.BookGroupId equals bg.BookGroupId
-                        select new
-                        {
-                            b.BookId,
-                            b.BookName,
-                            b.BookPageCount,
-                            b.BookImage,
-                            b.AuthorId,
-                            b.BookGroupId,
-                            bg.BookGroupName,
-                            a.AuthorName
-                        };
-            foreach (var item in query)
-            {
-
-                //{
-                //    BookListViewModel obj = new BookListViewModel();
-                //    obj.BookId = item.BookId;
-                //    obj.BookName = item.BookName;
-                //    obj.BookImage = item.BookImage;
-                //    obj.BookPageCount = item.BookPageCount;
-                //    obj.AuthorId = item.AuthorId;
-                //    obj.AuthorName = item.AuthorName;
-                //    obj.BookGroupId = item.BookGroupId;
-                //    obj.BookGroupName = item.BookGroupName;
-                //}
+            //    //{
+            //    //    BookListViewModel obj = new BookListViewModel();
+            //    //    obj.BookId = item.BookId;
+            //    //    obj.BookName = item.BookName;
+            //    //    obj.BookImage = item.BookImage;
+            //    //    obj.BookPageCount = item.BookPageCount;
+            //    //    obj.AuthorId = item.AuthorId;
+            //    //    obj.AuthorName = item.AuthorName;
+            //    //    obj.BookGroupId = item.BookGroupId;
+            //    //    obj.BookGroupName = item.BookGroupName;
+            //    //}
 
 
-                BookListViewModel obj = new BookListViewModel
-                {
-                    BookId = item.BookId,
-                    BookName = item.BookName,
-                    BookImage = item.BookImage,
-                    BookPageCount = item.BookPageCount,
-                    AuthorId = item.AuthorId,
-                    AuthorName = item.AuthorName,
-                    BookGroupId = item.BookGroupId,
-                    BookGroupName = item.BookGroupName
-                };
-                model.Add(obj);
+            //    BookListViewModel obj = new BookListViewModel
+            //    {
+            //        BookId = item.BookId,
+            //        BookName = item.BookName,
+            //        BookImage = item.BookImage,
+            //        BookPageCount = item.BookPageCount,
+            //        AuthorId = item.AuthorId,
+            //        AuthorName = item.AuthorName,
+            //        BookGroupId = item.BookGroupId,
+            //        BookGroupName = item.BookGroupName
+            //    };
+            //    model.Add(obj);
 
-            }
+            //}
+
+            var query = (from b in _context.Books
+                         join a in _context.Authors
+                         on b.AuthorId equals a.AuthorId
+                         join bg in _context.BookGroups
+                         on b.BookGroupId equals bg.BookGroupId
+                         select new BookListViewModel
+                         {
+                            BookId =b.BookId,
+                           BookName=  b.BookName,
+                         BookPageCount=    b.BookPageCount,
+                            BookImage= b.BookImage,
+                            AuthorId= b.AuthorId,
+                            BookGroupId= b.BookGroupId,
+                          BookGroupName=   bg.BookGroupName,
+                           AuthorName=  a.AuthorName
+                         }).AsNoTracking().OrderBy(b=>b.BookId);
+            PagingList<BookListViewModel> modelPaging =await PagingList.CreateAsync(query, 4, page);
+
             ViewBag.rootPath = "/upload/thumbnailimage/";
-
-            return View(model);
+            return View(modelPaging);
         }
         #endregion ###################################################################################### 
 
         #region####################################### Search Book ##########################################
 
-        public IActionResult SearchBook(string BookSearch, string authorSearch, string bookGroupSearch)
+        public async Task<IActionResult> SearchBook(string BookSearch, string authorSearch, string bookGroupSearch,int page=1)
         {
-            List<BookListViewModel> model = new List<BookListViewModel>();
-            var query = from b in _context.Books
-                        join a in _context.Authors
-                        on b.AuthorId equals a.AuthorId
-                        join bg in _context.BookGroups
-                        on b.BookGroupId equals bg.BookGroupId
-                        select new
-                        {
-                            b.BookId,
-                            b.BookName,
-                            b.BookPageCount,
-                            b.BookImage,
-                            b.AuthorId,
-                            b.BookGroupId,
-                            bg.BookGroupName,
-                            a.AuthorName
-                        };
-            foreach (var item in query)
-            {
-                BookListViewModel obj = new BookListViewModel
-                {
-                    BookId = item.BookId,
-                    BookName = item.BookName,
-                    BookImage = item.BookImage,
-                    BookPageCount = item.BookPageCount,
-                    AuthorId = item.AuthorId,
-                    AuthorName = item.AuthorName,
-                    BookGroupId = item.BookGroupId,
-                    BookGroupName = item.BookGroupName
-                };
-                model.Add(obj);
-            }
+            //List<BookListViewModel> model = new List<BookListViewModel>();
+            //var query = (from b in _context.Books
+            //             join a in _context.Authors
+            //             on b.AuthorId equals a.AuthorId
+            //             join bg in _context.BookGroups
+            //             on b.BookGroupId equals bg.BookGroupId
+            //             select new
+            //             {
+            //                 b.BookId,
+            //                 b.BookName,
+            //                 b.BookPageCount,
+            //                 b.BookImage,
+            //                 b.AuthorId,
+            //                 b.BookGroupId,
+            //                 bg.BookGroupName,
+            //                 a.AuthorName
+            //             });
+            //foreach (var item in query)
+            //{
+            //    BookListViewModel obj = new BookListViewModel
+            //    {
+            //        BookId = item.BookId,
+            //        BookName = item.BookName,
+            //        BookImage = item.BookImage,
+            //        BookPageCount = item.BookPageCount,
+            //        AuthorId = item.AuthorId,
+            //        AuthorName = item.AuthorName,
+            //        BookGroupId = item.BookGroupId,
+            //        BookGroupName = item.BookGroupName
+            //    };
+            //    model.Add(obj);
+            //}
+
+            var model = (from b in _context.Books
+                         join a in _context.Authors
+                         on b.AuthorId equals a.AuthorId
+                         join bg in _context.BookGroups
+                         on b.BookGroupId equals bg.BookGroupId
+                         select new BookListViewModel()
+                         {
+                             BookId = b.BookId,
+                             BookName = b.BookName,
+                             BookPageCount = b.BookPageCount,
+                             BookImage = b.BookImage,
+                             AuthorId = b.AuthorId,
+                             BookGroupId = b.BookGroupId,
+                             BookGroupName = bg.BookGroupName,
+                             AuthorName = a.AuthorName
+                         }).AsNoTracking().OrderBy(b => b.BookId);
+            PagingList<BookListViewModel> modelPaging = await PagingList.CreateAsync(model, 4, page);
             //ابتدا براساس نام کتاب میگردد بعد . فیلتر میکند بعد اگر نام نویسنده جست و جو شده باشد 
             //در مدلی که نام کتاب در ان فیلتر شده دنبال ان میگردد
             //واگر نام گروه بندی وار شده باشد در مدل فیلتر شده نام نویسنده
             //یعنی هم زمان قابلیت فیلتر سه سرچ باکس را دارد
-            if (BookSearch!=null)
+            if (BookSearch != null)
             {
                 BookSearch = BookSearch.TrimStart().TrimEnd();
-                model = model.Where(b => b.BookName.Contains(BookSearch)).ToList();
+                model = model.Where(b => b.BookName.Contains(BookSearch)).OrderBy(b=>b.BookId);
+                modelPaging= await PagingList.CreateAsync(model, 4, page);
             }
             if (authorSearch != null)
             {
                 authorSearch = authorSearch.TrimStart().TrimEnd();
-                model = model.Where(b => b.BookName.Contains(authorSearch)).ToList();
+                model = model.Where(b => b.BookName.Contains(authorSearch)).AsNoTracking().OrderBy(b => b.BookId);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
+
             }
             if (bookGroupSearch != null)
             {
                 bookGroupSearch = bookGroupSearch.TrimStart().TrimEnd();
-                model = model.Where(b => b.BookName.Contains(bookGroupSearch)).ToList();
+                model = model.Where(b => b.BookName.Contains(bookGroupSearch)).AsNoTracking().OrderBy(b => b.BookId);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
+
             }
 
             ViewBag.rootPath = "/upload/thumbnailimage/";
-            return View("Index",model);
-
-
-
+            return View("Index", modelPaging);
         }
         #endregion
 
@@ -896,7 +934,7 @@ namespace Library.Areas.Admin.Controllers
                     //0:yyyy/MM/dd این دستوز به شکل زیرعمل میکند
                     //1397/3/5 ==> 1397/03/05
                     //اگر سال چهاررقم نباشد یا ماه وروز دورقم ثبت نشده باشد بجایش صفر میکذارد
-                    string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime( year+"/"+ month+"/"+ day));
+                    string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
 
 
                     for (int i = 0; i < bookRequset.Count(); i++)
@@ -906,7 +944,7 @@ namespace Library.Areas.Admin.Controllers
                             UserId = userId,
                             BookId = Convert.ToInt32(bookRequset[i]),   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
                             Flag = 1,
-                           RequestDate = shamsiDate
+                            RequestDate = shamsiDate
                         };
 
                         //فقط یک کتاب را ثبت میکند در دیتا بیس اگر چند کتاب در لیست باشد

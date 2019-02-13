@@ -27,7 +27,7 @@
                     </a>
                 </div>
                 <div></div>
-                <table class="table table-striped table-bordered table-sm mt-3">
+                <table class="table table-striped table-bordered table-sm mt-3 tableMobilize">
                     <thead class="thead-light ">
                         <tr>
                             <th>نام نقش</th>
@@ -79,6 +79,11 @@
 @section Scripts{
     <script src="~/js/Modal-js/application-role-index.js"></script>
     <script src="~/js/admin-panel.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            //ریسپانسیو کردن جدول-دستور پلاگین
+            $('table').tableMobilize();
+        });
+    </script>
 }
 

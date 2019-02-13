@@ -1,6 +1,8 @@
 ﻿<!-- we must add_viewImports to the Areas-admin-views as to be recognize by the views in this Area  -->
 <!-- we must use the IEnumerable <> type becaue we defined a list of view Model -->
-@model IEnumerable<UserListViewModel>
+@*@model IEnumerable<UserListViewModel>*@
+
+@model PagingList<UserListViewModel>
 @{
 
     ViewData["Title"] = "لیست کاربران";
@@ -45,7 +47,7 @@
                     </a>
                 </div>
                 <div></div>
-                <table class="mt-3 table table-bordered table-striped table-sm">
+                <table class="mt-3 table table-bordered table-striped table-sm tableMobilize">
                     <thead class="thead-light">
                         <tr>
                             <th>نام و نام خانوادگی</th>
@@ -76,7 +78,12 @@
                     </tbody>
                 </table>
 
+            </div>
 
+            <div class="row justify-content-center">
+                <nav>
+                    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+                </nav>
             </div>
         </div>
     </div>
@@ -88,6 +95,11 @@
 
     <script src="~/js/Modal-js/user-index.js"></script>
     <script src="~/js/admin-panel.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            //ریسپانسیو کردن جدول-دستور پلاگین
+            $('table').tableMobilize();
+        });
+    </script>
 
 }

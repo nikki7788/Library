@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Library.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,36 +30,116 @@ namespace Library.Areas.Admin.Controllers
 
         #region############################ Index #############################
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
-            model = (from br in _contex.BorrowRequestedBooks
-                     join b in _contex.Books on br.BookId equals b.BookId
-                     join u in _contex.Users on br.UserId equals u.Id
-                     select new ManageReqestedBookViewModel
-                     {
-                         Id = br.Id,
-                         BookId = br.BookId,
-                         UserId = br.UserId,
-                         UserFullName = u.FirstName + " " + u.LastName,
-                         BookStock = b.BookStock,
-                         BookName = b.BookName,
-                         Flag = br.Flag,
-                         RequestDate = br.RequestDate,
-                         AnswerDate = br.AnswerDate,
-                         ReturnDate = br.ReturnDate,
-                         FlageState = (
-                             br.Flag == 1 ? "درخواست امانت" :
-                             br.Flag == 2 ? "امانت برده" :
-                             br.Flag == 3 ? "رد درخواست" :
-                             br.Flag == 4 ? "برگشت داده" : "نامشخص"
-                         )
-                     }).ToList();
+            //List<ManageReqestedBookViewModel> model = new List<ManageReqestedBookViewModel>();
+            //model = (from br in _contex.BorrowRequestedBooks
+            //         join b in _contex.Books on br.BookId equals b.BookId
+            //         join u in _contex.Users on br.UserId equals u.Id
+            //         select new ManageReqestedBookViewModel
+            //         {
+            //             Id = br.Id,
+            //             BookId = br.BookId,
+            //             UserId = br.UserId,
+            //             UserFullName = u.FirstName + " " + u.LastName,
+            //             BookStock = b.BookStock,
+            //             BookName = b.BookName,
+            //             Flag = br.Flag,
+            //             RequestDate = br.RequestDate,
+            //             AnswerDate = br.AnswerDate,
+            //             ReturnDate = br.ReturnDate,
+            //             FlageState = (
+            //                 br.Flag == 1 ? "درخواست امانت" :
+            //                 br.Flag == 2 ? "امانت برده" :
+            //                 br.Flag == 3 ? "رد درخواست" :
+            //                 br.Flag == 4 ? "برگشت داده" : "نامشخص"
+            //             )
+            //         }).ToList();
+            //return View(model);
 
-            return View(model);
+            var model = (from br in _contex.BorrowRequestedBooks
+                         join b in _contex.Books on br.BookId equals b.BookId
+                         join u in _contex.Users on br.UserId equals u.Id
+                         select new ManageReqestedBookViewModel
+                         {
+                             Id = br.Id,
+                             BookId = br.BookId,
+                             UserId = br.UserId,
+                             UserFullName = u.FirstName + " " + u.LastName,
+                             BookStock = b.BookStock,
+                             BookName = b.BookName,
+                             Flag = br.Flag,
+                             RequestDate = br.RequestDate,
+                             AnswerDate = br.AnswerDate,
+                             ReturnDate = br.ReturnDate,
+                             FlageState = (
+                                 br.Flag == 1 ? "درخواست امانت" :
+                                 br.Flag == 2 ? "امانت برده" :
+                                 br.Flag == 3 ? "رد درخواست" :
+                                 br.Flag == 4 ? "برگشت داده" : "نامشخص"
+                             )
+                         }).AsNoTracking().OrderBy(m => m.Id);
+            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 3, page);
+            return View(modelPaging);
+
         }
         #endregion####################################################
 
+        #region######################## SearchInRequset Aync ##############################
+        public async Task<IActionResult> SearchInRequestAsync(string bookSearch, string fromDate, string toDate, int page = 1)
+        {
+            var model = (from br in _contex.BorrowRequestedBooks
+                         join b in _contex.Books on br.BookId equals b.BookId
+                         join u in _contex.Users on br.UserId equals u.Id
+                         select new ManageReqestedBookViewModel
+                         {
+                             Id = br.Id,
+                             BookId = br.BookId,
+                             UserId = br.UserId,
+                             UserFullName = u.FirstName + " " + u.LastName,
+                             BookStock = b.BookStock,
+                             BookName = b.BookName,
+                             Flag = br.Flag,
+                             RequestDate = br.RequestDate,
+                             AnswerDate = br.AnswerDate,
+                             ReturnDate = br.ReturnDate,
+                             FlageState = (
+                                 br.Flag == 1 ? "درخواست امانت" :
+                                 br.Flag == 2 ? "امانت برده" :
+                                 br.Flag == 3 ? "رد درخواست" :
+                                 br.Flag == 4 ? "برگشت داده" : "نامشخص"
+                             )
+                         }).AsNoTracking().OrderBy(m => m.Id);
+            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 3, page);
+            if (bookSearch != null)
+            {
+                bookSearch = bookSearch.TrimEnd().TrimStart();
+                model = model.Where(m => m.BookName.Contains(bookSearch)).AsNoTracking().OrderBy(m => m.Id);
+                modelPaging = await PagingList.CreateAsync(model, 3, page);
+            }
+            if (fromDate != null && toDate == null)
+            {
+                model = model.Where(m => m.RequestDate.CompareTo(fromDate) >= 0).AsNoTracking().OrderBy(m => m.Id);
+                modelPaging = await PagingList.CreateAsync(model, 3, page);
+
+            }
+            if (fromDate != null && toDate != null)
+            {
+                model = model.Where(m => m.RequestDate.CompareTo(fromDate) >= 0 && m.RequestDate.CompareTo(toDate) <= 0).AsNoTracking().OrderBy(m => m.Id);
+                modelPaging = await PagingList.CreateAsync(model, 3, page);
+
+            }
+            if (toDate != null && fromDate == null)
+            {
+                model = model.Where(m => m.RequestDate.CompareTo(toDate) <= 0).AsNoTracking().OrderBy(m => m.Id);
+                modelPaging = await PagingList.CreateAsync(model, 3, page);
+
+            }
+            return View("Index", modelPaging);
+
+        }
+        #endregion##################################################
+       
         #region############################ RejectRequest Get #############################
         [HttpGet]
         public IActionResult RejectRequest(int id)
@@ -157,7 +239,7 @@ namespace Library.Areas.Admin.Controllers
         {
             using (var db = _iServicePovider.GetRequiredService<ApplicationDbContext>())
             {
-                
+
                 //string DateString = "1396/12/19";
                 //IFormatProvider culture = new CultureInfo("fa-Ir", true);
                 //DateTime dateVal = DateTime.ParseExact(DateString, "yyyy/MM/dd", culture);

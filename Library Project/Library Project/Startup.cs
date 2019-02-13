@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 
 namespace Library
 {
@@ -46,8 +47,15 @@ namespace Library
             services.AddMvc();
             //for using auto Mapper
             services.AddAutoMapper();
-
             //Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
+
+            //pagination         برای صفحه بندی و مچ کردن با بوت استرپ۴
+            services.AddPaging(options => {
+                options.ViewName = "Bootstrap4";
+                options.HtmlIndicatorDown = " <span>&darr;</span>";
+                options.HtmlIndicatorUp = " <span>&uarr;</span>";
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -101,7 +101,7 @@ table.tableMobilized.table-striped > tbody > tr:nth-of-type(odd) td {
             table.tableMobilize td[data-title]:before {
                 content: attr(data-title) ": ";
                 /* رنگ تیتر جدول درسایز موبایل   th*/
-                color: #f00;
+                color: #555;
             }
 
             table.tableMobilize th[data-title]:first-child:before {

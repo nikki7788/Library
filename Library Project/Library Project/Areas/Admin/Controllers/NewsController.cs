@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,63 +29,94 @@ namespace Library.Areas.Admin.Controllers
             _appEnvironment = appEnvironment;
         }
         #region######################## Index ###################################
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            List<News> model = new List<News>();
-            model = _context.News.Select(n => new News
+            //List<News> model = new List<News>();
+            //model = _context.News.Select(n => new News
+            //{
+            //    NewsId = n.NewsId,
+            //    NewsTitle = n.NewsTitle,
+            //    NewsContent = n.NewsContent,
+            //    NewsDate = n.NewsDate,
+            //    NewsImage = n.NewsImage
+            //}).ToList();
+            var model = _context.News.Select(n => new News
             {
                 NewsId = n.NewsId,
                 NewsTitle = n.NewsTitle,
                 NewsContent = n.NewsContent,
                 NewsDate = n.NewsDate,
                 NewsImage = n.NewsImage
-            }).ToList();
+            }).AsNoTracking().OrderBy(n => n.NewsId);
+            PagingList < News > modelPaging= await PagingList.CreateAsync(model, 3, page);
+
             ViewBag.imgPath = "/upload/normalimage/";
-            return View(model);
+
+            // return View(model);
+            return View(modelPaging);
         }
         #endregion#####################
 
         #region ####################### Search ####################################
-        public IActionResult SearchNews(string fromDate, string toDate, string newsTitleSearch)
+        public async Task<IActionResult> SearchNewsAsync(string fromDate, string toDate, string newsTitleSearch,int page=1)
         {
-            List<News> model = new List<News>();
-            model = _context.News.Select(n => new News
+            //List<News> model = new List<News>();
+            //model = _context.News.Select(n => new News
+            //{
+            //    NewsId = n.NewsId,
+            //    NewsTitle = n.NewsTitle,
+            //    NewsContent = n.NewsContent,
+            //    NewsDate = n.NewsDate,
+            //    NewsImage = n.NewsImage
+            //}).ToList();
+
+            var model = _context.News.Select(n => new News
             {
                 NewsId = n.NewsId,
                 NewsTitle = n.NewsTitle,
                 NewsContent = n.NewsContent,
                 NewsDate = n.NewsDate,
                 NewsImage = n.NewsImage
-            }).ToList();
+            }).AsNoTracking().OrderBy(n => n.NewsId);
+            PagingList<News> modelPaging =await PagingList.CreateAsync(model, 4, page);
 
             //  برای مقایسه رشته ها بکارمیرودبراساس کد اسکی حروف مقایسه میکند ومقدار عدد برمیگرداند 0 1 -1  compareto
             //صفر یعنی مقایسه برابر است   یک یعنی بزرگتر و منفی یک یعنی کوچکتر
             if (fromDate != null && toDate == null)
             {
                 //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ های کوچکتر و قبل از تاریخ ارسالی از سرچ را می اورد   compareto 
-                model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0).ToList();
+                //model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0).ToList();
+
+                model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0).OrderBy(n => n.NewsId);
+                modelPaging =await PagingList.CreateAsync(model, 4, page);
             }
 
             if (toDate != null && fromDate == null)
             {
                 //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ های بعد و بزرگتر از تاریخ ارسالی را میاورد   compareto 
-                model = model.Where(n => n.NewsDate.CompareTo(toDate) <= 0).ToList();
+                //model = model.Where(n => n.NewsDate.CompareTo(toDate) <= 0).ToList();
+
+                model = model.Where(n => n.NewsDate.CompareTo(toDate) <= 0).OrderBy(n=>n.NewsId);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
             }
 
-            if (toDate != null && fromDate != null)
-            {
-                //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ بین تاریخ های ارسالی را می اورد   compareto 
-                model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0 && n.NewsDate.CompareTo(toDate) <= 0).ToList();
-            }
+        //    if (toDate != null && fromDate != null)
+        //    {
+        //        //    //  مقایسه میکند تاریخ های موجود درسرور را با تارخ ارسالی و تاریخ بین تاریخ های ارسالی را می اورد   compareto 
+        //        //    model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0 && n.NewsDate.CompareTo(toDate) <= 0).ToList();
+        //        model = model.Where(n => n.NewsDate.CompareTo(fromDate) >= 0 && n.NewsDate.CompareTo(toDate) <= 0).OrderBy(n => n.NewsId);
+        //        modelPaging =await PagingList.CreateAsync(model, 4, page);
+
+        //}
 
             if (newsTitleSearch != null)
             {
                 newsTitleSearch = newsTitleSearch.TrimEnd().TrimStart();
-                model = model.Where(n => n.NewsTitle.Contains(newsTitleSearch)).ToList();
+                model = model.Where(n => n.NewsTitle.Contains(newsTitleSearch)).OrderBy(n=>n.NewsId);
             }
 
             ViewBag.imgPath = "/upload/normalimage/";
-            return View("Index",model);
+            return View("Index", modelPaging);
         }
 
 
@@ -123,7 +156,14 @@ namespace Library.Areas.Admin.Controllers
 
             return PartialView("_AddEdiNewsPartial", model);
         }
-
+        /// <summary>
+        /// llll
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="NEwsId"></param>
+        /// <param name="imgName"></param>
+        /// <param name="files"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddEditNews(News model, int NEwsId, string imgName, IEnumerable<IFormFile> files)
         {

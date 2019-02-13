@@ -26,6 +26,8 @@ namespace Library.Models
 
         public DbSet<BorrowRequestedBook> BorrowRequestedBooks { get; set; }
 
+        public DbSet<TransactionPayment> TransactionPayments { get; set; }
+
         #endregion##################################################################################################
     }
 }

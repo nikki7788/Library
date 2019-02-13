@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
 
 namespace Library.Areas.Admin.Controllers
 {
@@ -29,15 +30,15 @@ namespace Library.Areas.Admin.Controllers
         #endregion #####---------------------------------------- ######
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             //  include   بادستور
             //ما تزریق انجام داده ایم و باید حتا اسینکرون بشد
             //وبااین دستور پراپرتی آی کالکشن و ویرچوال کتاب را که تعریف کرده بودیم در جدول گروه بندی به ان دسترسی داریم 
             //یعنی به اطلاعات کتاب دسترسی داریم دراینجا الان
             //بقیه پراپرتی ها را هم خودش مقداردهی میکند
-            var model = await _context.BookGroups.Include(bg => bg.Books).ToListAsync();
-            return View(model);
+            //var model = await _context.BookGroups.Include(bg => bg.Books).ToListAsync();
+            //return View(model);
             //or
 
             //List<BookGroup> model = new List<BookGroup>();
@@ -48,19 +49,30 @@ namespace Library.Areas.Admin.Controllers
             //    BookGroupDescription = bg.BookGroupDescription
             //}).ToList();
             //return View(model);
+
+            var model =  _context.BookGroups.AsNoTracking().Include(b => b.Books).OrderBy(bg=>bg.BookGroupId);
+            PagingList<BookGroup> modelPaging =await PagingList.CreateAsync(model, 2, page);
+            return View(modelPaging);
         }
 
-        public async Task<IActionResult> SearchBookGroup(string bookGroupSearch) {
+        public async Task<IActionResult> SearchBookGroup(string bookGroupSearch,int page=1) {
 
-            var model = _context.BookGroups.Include(bg => bg.Books);
-            
-            if (bookGroupSearch != null)
+            //var model = _context.BookGroups.Include(bg => bg.Books);
+            //if (bookGroupSearch != null)
+            //{
+            //    bookGroupSearch = bookGroupSearch.TrimEnd().TrimStart();
+            //     model = model.Where(bg=>bg.BookGroupName.Contains(bookGroupSearch)).Include(bg => bg.Books);
+            //}
+            //return View("Index",await model.ToListAsync());
+
+            var model = _context.BookGroups.AsNoTracking().Include(b => b.Books).OrderBy(bg => bg.BookGroupId);
+            PagingList<BookGroup> modelPaging = await PagingList.CreateAsync(model, 2, page);
+            if (bookGroupSearch!=null)
             {
-                bookGroupSearch = bookGroupSearch.TrimEnd().TrimStart();
-                 model = model.Where(bg=>bg.BookGroupName.Contains(bookGroupSearch)).Include(bg => bg.Books);
-
+                model= _context.BookGroups.Where(bg=>bg.BookGroupName.Contains(bookGroupSearch)).OrderBy(bg => bg.BookGroupId);
             }
-            return View("Index",await model.ToListAsync());
+            return View(modelPaging);
+
         }
 
 

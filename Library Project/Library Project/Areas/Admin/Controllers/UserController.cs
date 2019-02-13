@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 namespace Library.Area.Admin.Controllers
 {
@@ -24,45 +26,66 @@ namespace Library.Area.Admin.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
-
+        #region ############### Index# #######################
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page=1)
         {
             //creating a list of view model
-            List<UserListViewModel> model = new List<UserListViewModel>();
+            //List<UserListViewModel> model = new List<UserListViewModel>();
 
             //at first we go to the  database(_userManager)-Users' Table and then selcting properties of Users' table and
             //converting them to the view model type(u => new UserListViewModel) after that put them in properties of vie model(e.g.: Id = u.Id)
             //u => refer to Users table
-            model = _userManager.Users.Select(u => new UserListViewModel
+            //model = _userManager.Users.Select(u => new UserListViewModel
+            //{
+            //    Id = u.Id,
+            //    Name = u.FirstName + " " + u.LastName,     //نمایش نام و نام خانوادگی کاربر باهم
+            //    Email = u.Email
+            //}).ToList();
+            //return View(model);
+
+            var model = _userManager.Users.Select(u => new UserListViewModel
             {
                 Id = u.Id,
                 Name = u.FirstName + " " + u.LastName,     //نمایش نام و نام خانوادگی کاربر باهم
                 Email = u.Email
-            }).ToList();
-
-            return View(model);
+            }).AsNoTracking().OrderBy(u => u.Id);
+            PagingList<UserListViewModel> modelPaging =await PagingList.CreateAsync(model,3,page);
+            return View(modelPaging);
         }
+        #endregion######################
 
-        public IActionResult SearchUser(string userSearch)
+        #region ###################### SearchUser##########################        
+      
+        public async Task<IActionResult> SearchUser(string userSearch,int page=1)
         {
-            List<UserListViewModel> model = new List<UserListViewModel>();
-            model = _userManager.Users.Select(u => new UserListViewModel
+            //List<UserListViewModel> model = new List<UserListViewModel>();
+            //model = _userManager.Users.Select(u => new UserListViewModel
+            //{
+            //    Id = u.Id,
+            //    Name = u.FirstName + " " + u.LastName,     //نمایش نام و نام خانوادگی کاربر باهم
+            //    Email = u.Email
+            //}).ToList();
+            var model = _userManager.Users.Select(u => new UserListViewModel
             {
                 Id = u.Id,
                 Name = u.FirstName + " " + u.LastName,     //نمایش نام و نام خانوادگی کاربر باهم
                 Email = u.Email
-            }).ToList();
+            }).AsNoTracking().OrderBy(u => u.Id);
+            PagingList<UserListViewModel> modelPaging = await PagingList.CreateAsync(model, 3, page);
+
             //ااگر عبارتی در ر سرچ باکس ووجود داشتت   
             if (userSearch != null)
             {
                 userSearch = userSearch.TrimEnd().TrimStart();
                 //براساس عبارت داخل سرچ باکس فیلتر میکند مواذد نمایش داه شده در ویو را
-                model = model.Where(u => u.Name.Contains(userSearch)).ToList(); 
+                model = model.Where(u => u.Name.Contains(userSearch)).AsNoTracking().OrderBy(u=>u.Id);
+                modelPaging = await PagingList.CreateAsync(model, 3, page);
             }
-            return View("Index", model);
+            //return View("Index", model);
+            return View("Index", modelPaging);
         }
-
+  #endregion############################################
 
         [HttpGet]
         public IActionResult AddUser()
