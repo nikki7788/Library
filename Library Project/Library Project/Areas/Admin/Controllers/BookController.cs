@@ -105,7 +105,8 @@ namespace Library.Areas.Admin.Controllers
                             AuthorId= b.AuthorId,
                             BookGroupId= b.BookGroupId,
                           BookGroupName=   bg.BookGroupName,
-                           AuthorName=  a.AuthorName
+                           AuthorName=  a.AuthorName,
+                           Price=b.Price
                          }).AsNoTracking().OrderBy(b=>b.BookId);
             PagingList<BookListViewModel> modelPaging =await PagingList.CreateAsync(query, 4, page);
 
@@ -116,7 +117,7 @@ namespace Library.Areas.Admin.Controllers
 
         #region####################################### Search Book ##########################################
 
-        public async Task<IActionResult> SearchBook(string BookSearch, string authorSearch, string bookGroupSearch,int page=1)
+        public async Task<IActionResult> SearchBook(string BookSearch, string authorSearch, string bookGroupSearch, int startPrice, int endPrice ,int page=1)
         {
             //List<BookListViewModel> model = new List<BookListViewModel>();
             //var query = (from b in _context.Books
@@ -189,6 +190,19 @@ namespace Library.Areas.Admin.Controllers
             {
                 bookGroupSearch = bookGroupSearch.TrimStart().TrimEnd();
                 model = model.Where(b => b.BookName.Contains(bookGroupSearch)).AsNoTracking().OrderBy(b => b.BookId);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
+
+            }
+            if (startPrice!=endPrice)
+            {
+                model = model.Where(b => b.Price>=startPrice).AsNoTracking().OrderBy(b => b.BookId);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
+
+            }
+            if (endPrice!=0)
+            {
+                bookGroupSearch = bookGroupSearch.TrimStart().TrimEnd();
+                model = model.Where(b => b.Price <= startPrice).AsNoTracking().OrderBy(b => b.BookId);
                 modelPaging = await PagingList.CreateAsync(model, 4, page);
 
             }
@@ -273,6 +287,8 @@ namespace Library.Areas.Admin.Controllers
                         model.BookId = book.BookId;
                         //برای دریافت نام عکس در مودال و نمایش ان  به کمک ویوبگ
                         model.BookImage = book.BookImage;
+
+                        model.Price = book.Price;
                     }
 
                 }
@@ -821,6 +837,18 @@ namespace Library.Areas.Admin.Controllers
 
 
             ViewBag.imgPath = "/upload/normalimage/";
+
+
+
+            //-------------------یافن و ارسال نام کابر به ویو    نام کاربر و مقدار موجودی کیف پول کاربر را برمیگرداند--------------------
+            ApplicationUser userFullName = (from u in _context.Users
+                                            where u.Id == _userManager.GetUserId(HttpContext.User)
+                                            select u).SingleOrDefault();
+            //   بنویسیم   HttpContext    میتوانیم بدون      GetUserId(User)
+
+            ViewBag.userFullName = userFullName.FirstName + " " + " " + userFullName.LastName;
+            ViewBag.wallet = userFullName.Wallet;
+            //---------------------------------------------------------------------
             return View(model);
         }
 
@@ -892,8 +920,8 @@ namespace Library.Areas.Admin.Controllers
         [Authorize(Roles = "User")]
         public IActionResult BorrowRequesteBook(string userId)
         {
-            //ثبت درخواست کاربر در دیتابیس و منتظر تایید ادمین بود برای تایید و قرض گرفتن
 
+            //ثبت درخواست کاربر در دیتابیس و منتظر تایید ادمین بود برای تایید و قرض گرفتن
             string cookieContent = Request.Cookies["_bb"].ToString();
             string[] bookRequset = cookieContent.Split(",");
             bookRequset = bookRequset.Where(r => r != "").ToArray();

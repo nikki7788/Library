@@ -90,6 +90,8 @@ namespace Library.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
+                    b.Property<long>("Wallet");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -143,6 +145,8 @@ namespace Library.Migrations
                     b.Property<int>("BookStock");
 
                     b.Property<int>("BookViews");
+
+                    b.Property<int>("Price");
 
                     b.HasKey("BookId");
 

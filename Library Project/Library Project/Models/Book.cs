@@ -33,7 +33,9 @@ namespace Library.Models
         public int BookLikeCount { get; set; }             //تعداد لایک
 
         public int BookDislike { get; set; }               // تعداد دیس لایک ها   
-        
+
+        public int Price { get; set; }
+
         #region---------#######-----   ForeignKeys and thier references   --------######-----------###
 
         public int AuthorId { get; set; }

@@ -58,6 +58,7 @@
                             <th>@Html.DisplayNameFor(model => model.AuthorName)</th>
                             <th>@Html.DisplayNameFor(model => model.BookGroupName)</th>
                             <th>@Html.DisplayNameFor(model => model.BookImage)</th>
+                            <th>@Html.DisplayNameFor(model => model.Price)</th>
                             <th>عملیات</th>
                         </tr>
                     </thead>
@@ -70,6 +71,7 @@
 
                                 <td>@item.AuthorName</td>
                                 <td>@item.BookGroupName</td>
+                                <td>@item.Price</td>
                                 <td>
                                     <img src="@ViewBag.rootPath@item.BookImage" alt="bookImg" class="img-fluid img-thumbnail img" style="width:80px;height:80px" />
                                 </td>

@@ -1,0 +1,69 @@
+﻿
+@model TransactionPayment
+@{
+    ViewData["Tite"] = "شارژ کیف پول";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row w-100 ">
+    <!--پنل ادمین-->
+    <div class="col-md-4 mr-lg-0 mr-sm-0 mr-md-0 mr-3"> @await Html.PartialAsync("_UserPanelPartial")  </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-8 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-light">لیست درخواست ها</div>
+            <div class="card-body">
+
+            
+
+                <form asp-controller="PaymentTransaction" asp-action="Payment" method="post">
+                    <div class="form-group row justify-content-center">
+                        <label asp-for="Amount" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="Amount" class="form-control" />
+                            @*<span asp-validation-for="Amount" class="text-danger"></span>*@
+                            <!--نمایش خطای ارسال شده از اکشن و ویومدل-->
+                            <span class="text-danger">@Html.ValidationMessage("AmountError")</span>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center ">
+                        <label asp-for="Email" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="Email " class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center ">
+                        <label asp-for="Mobile" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="Mobile" class="form-control" />
+                            <span asp-validation-for="Mobile " class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row justify-content-center ">
+                        <label asp-for="Description" class="form-control-lable col-md-4 font-weight-bold"></label>
+                        <div class="col-md-5">
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description " class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!--برای اینکه همتراز با اینپوت ها باشد داخل دیو مانند انها قرار دادیم-->
+                    <div class="form-group row justify-content-center">
+                        <div class=" col-md-4"></div>
+                        <div class="col-md-5">
+                            <button type="submit" class="btn btn-success text-center w-100 font-weight-bold">تایید</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/admin-panel.js"></script>
+}

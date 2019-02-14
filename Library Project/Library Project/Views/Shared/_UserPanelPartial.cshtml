@@ -1,8 +1,21 @@
 ﻿
 <div class=" menu">
     <ul class="my-2 p-1">
-        <li ><span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">نام و نام خانوادگی کاربر:
-             </span><span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.userFullName</span></li>
+        <li>
+            <span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">
+                نام و نام خانوادگی کاربر:
+            </span>
+            <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.userFullName</span>
+        </li>
+        <li>
+            <span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">
+                موجودی کیف پول :
+            </span>
+            <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.wallet</span>
+
+            <span class="text-secondary font-weight-bold ml-2 col-md-6 " style="font-size:12px;">تومان</span>
+        </li>
+
     </ul>
     <ul>
         <li class="dashboard ">داشبورد</li>
@@ -14,7 +27,7 @@
                 </span>
                 <i class="fa fa-times "></i>
             </a>
-            <ul >
+            <ul>
                 <li><a asp-controller="UserProfile" asp-action="Index" class="py-3">مدیریت درخواست ها</a></li>
             </ul>
         </li>
@@ -25,7 +38,9 @@
                 <i class="fa fa-plus"></i>
             </a>
             <ul>
+                <li><a asp-controller="PaymentTransaction" asp-action="Payment" class="py-3">شارژحساب</a></li>
                 <li><a asp-controller="UserProfile" asp-action="ChangeUserPass" class="py-3">تغییر رمزعبور</a></li>
+
             </ul>
         </li>
     </ul>

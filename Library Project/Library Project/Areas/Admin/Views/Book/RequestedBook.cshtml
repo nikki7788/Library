@@ -13,9 +13,32 @@
 <div id="main-div">
     <!--start row-->
     <div class="row clearfix ">
+        
         <!-------------------------------start main-right-panel-------------------------------------------------->
         <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 
+            <!-------------------------------start wallet & user fullName -------------------------------------------------->
+
+            <div class="my-2 p-1 divStyle">
+                <div>
+                    <span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">
+                        نام و نام خانوادگی کاربر:
+                    </span>
+                    <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.userFullName</span>
+                </div>
+                <br />
+                <br />
+                <div>
+                    <span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">
+                        موجودی کیف پول :
+                    </span>
+                    <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.wallet</span>
+
+                    <span class="text-secondary font-weight-bold ml-2 col-md-6 " style="font-size:12px;">تومان</span>
+                </div>
+
+            </div>
+            <!-------------------------------end  wallet & user fullName -------------------------------------------------->
             <!---------------------------start right-panel-lastnews---------------------------------------------->
             <div id="right-panel-lastnews">
                 @Html.Partial("_LastNewsPartial", Model.LastNews)

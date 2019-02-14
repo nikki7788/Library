@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Tite"] = "تراکنش موفق";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row w-100 ">
+    <!--پنل ادمین-->
+    <div class="col-md-4 mr-lg-0 mr-sm-0 mr-md-0 mr-3"> @await Html.PartialAsync("_UserPanelPartial")  </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-8 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        <div class="card mt-3">
+            <div class="card-header bg-success text-light">عملیات موفق</div>
+            <div class="card-body">
+                <div class="text-center p-1">
+                    <h4 class="text-success text-justify p-1 ">تراکنش با موفقیت انجام شد.</h4>
+                    <div>
+                        <table class="table table-bordered table-success table-sm tableMobilize">
+                            <tbody>
+                                <tr>
+                                    <td>شماره تراکنش</td>
+                                    <td>@ViewBag.TransactionNo</td>
+                                </tr>
+
+                                <tr>
+                                    <td>مبلغ تراکنش</td>
+                                    <td>@ViewBag.Amount</td>
+                                </tr>
+
+                                <tr>
+                                    <td>تاریخ تراکنش</td>
+                                    <td>@ViewBag.TransactionDate</td>
+                                </tr>
+
+                                <tr>
+                                    <td>زمان تراکنش</td>
+                                    <td>@ViewBag.TransactionTime</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/admin-panel.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //ریسپانسیو کردن جدول-دستور پلاگین
+            $('table').tableMobilize();
+        });
+    </script>
+}

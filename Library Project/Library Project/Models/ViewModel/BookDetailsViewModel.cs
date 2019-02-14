@@ -38,6 +38,9 @@ namespace Library.Models.ViewModel
         [Display(Name = "گروه بندی کتاب")]
         public string BookGroupName { get; set; }
 
+        [Display(Name = "قیمت کتاب")]
+        public int Price { get; set; }
+
         public int AuthorId { get; set; }
 
         public int BookGroupID { get; set; }
