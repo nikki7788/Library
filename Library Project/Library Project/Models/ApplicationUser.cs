@@ -13,5 +13,7 @@ namespace Library.Models
         public string LastName { get; set; }
 
         public byte Gender { get; set; }
+
+        public long Wallet { get; internal set; }
     }
 }

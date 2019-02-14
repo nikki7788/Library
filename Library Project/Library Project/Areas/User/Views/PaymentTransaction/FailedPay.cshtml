@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Tite"] = "تراکنش ناموفق";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row w-100 ">
+    <!--پنل ادمین-->
+    <div class="col-md-4 mr-lg-0 mr-sm-0 mr-md-0 mr-3"> @await Html.PartialAsync("_UserPanelPartial")  </div>
+    <!--برای اینکه کنار پنل داشبورد بیفتد-->
+    <div class="col-md-8 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+        <div class="card mt-3">
+            <div class="card-header bg-danger text-light">عملیات ناموفق</div>
+            <div class="card-body">
+                <div class="text-center p-1">
+                    <h4 class="text-danger text-justify p-1 "> عملیات پرداخت ناموفق بود. در صورتی که مبلغی از حساب شما کسر شده است ظرف مدت 72 ساعت به حساب شما برگشت داده خواهد شد.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/admin-panel.js"></script>
+}

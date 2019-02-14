@@ -1,6 +1,9 @@
 ﻿
 @model AddEditBookViewModel
 
+<!--برای اپلود تصویر باید از اتریبیوت هعای 
+    encripte & method=post
+    استفاده کرد-->
 <form method="post" enctype="multipart/form-data">
 
     <!--Modal Header-->
@@ -68,6 +71,14 @@
             </div>
         </div>
 
+        <div class="form-group row">
+            <label asp-for="Price" class="col-3 col-form-label"></label>
+            <div class="col-9">
+                <input asp-for="Price" class="form-control" />
+                <span class="text-danger" asp-validation-for="Price"></span>
+            </div>
+        </div>
+
         <!-- Uploding files -->
         <div class="form-group row">
             <label asp-for="BookImage" class="col-3 col-form-label"></label>
@@ -80,18 +91,18 @@
                     {
                         <!-- we are in updating mode-->
                         <!-- showin book picture from action-->
-                       <img src=" @ViewBag.imgRoot@Model.BookImage" alt="bookImg" class="img-fluid img-thumbnail" style="border:solid 1px" />
+                        <img src=" @ViewBag.imgRoot@Model.BookImage" alt="bookImg" class="img-fluid img-thumbnail" style="border:solid 1px" />
 
                         //      نام تصویر را اگر در حالت ویرایش تصویری را انتخاب نکردیم به اکشن مورد نطر که
-                        //  است میفرستد تا در پراپرتی نام تصویر دوباره ذخیره شود و تصویر پیش فرض  قرار نگیرد AddEditBook 
-                       <input type="hidden" name="imgName" value="@Model.BookImage" />
+                        //  است میفرستد تا در پراپرتی نام تصویر دوباره ذخیره شود و تصویر پیش فرض  قرار نگیرد AddEditBook
+                        <input type="hidden" name="imgName" value="@Model.BookImage" />
                     }
 
                 </div>
 
             </div>
         </div>
-       
+
         <div class="form-group row">
         </div>
 

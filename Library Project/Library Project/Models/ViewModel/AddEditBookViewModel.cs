@@ -31,6 +31,10 @@ namespace Library.Models.ViewModel
         //  [Required(ErrorMessage = "لطفا تعداد صفخات کتاب را وارد کنید")]
         public int BookPageCount { get; set; }
 
+
+        [Display(Name = "قیمت کتاب")]
+        [Required(ErrorMessage = "قیمت کناب را وارد کنید.توجه کنید مبلغ قیمت کتاب حتماباید بیش از 100 تومان باشد")]
+        public int Price { get; set; }
         #region###############----- Dropdown list--######################
 
         [Display(Name = "گروه بندی کتاب")]

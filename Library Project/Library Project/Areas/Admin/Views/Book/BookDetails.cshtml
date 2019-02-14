@@ -76,6 +76,10 @@
                                 </div>
                                 <br />
                                 <div class="">
+                                    <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.Price) :</span><span> @item.Price</span>
+                                </div>
+                                <br />
+                                <div class="">
                                     <span class="font-weight-bold"> @Html.DisplayNameFor(model => item.BookViews) :</span><span> @item.BookViews</span>
                                 </div>
                                 <br />
@@ -93,7 +97,7 @@
                                     <!--------------------------------------->
                                     <!--without ajx-->
                                     @* <a  asp-controller="Book" asp-action="Like" asp-route-id="@item.BookId" class="btnlike">*@
-                                    <!--without ajx-->
+                                    <!--with ajx-->
                                     <a id="btn-like">
                                         <i class="fa fa-thumbs-up btn btn-success"></i>
                                     </a>
