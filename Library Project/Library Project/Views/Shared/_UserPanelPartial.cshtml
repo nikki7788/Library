@@ -11,7 +11,8 @@
             <span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">
                 موجودی کیف پول :
             </span>
-            <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.wallet</span>
+            <!--نمایش عدد سه تا سه تا   ToString("#,##0")-->
+            <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.wallet.ToString("#,##0")</span>
 
             <span class="text-secondary font-weight-bold ml-2 col-md-6 " style="font-size:12px;">تومان</span>
         </li>

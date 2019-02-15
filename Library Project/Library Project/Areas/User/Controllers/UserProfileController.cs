@@ -192,12 +192,13 @@ namespace Library.Area.User.Controllers
         [HttpGet]
         public IActionResult ChangeUserPass()
         {
-            //-------------------یافن و ارسال نام کابر به ویو برای نمایش--------------------
+            //نام کاربر و مقدار موجودی کیف پول کاربر را برمیگرداند--------------------------------------------
             ApplicationUser userFullName = (from u in _context.Users
                                             where u.Id == _userManager.GetUserId(HttpContext.User)
                                             select u).SingleOrDefault();
+            ViewBag.wallet = userFullName.Wallet;
             ViewBag.userFullName = userFullName.FirstName + " " + " " + userFullName.LastName;
-            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------------------
             return View();
 
         }

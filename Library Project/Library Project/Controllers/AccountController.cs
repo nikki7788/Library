@@ -68,6 +68,15 @@ namespace Library.Controllers
 
         public async Task<IActionResult> LogOut()
         {
+
+            //برای عدم نمایش لیست کتاب های درخواستی کابر برای دیگرکاربران 
+            //بعد از لاگ اوت کوکی درخواست کتاب حذف میشود و خود کابر هم با لاگین کردن لیستی ندارد
+            if (Request.Cookies["_bb"] !=null)
+            {
+                Response.Cookies.Delete("_bb");
+            }
+
+
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }

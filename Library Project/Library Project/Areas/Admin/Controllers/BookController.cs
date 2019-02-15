@@ -41,7 +41,7 @@ namespace Library.Areas.Admin.Controllers
         #region ################################ Index #################################
         //--------------------------------************* index ***********--------------------------------------------------------
         [HttpGet]
-        public async Task<IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1)
         {
             //List<BookListViewModel> model = new List<BookListViewModel>();
             //var query = from b in _context.Books
@@ -98,17 +98,17 @@ namespace Library.Areas.Admin.Controllers
                          on b.BookGroupId equals bg.BookGroupId
                          select new BookListViewModel
                          {
-                            BookId =b.BookId,
-                           BookName=  b.BookName,
-                         BookPageCount=    b.BookPageCount,
-                            BookImage= b.BookImage,
-                            AuthorId= b.AuthorId,
-                            BookGroupId= b.BookGroupId,
-                          BookGroupName=   bg.BookGroupName,
-                           AuthorName=  a.AuthorName,
-                           Price=b.Price
-                         }).AsNoTracking().OrderBy(b=>b.BookId);
-            PagingList<BookListViewModel> modelPaging =await PagingList.CreateAsync(query, 4, page);
+                             BookId = b.BookId,
+                             BookName = b.BookName,
+                             BookPageCount = b.BookPageCount,
+                             BookImage = b.BookImage,
+                             AuthorId = b.AuthorId,
+                             BookGroupId = b.BookGroupId,
+                             BookGroupName = bg.BookGroupName,
+                             AuthorName = a.AuthorName,
+                             Price = b.Price
+                         }).AsNoTracking().OrderBy(b => b.BookId);
+            PagingList<BookListViewModel> modelPaging = await PagingList.CreateAsync(query, 4, page);
 
             ViewBag.rootPath = "/upload/thumbnailimage/";
             return View(modelPaging);
@@ -117,7 +117,7 @@ namespace Library.Areas.Admin.Controllers
 
         #region####################################### Search Book ##########################################
 
-        public async Task<IActionResult> SearchBook(string BookSearch, string authorSearch, string bookGroupSearch, int startPrice, int endPrice ,int page=1)
+        public async Task<IActionResult> SearchBook(string BookSearch, string authorSearch, string bookGroupSearch, int startPrice, int endPrice, int page = 1)
         {
             //List<BookListViewModel> model = new List<BookListViewModel>();
             //var query = (from b in _context.Books
@@ -176,8 +176,8 @@ namespace Library.Areas.Admin.Controllers
             if (BookSearch != null)
             {
                 BookSearch = BookSearch.TrimStart().TrimEnd();
-                model = model.Where(b => b.BookName.Contains(BookSearch)).OrderBy(b=>b.BookId);
-                modelPaging= await PagingList.CreateAsync(model, 4, page);
+                model = model.Where(b => b.BookName.Contains(BookSearch)).OrderBy(b => b.BookId);
+                modelPaging = await PagingList.CreateAsync(model, 4, page);
             }
             if (authorSearch != null)
             {
@@ -193,13 +193,13 @@ namespace Library.Areas.Admin.Controllers
                 modelPaging = await PagingList.CreateAsync(model, 4, page);
 
             }
-            if (startPrice!=endPrice)
+            if (startPrice != endPrice)
             {
-                model = model.Where(b => b.Price>=startPrice).AsNoTracking().OrderBy(b => b.BookId);
+                model = model.Where(b => b.Price >= startPrice).AsNoTracking().OrderBy(b => b.BookId);
                 modelPaging = await PagingList.CreateAsync(model, 4, page);
 
             }
-            if (endPrice!=0)
+            if (endPrice != 0)
             {
                 bookGroupSearch = bookGroupSearch.TrimStart().TrimEnd();
                 model = model.Where(b => b.Price <= startPrice).AsNoTracking().OrderBy(b => b.BookId);
@@ -550,7 +550,7 @@ namespace Library.Areas.Admin.Controllers
             //--------------------------نمایش اخرین خبرهای ثبت شده---------------------------------------------------
             //model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
             model.LastNews = (from n in _context.News orderby n.NewsId descending select n).Take(6).ToList();
-            //--------------------------نمایش اخرین خبرهای ثبت شده---------------------------------------------------
+            //--------------------------نمایش جزییات کتاب---------------------------------------------------
             model.BookDetails = (from b in _context.Books
                                  join a in _context.Authors on b.AuthorId equals a.AuthorId
                                  join bg in _context.BookGroups on b.BookGroupId equals bg.BookGroupId
@@ -567,7 +567,8 @@ namespace Library.Areas.Admin.Controllers
                                      BookLikeCount = b.BookLikeCount,
                                      BookDislike = b.BookDislike,
                                      BookStock = b.BookStock,
-                                     BookViews = b.BookViews
+                                     BookViews = b.BookViews,
+                                     Price=b.Price
 
                                  }).ToList();
             //-----------------------------------count views---------------------------------------------
@@ -831,7 +832,9 @@ namespace Library.Areas.Admin.Controllers
                                        select new Book
                                        {
                                            BookId = b.BookId,
-                                           BookName = b.BookName
+                                           BookName = b.BookName,
+                                           Price = b.Price    //بهای کتاب را در جدول نمایش میدهد
+
                                        }).ToList();
             }
 
@@ -894,17 +897,29 @@ namespace Library.Areas.Admin.Controllers
                                            select new Book
                                            {
                                                BookId = b.BookId,
-                                               BookName = b.BookName
+                                               BookName = b.BookName,
+                                               Price = b.Price   //نمایش بهای کتاب
                                            }).ToList();
                 }
                 else
                 {
-                    //اگر کتابی در لیست درخواستی ما وجود نداشته باشد میاید به اکشن ایندکس و کوکی را پاک میکند
+                    //اگر کتابی در لیست درخواستی ما وجود نداشته باشد میاید به اکشن ایندکس و کوکی را پاک میکند تا صفحه در لیست شما کتابی وجود ندارد را نمایش دهد
                     Response.Cookies.Delete("_bb");
                     return Redirect("/Home/Index");
                 }
 
             }
+            //-------------------یافن و ارسال نام کابر به ویو    نام کاربر و مقدار موجودی کیف پول کاربر را برمیگرداند--------------------
+            ApplicationUser userFullName = (from u in _context.Users
+                                            where u.Id == _userManager.GetUserId(HttpContext.User)
+                                            select u).SingleOrDefault();
+            //   بنویسیم   HttpContext    میتوانیم بدون      GetUserId(User)
+
+            ViewBag.userFullName = userFullName.FirstName + " " + " " + userFullName.LastName;
+            ViewBag.wallet = userFullName.Wallet;
+            //---------------------------------------------------------------------
+
+
 
             model.LastNews = _context.News.OrderByDescending(n => n.NewsId).Take(6).ToList();
             model.LastRegistedUser = _userManager.Users.OrderByDescending(u => u.Id).Take(6).ToList();

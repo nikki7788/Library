@@ -13,7 +13,7 @@
 <div id="main-div">
     <!--start row-->
     <div class="row clearfix ">
-        
+
         <!-------------------------------start main-right-panel-------------------------------------------------->
         <div id="main-right-panel" class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 
@@ -32,7 +32,7 @@
                     <span class="text-secondary font-weight-bold ml-2 col-md-6" style="font-size:12px;">
                         موجودی کیف پول :
                     </span>
-                    <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.wallet</span>
+                    <span class="col-md-6" style="font-size:16px;font-weight:800;color:#e1955f">@ViewBag.wallet.ToString("#,##0")</span>
 
                     <span class="text-secondary font-weight-bold ml-2 col-md-6 " style="font-size:12px;">تومان</span>
                 </div>
@@ -63,24 +63,53 @@
                     <table class="table table-bordered table-hover  table-sm">
                         <thead class="thead-light text-center">
                             <tr class="p-1">
+                                <th>ردیف</th>
                                 <th>شماره کتاب</th>
                                 <th>نام کتاب</th>
+                                <th>بهای  کتاب</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody class="p-1 text-center">
-                            @foreach (var item in Model.RequsetedBook)
-                            {
-                                <tr>
-                                    <td>@item.BookId</td>
-                                    <td>@item.BookName</td>
-                                    <td>
-                                        <a asp-controller="Book" asp-action="DeleteRequestedBook" asp-route-id="@item.BookId" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
+                            @{
+                                int counter = 1; <!--شمارنده-->
+
+                                @foreach (var item in Model.RequsetedBook)
+                                {
+                            <tr>
+                                <td>@(counter++)</td>     <!--نمایش شمارنده -->
+
+                                <td>@item.BookId</td>
+                                <td>@item.BookName</td>
+                                <td>@item.Price.ToString("#,##0")</td> <!--نمایش عدد سه تا سه تا   ToString("#,##0")-->
+                                <td>
+                                    <a asp-controller="Book" asp-action="DeleteRequestedBook" asp-route-id="@item.BookId" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                                }
                             }
                         </tbody>
                     </table>
+
+                    <div class="text-left">
+                        <hr class="bg-dark" />
+
+                        <!--برای نمایش اعداد به صو.رت سه رم سه رقم از دوروش زیر استفاده میتوان کرد-->
+                        @*@string.Format("{0:#,0.00}",totalPrice)     razor page*@
+                        @*@totalPrice.ToString("#,##0,0.00")*@
+                        <!--اگر اعشار را نمیخواهیم باید . 0.00را حذف کنیم
+                            0.00 به جای دوتا صفر هرتعدا رقم اعشار ک میخواهیم نمایش دهیم میگذاریم-->
+
+                        @{
+                            int totalPrice = Model.RequsetedBook.Sum(b => b.Price);
+                        }
+
+                        <span class="text-primary pr-1" style="font-size:14px;font-weight:600">مجموع بهای کتاب ها:</span>
+                        <span class="text-success pr-1 number" style="font-size:14px;font-weight:700">@totalPrice.ToString("#,##0")</span>
+                        <span class="text-secondary pl-1" style="font-size:13px;font-weight:600">تومان</span>
+
+                    </div>
+                    <br />
                     <div>
                         <a id="btn-submit-request" class="btn btn-success text-light" style="width:20%">ثبت کتاب</a>
                         <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-danger text-light" style="width:20%">بازکشت</a>
@@ -147,4 +176,5 @@
 
 
     </script>
+
 }

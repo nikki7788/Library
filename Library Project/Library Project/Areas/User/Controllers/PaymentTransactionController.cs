@@ -176,6 +176,7 @@ namespace Library.Areas.User.Controllers
                         p.Mobile = mobile;
                         p.Email = Email;
 
+                        //ای دی تراکنش را برمیگرداند
                         p.TransactionNo = verification.RefId.ToString();
 
                         //ایدی کابری که لاگین کرده است در واقع کاربری که تراکنش نجام میدهد را مشخص میکند
@@ -186,8 +187,8 @@ namespace Library.Areas.User.Controllers
 
 
                         //شارژ کیف پول
-                        //    یعنی کاربری که الان انلاینه و وصله و داره تراکنش انجام مده  getuserId 
-                        //کیف پ.ل کابر را اپدیت میکند
+                        //  یعنی کاربری که الان انلاینه و وصله و داره تراکنش انجام مده  getuserId 
+                        //کیف پول کابر را اپدیت میکند
                         var updateQuery = (from U in database.Users where U.Id == _userManager.GetUserId(User) select U).SingleOrDefault();
                         updateQuery.Wallet = updateQuery.Wallet + amount;
 
