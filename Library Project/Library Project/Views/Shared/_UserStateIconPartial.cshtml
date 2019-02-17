@@ -13,11 +13,25 @@
                     خوش آمدید.
                 </a>
             </li>
-            <li class="nav-item ">
-                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link text-info font-weight-bold" aria-hidden="true">
-                    پنل کاربری
-                </a>
-            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                //رفتن به پنل کاربری برای ادمین
+                <li class="nav-item ">
+                    <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link text-info font-weight-bold" aria-hidden="true">
+                        پنل کاربری
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("User"))
+            {
+                //رفتن به پنل کاربری برای یوزر
+                <li class="nav-item ">
+                    <a asp-area="User" asp-controller="UserProfile" asp-action="Index" class="nav-link text-info font-weight-bold" aria-hidden="true">
+                        پنل کاربری
+                    </a>
+                </li>
+            }
+
             <li class="nav-item mx-auto">
                 <button type="submit" class="nav-link btn btn-link font-weight-bold" aria-hidden="true" style="text-decoration:none">خروج</button>
             </li>

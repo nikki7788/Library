@@ -184,6 +184,8 @@ namespace Library.Migrations
 
                     b.Property<byte>("Flag");
 
+                    b.Property<int>("Price");
+
                     b.Property<string>("RequestDate");
 
                     b.Property<string>("ReturnDate");

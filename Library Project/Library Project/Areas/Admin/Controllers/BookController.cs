@@ -166,7 +166,8 @@ namespace Library.Areas.Admin.Controllers
                              AuthorId = b.AuthorId,
                              BookGroupId = b.BookGroupId,
                              BookGroupName = bg.BookGroupName,
-                             AuthorName = a.AuthorName
+                             AuthorName = a.AuthorName,
+                             Price=b.Price
                          }).AsNoTracking().OrderBy(b => b.BookId);
             PagingList<BookListViewModel> modelPaging = await PagingList.CreateAsync(model, 4, page);
             //ابتدا براساس نام کتاب میگردد بعد . فیلتر میکند بعد اگر نام نویسنده جست و جو شده باشد 
@@ -568,7 +569,7 @@ namespace Library.Areas.Admin.Controllers
                                      BookDislike = b.BookDislike,
                                      BookStock = b.BookStock,
                                      BookViews = b.BookViews,
-                                     Price=b.Price
+                                     Price = b.Price
 
                                  }).ToList();
             //-----------------------------------count views---------------------------------------------
@@ -933,7 +934,7 @@ namespace Library.Areas.Admin.Controllers
         #region#######################  BorrowRequesteBook  ######################################################
         [AllowAnonymous]
         [Authorize(Roles = "User")]
-        public IActionResult BorrowRequesteBook(string userId)
+        public IActionResult BorrowRequesteBook(string userId, string totalPrice)
         {
 
             //ثبت درخواست کاربر در دیتابیس و منتظر تایید ادمین بود برای تایید و قرض گرفتن
@@ -957,48 +958,87 @@ namespace Library.Areas.Admin.Controllers
                                  join q in query on bo.BookId equals q.BookId
                                  select bo.BookName).ToList();
 
-                //اگر مقدار کویری بزرگتر از فر یعنی کتاب هایی در دیتابیس در جدول درخواست وجود دارد
+                //اگر مقدار کویری بزرگتر از صفر یعنی کتاب هایی در دیتابیس در جدول درخواست وجود دارد
                 if (query.Count() > 0)
                 {
                     return Json(new { status = "warning", message = " قبلا ثبت شده است", rs = qBookName });
                 }
                 //----------------------***********************************-------------------
+
+
+
                 //----------------------------------------------------------------------------
                 //ثبت درخواست کاربر در دیتابیس 
                 using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
-
-                    //بدست آوردن تاریخ شمسی
-                    var currentDate = DateTime.Now;
-                    PersianCalendar persianCalendar = new PersianCalendar();
-                    int year = persianCalendar.GetYear(currentDate);
-                    int month = persianCalendar.GetMonth(currentDate);
-                    int day = persianCalendar.GetDayOfMonth(currentDate);
-                    //0:yyyy/MM/dd این دستوز به شکل زیرعمل میکند
-                    //1397/3/5 ==> 1397/03/05
-                    //اگر سال چهاررقم نباشد یا ماه وروز دورقم ثبت نشده باشد بجایش صفر میکذارد
-                    string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
-
-
-                    for (int i = 0; i < bookRequset.Count(); i++)
+                    //جون داریم روی کیف پول عملیات افزودن یاکم کردن اننجام میدهم از زتنزاکشن استفاده میکنیم که اگر در خطایی در تبت در دیتابیس و عملیات کاستن اتفاقی افتاد
+                    //ویک از کارها انجام نشد کل عملیات برگشت شود
+                    using (var transaction = db.Database.BeginTransaction())
                     {
-                        BorrowRequestedBook bReq = new BorrowRequestedBook
+                        try
                         {
-                            UserId = userId,
-                            BookId = Convert.ToInt32(bookRequset[i]),   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
-                            Flag = 1,
-                            RequestDate = shamsiDate
-                        };
+                            //----------------------***************** کنترل موجودی کیف پول کاربر ******************-------------------
+                            //بررسی اینکه موجودی کیف پول بیش از مجموع بهای کتاب های داخل لیست در خواستی باشد
 
-                        //فقط یک کتاب را ثبت میکند در دیتا بیس اگر چند کتاب در لیست باشد
-                        //bReq.UserId = userId;
-                        //bReq.BookId = Convert.ToInt32(bookRequset[i]);   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
-                        //bReq.Flag = 1;
-                        //bReq.RequestDate = ShamsiDate;
+                            var queryWallet = (from u in db.Users where u.Id == _userManager.GetUserId(User) select u).SingleOrDefault();
 
-                        db.Add(bReq);
+                            if (queryWallet.Wallet < Convert.ToInt32(totalPrice))
+                            {
+                                return Json(new { status = "fail", message = "موجودی کبف پول شما کافی نیست " });
+                            }
+                            //----------------------******************** اگر موجودی کیف پول بیش از مجموع بهای لیست باشد***************-------------------
+                            else
+                            {
+                                //بدست آوردن تاریخ شمسی
+                                var currentDate = DateTime.Now;
+                                PersianCalendar persianCalendar = new PersianCalendar();
+                                int year = persianCalendar.GetYear(currentDate);
+                                int month = persianCalendar.GetMonth(currentDate);
+                                int day = persianCalendar.GetDayOfMonth(currentDate);
+                                //0:yyyy/MM/dd این دستوز به شکل زیرعمل میکند
+                                //1397/3/5 ==> 1397/03/05
+                                //اگر سال چهاررقم نباشد یا ماه وروز دورقم ثبت نشده باشد بجایش صفر میکذارد
+                                string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+
+
+                                for (int i = 0; i < bookRequset.Count(); i++)
+                                {
+                                    BorrowRequestedBook bReq = new BorrowRequestedBook();
+
+                                    bReq.UserId = userId;
+                                    bReq.BookId = Convert.ToInt32(bookRequset[i]);  // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
+                                    bReq.Flag = 1;
+                                    bReq.RequestDate = shamsiDate;
+                                    ////////////////////////  برگرداندن قیمت هر گکتاب /////////////////////////
+                                    int priceQuery = (from b in _context.Books where b.BookId == Convert.ToInt32(bookRequset[i]) select b.Price).SingleOrDefault();
+                                    bReq.Price = priceQuery;
+
+                                    //  var priceQuery = (from b in _context.Books where b.BookId == Convert.ToInt32(bookRequset[i]) select b).SingleOrDefault();
+                                    //bReq.Price = priceQuery.Price;
+                                    ////////////////////////////
+
+
+
+                                    //فقط یک کتاب را ثبت میکند در دیتا بیس اگر چند کتاب در لیست باشد
+                                    //bReq.UserId = userId;
+                                    //bReq.BookId = Convert.ToInt32(bookRequset[i]);   // جون آی دی کاب از نوع عدد است باید درایه ای کوکی به عدد تبدیل شوند
+                                    //bReq.Flag = 1;
+                                    //bReq.RequestDate = ShamsiDate;
+
+                                    db.Add(bReq);
+                                }
+                                queryWallet.Wallet -= Convert.ToInt32(totalPrice);
+                                db.SaveChanges();
+
+                                transaction.Commit();       //اجرای ترنزاکشن همیشه باید بعد از ذخیرهه در دیتابیس باشد
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                            throw;
+                        }
                     }
-                    db.SaveChanges();
                 }
 
                 //----------------------------------------------------------------------------

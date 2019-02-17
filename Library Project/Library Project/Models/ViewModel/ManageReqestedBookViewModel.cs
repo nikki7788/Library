@@ -33,7 +33,10 @@ namespace Library.Models
         public string AnswerDate { get; set; }
 
         [Display(Name ="تاریخ برگشت")]
-        public string ReturnDate { get; set; } 
+        public string ReturnDate { get; set; }
+
+        [Display(Name = "قیمت کتاب")]
+        public int Price { get; set; }
 
 
 

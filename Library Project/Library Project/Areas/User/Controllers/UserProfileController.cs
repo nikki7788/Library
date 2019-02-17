@@ -75,6 +75,7 @@ namespace Library.Area.User.Controllers
                              RequestDate = br.RequestDate,
                              AnswerDate = br.AnswerDate,
                              ReturnDate = br.ReturnDate,
+                             Price=br.Price,
                              //وضعیت درخواست را نمایش می دهد
                              FlageState = (
                                  br.Flag == 1 ? "درخواست امانت" :
@@ -125,6 +126,7 @@ namespace Library.Area.User.Controllers
                              RequestDate = br.RequestDate,
                              AnswerDate = br.AnswerDate,
                              ReturnDate = br.ReturnDate,
+                             Price=br.Price,
                              //وضعیت درخواست را نمایش می دهد
                              FlageState = (
                                  br.Flag == 1 ? "درخواست امانت" :

@@ -72,6 +72,7 @@ namespace Library.Areas.Admin.Controllers
                              RequestDate = br.RequestDate,
                              AnswerDate = br.AnswerDate,
                              ReturnDate = br.ReturnDate,
+                             Price = br.Price,
                              FlageState = (
                                  br.Flag == 1 ? "درخواست امانت" :
                                  br.Flag == 2 ? "امانت برده" :
@@ -79,7 +80,7 @@ namespace Library.Areas.Admin.Controllers
                                  br.Flag == 4 ? "برگشت داده" : "نامشخص"
                              )
                          }).AsNoTracking().OrderBy(m => m.Id);
-            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 3, page);
+            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 5, page);
             return View(modelPaging);
 
         }
@@ -103,6 +104,7 @@ namespace Library.Areas.Admin.Controllers
                              RequestDate = br.RequestDate,
                              AnswerDate = br.AnswerDate,
                              ReturnDate = br.ReturnDate,
+                             Price = br.Price,
                              FlageState = (
                                  br.Flag == 1 ? "درخواست امانت" :
                                  br.Flag == 2 ? "امانت برده" :
@@ -110,36 +112,36 @@ namespace Library.Areas.Admin.Controllers
                                  br.Flag == 4 ? "برگشت داده" : "نامشخص"
                              )
                          }).AsNoTracking().OrderBy(m => m.Id);
-            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 3, page);
+            PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 5, page);
             if (bookSearch != null)
             {
                 bookSearch = bookSearch.TrimEnd().TrimStart();
                 model = model.Where(m => m.BookName.Contains(bookSearch)).AsNoTracking().OrderBy(m => m.Id);
-                modelPaging = await PagingList.CreateAsync(model, 3, page);
+                modelPaging = await PagingList.CreateAsync(model, 5, page);
             }
             if (fromDate != null && toDate == null)
             {
                 model = model.Where(m => m.RequestDate.CompareTo(fromDate) >= 0).AsNoTracking().OrderBy(m => m.Id);
-                modelPaging = await PagingList.CreateAsync(model, 3, page);
+                modelPaging = await PagingList.CreateAsync(model, 5, page);
 
             }
             if (fromDate != null && toDate != null)
             {
                 model = model.Where(m => m.RequestDate.CompareTo(fromDate) >= 0 && m.RequestDate.CompareTo(toDate) <= 0).AsNoTracking().OrderBy(m => m.Id);
-                modelPaging = await PagingList.CreateAsync(model, 3, page);
+                modelPaging = await PagingList.CreateAsync(model, 5, page);
 
             }
             if (toDate != null && fromDate == null)
             {
                 model = model.Where(m => m.RequestDate.CompareTo(toDate) <= 0).AsNoTracking().OrderBy(m => m.Id);
-                modelPaging = await PagingList.CreateAsync(model, 3, page);
+                modelPaging = await PagingList.CreateAsync(model, 5, page);
 
             }
             return View("Index", modelPaging);
 
         }
         #endregion##################################################
-       
+
         #region############################ RejectRequest Get #############################
         [HttpGet]
         public IActionResult RejectRequest(int id)
@@ -178,31 +180,41 @@ namespace Library.Areas.Admin.Controllers
                 var query = db.BorrowRequestedBooks.Where(br => br.Id == id);
                 // var query=(from br in db.BorrowRequestedBooks where br.Id == id select br);
                 var result = query.SingleOrDefault();
-                if (query.Count() > 0)
+
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    if (result != null)
+                    //اگرچنین درخواستی وجود داشت با اید درخواست مورد نظر
+                    if (query.Count() > 0)
                     {
-                        //بدست آوردن تاریخ شمسی
-                        var currentDay = DateTime.Now;
-                        PersianCalendar pcalender = new PersianCalendar();
-                        int year = pcalender.GetYear(currentDay);
-                        int month = pcalender.GetMonth(currentDay);
-                        int day = pcalender.GetDayOfMonth(currentDay);
+                        {
+                            if (result != null)
+                            {
+                                //بدست آوردن تاریخ شمسی
+                                var currentDay = DateTime.Now;
+                                PersianCalendar pcalender = new PersianCalendar();
+                                int year = pcalender.GetYear(currentDay);
+                                int month = pcalender.GetMonth(currentDay);
+                                int day = pcalender.GetDayOfMonth(currentDay);
+                                string shamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
 
-                        string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+                                result.Flag = 3; //درخواست رد شد
+                                result.AnswerDate = shamsiDate;
 
-                        result.Flag = 3; //درخواست رد شد
-                        result.AnswerDate = ShamsiDate;
+                                db.BorrowRequestedBooks.Attach(result);
+                                db.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                            }
+                        }
 
-                        db.BorrowRequestedBooks.Attach(result);
-                        db.Entry(result).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        //برگشت مبلغ به کیف پول کاربر
+                        var returnMoney = (from u in db.Users where u.Id == result.UserId select u).SingleOrDefault();
+                        returnMoney.Wallet += result.Price;
+
                         db.SaveChanges();
+                        transaction.Commit();     //اجرای ترانزاکشن
                     }
-
                 }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
-
         }
         #endregion####################################################
 

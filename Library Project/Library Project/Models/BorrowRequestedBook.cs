@@ -8,7 +8,7 @@ namespace Library.Models
 {
     public class BorrowRequestedBook
     {
-        //برای ثبت درخواست ها در دیتابیس یک جدول ایجاد میکنیم
+        //برای ثبت درخواست هاي کاربر در دیتابیس یک جدول ایجاد میکنیم
 
         [Key]
         public int Id { get; set; }                            //آی دی درخواست
@@ -29,6 +29,9 @@ namespace Library.Models
 
         [Display(Name = "تاریخ برگشت")]
         public string ReturnDate { get; set; }
+
+        [Display(Name = "قیمت کتاب")]
+        public int Price { get; set; }
 
 
     }

@@ -65,6 +65,7 @@
                             <th>ردیف</th>
                             <th>@Html.DisplayNameFor(model => model.BookName)</th>
                             <th>@Html.DisplayNameFor(model => model.FlageState)</th>
+                            <th>@Html.DisplayNameFor(model => model.Price)</th>
                             <th>@Html.DisplayNameFor(model => model.RequestDate)</th>
                             <th>@Html.DisplayNameFor(model => model.AnswerDate)</th>
                             <th>@Html.DisplayNameFor(model => model.ReturnDate)</th>
@@ -102,6 +103,8 @@
 
                                         <td class="bg-primary text-light">@item.FlageState</td>
                                     }
+                                    @*<td>@item.Price</td>*@
+                                    <td>@item.Price.ToString("#,##0")</td>
                                     <td>@item.RequestDate</td>
                                     <td>@item.AnswerDate</td>
                                     <td>@item.ReturnDate</td>
