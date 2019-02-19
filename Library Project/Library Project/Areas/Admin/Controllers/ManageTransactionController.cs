@@ -58,6 +58,7 @@ namespace Library.Areas.Admin.Controllers
         
         public async Task<IActionResult> SearchInTransactionAsync(string fromDate,string toDate,string userFullName, int page = 1)
         {
+            //رکورد های همه کاربران را نمایش میدهد
             var model = (from pt in _context.TransactionPayments
                          join u in _context.Users on pt.UserId equals u.Id
                          select new PaymentTransactionViewModel

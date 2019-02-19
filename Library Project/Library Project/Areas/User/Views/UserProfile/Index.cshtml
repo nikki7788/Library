@@ -13,7 +13,7 @@
         @await Html.PartialAsync("_UserPanelPartial")
     </div>
     <!--برای اینکه کنار پنل داشبورد بیفتد-->
-    <div class=" col-md-8 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
+    <div class=" col-md-8 col-sm-12 mr-lg-0 mr-sm-0 mr-md-0 mr-2">
         <div class="card mt-3">
 
 
@@ -24,7 +24,10 @@
                     <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
                     <div class="col-md-4 col-form-label" style="font-weight:400;"> لیست درخواست ها</div>
                     <div class="col-md-8 my-2 ">
-                        <form asp-controller="UserProfile" asp-action="SearchInUserAsync" method="post">
+                        <!--هم گذاشت  post  گذاشت و       get  متد سرچ را هم میتنوان   -->
+                        <!-- باشد قابلیت بوک مارک دارد و میتوان بقیه اشتراک گذاشت مقدار سرچ در ادرس مرور گر نایش داده منیشود اطلاعات سرچ وارسالی ما به سرور  get    اگر-->
+                        <!-- باشد قابلیت بوک مارک ندارد و نمیتوان بقیه اشتراک گذاشت مقدار سرچ   در ادرس مرور گر نایش داده نمیشود برای ارسال امن اطالعات خوب است ولی در سرچ امنیت هم نیست  post  اگر-->
+                        <form asp-controller="UserProfile" asp-action="SearchInUserAsync" method="get">
                             <div class="row">
                                 <div class="input-group col-md-3">
                                     <div class="input-group-prepend">

@@ -17,6 +17,9 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\sarir\.nuget\packages\newtonsoft.json\10.0.3</PkgNewtonsoft_Json>
+    <PkgVS2012-Javascript-Intellisense Condition=" '$(PkgVS2012-Javascript-Intellisense)' == '' ">C:\Users\sarir\.nuget\packages\vs2012-javascript-intellisense\1.0.712.2147</PkgVS2012-Javascript-Intellisense>
+    <PkgReflectionIT_Analyzer Condition=" '$(PkgReflectionIT_Analyzer)' == '' ">C:\Users\sarir\.nuget\packages\reflectionit.analyzer\1.1.0</PkgReflectionIT_Analyzer>
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\sarir\.nuget\packages\microsoft.codeanalysis.analyzers\1.1.0</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\sarir\.nuget\packages\microsoft.entityframeworkcore.tools\2.0.3</PkgMicrosoft_EntityFrameworkCore_Tools>
     <PkgjQuery Condition=" '$(PkgjQuery)' == '' ">C:\Users\sarir\.nuget\packages\jquery\1.9.0</PkgjQuery>
   </PropertyGroup>

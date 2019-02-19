@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Library.Models;
+using Library.Serviec.AuthorService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -46,7 +47,7 @@ namespace Library
             // Add framework services.
             services.AddMvc();
             //for using auto Mapper
-            services.AddAutoMapper();
+            // services.AddAutoMapper();      //در کور ۲ نیازی به اضافه کردن ایم سرویس نداریم به ورت پیش فرض و توکاروجود دارد
             //Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
 
             //pagination         برای صفحه بندی و مچ کردن با بوت استرپ۴
@@ -56,6 +57,9 @@ namespace Library
                 options.HtmlIndicatorUp = " <span>&uarr;</span>";
             });
 
+
+            //معرفی لایه های سرویس
+            services.AddTransient<IAuthorService, AuthorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

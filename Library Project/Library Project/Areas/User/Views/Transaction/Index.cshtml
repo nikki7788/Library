@@ -1,7 +1,7 @@
 ﻿
 @model PagingList<PaymentTransactionViewModel>
 @{
-    ViewData["Title"] = "گزارش مالی";
+    ViewData["Title"] = "گزارش تراکنش ها";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,21 +9,21 @@
 <link href="~/persiandatepicker/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
 <div class="row w-100 px-sm-2">
     <!--پنل ادمین-->
-    <div class="col-md-4  col-sm-12  mr-lg-0 mr-md-0 mr-sm-0  mr-2">
-        @await Html.PartialAsync("_AdminPanelPartial")
+    <div class="col-lg-4 col-md-4 col-sm-12  mr-lg-0 mr-md-0 mr-sm-0  mr-2">
+        @await Html.PartialAsync("_UserPanelPartial")
     </div>
     <!--برای اینکه کنار پنل داشبورد بیفتد-->
-    <div class="col-md-8  mr-lg-0 mr-sm-0 mr-md-0 mr-2">
-        <div class="card mt-3 ">
+    <div class="col-lg-8 col-md-8 col-sm-12 mr-lg-0 mr-sm-0 mr-md-0 mr-2 ">
+        <div class="card mt-3">
 
             <!--start Header & search box-->
             <div class="card-header bg-primary text-light ">
                 <div class="row justify-content-md-around">
                     <!--   را میدهیم تا متن هم تراز متن اینئوت شود col-form-label-->
-                    <div class="col-md-4 col-form-label" style="font-weight:400;"> لیست تراکنش های مالی</div>
+                    <div class="col-md-4 col-form-label" style="font-weight:400;"> لیست تراکنش ها</div>
                     <div class="col-md-8 my-2 ">
-                        <form asp-controller="ManageTransaction" asp-action="SearchInTransactionAsync" method="post">
-                            <div class="row ">
+                        <form asp-controller="Transaction" asp-action="SearchInTransactionAsync" method="post">
+                            <div class="row">
                                 <div class="input-group col-md-3">
                                     <div class="input-group-prepend">
                                         <span class="btn btn-secondary" id="date4"><i class="far fa-calendar-alt text-light"></i></span>
@@ -32,18 +32,18 @@
                                            aria-describedby="date4">
                                 </div>
 
-                                <div class="input-group col-md-3 ">
-                                    <div class="input-group-prepend ">
-                                        <span class="btn btn-secondary " id="date5"><i class="far fa-calendar-alt text-light"></i></span>
+                                <div class="input-group col-md-3">
+                                    <div class="input-group-prepend">
+                                        <span class="btn btn-secondary" id="date5"><i class="far fa-calendar-alt text-light"></i></span>
                                     </div>
-                                    <input type="text" id="toDate" name="toDate" class="form-control " placeholder="تا تاریخ" aria-label="date5"
+                                    <input type="text" id="toDate" name="toDate" class="form-control" placeholder="تا تاریخ" aria-label="date5"
                                            aria-describedby="date5">
                                 </div>
 
                                 <div class="input-group col-md-6">
                                     <input type="text" id="userFullName" name="userFullName" class="form-control " placeholder="عنوان درخواست..." />
                                     <div class="input-group-prepend ">
-                                        <button type="submit" class="btn btn-success form-control" style="border-radius:5px 0 0 5px !important;"><i class="fa fa-search"></i></button>
+                                        <button type="submit" class="btn btn-success " style="border-radius:5px 0 0 5px !important;"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -54,12 +54,11 @@
             <!--End Header & search box-->
 
             <div class="card-body ">
-                <div></div>
-                <table class="table table-bordered table-striped table-hover table-sm mt-3  tableMobilize d-md-inline ">
+
+                <table class="table table-bordered table-hover mt-3  tableMobilize">
                     <thead class="thead-light ">
                         <tr class="tb-pa">
                             <th>ردیف</th>
-                            <th>@Html.DisplayNameFor(model => model.FullNameUser)</th>
                             <th>@Html.DisplayNameFor(model => model.Amount)</th>
                             <th>@Html.DisplayNameFor(model => model.Description)</th>
                             <th>@Html.DisplayNameFor(model => model.Email)</th>
@@ -76,15 +75,14 @@
 
                             foreach (var item in Model)
                             {
-                                <!--   string setClass = "";
+                                string setClass = "";
                                 if ((counter % 2) == 0)
                                 {
                                     setClass = "bg-info";
-                                }-->
+                                }
 
-                                <tr class="tb-pa">
+                                <tr class="tb-pa @setClass">
                                     <td>@(counter++)</td>
-                                    <td>@item.FullNameUser</td>
                                     @* <td>@item.Amount</td>*@
                                     <td>@item.Amount.ToString("#,##0")</td>
                                     <td>@item.Description</td>
@@ -130,6 +128,7 @@ $('#date5').MdPersianDateTimePicker({
 });
     </script>
     <!--End Persian data picker-->
+
     <script>
         $(document).ready(function () {
             //ریسپانسیو کردن جدول-دستور پلاگین

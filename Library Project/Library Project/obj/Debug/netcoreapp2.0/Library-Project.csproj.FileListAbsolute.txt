@@ -1,4 +1,0 @@
-D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library-Project.csprojAssemblyReference.cache
-D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library-Project.csproj.CoreCompileInputs.cache
-D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library-Project.AssemblyInfoInputs.cache
-D:\MVC Projects\GitHub\Library-project\Library Project\Library Project\obj\Debug\netcoreapp2.0\Library-Project.AssemblyInfo.cs

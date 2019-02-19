@@ -88,18 +88,19 @@ namespace Library.Area.User.Controllers
                                                                //  var modelPaging = await PagingList<ManageReqestedBookViewModel>.CreateAsync(model, 4, page);
             PagingList<ManageReqestedBookViewModel> modelPaging = await PagingList.CreateAsync(model, 4, page); //هر۴رکورد دریک صفحه
 
-            //-------------------یافن و ارسال نام کابر به ویو--------------------
+            //-------------------نام کاربر و مقدار موجودی کیف پول کاربر را برمیگرداند--------------------
             ApplicationUser userFullName = (from u in _context.Users
                                             where u.Id == _userManager.GetUserId(HttpContext.User)
                                             select u).SingleOrDefault();
             //   بنویسیم   HttpContext    میتوانیم بدون      GetUserId(User)
 
             ViewBag.userFullName = userFullName.FirstName + " " + " " + userFullName.LastName;
+            //نام کاربر و مقدار موجودی کیف پول کاربر را برمیگرداند
+            ViewBag.wallet = userFullName.Wallet;
             //---------------------------------------------------------------------
 
 
-            //نام کاربر و مقدار موجودی کیف پول کاربر را برمیگرداند
-            ViewBag.wallet = userFullName.Wallet;
+            
 
             return View(modelPaging);
         }

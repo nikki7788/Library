@@ -40,10 +40,18 @@
 
             <ul >
                 <li><a asp-controller="ManageRequest" asp-action="Index">مدیریت درخواستهای رسیده</a></li>
-                <li><a asp-controller="ManageTransaction" asp-action="Index">گزارش تراکنش مالی</a></li>
-               @* <li><a href="#">مدیریت  نشریه ها</a></li>*@
             </ul>
+
         </li>
+        <li class="main-li ">
+            <a href="#" class="clearfix text-left">
+                <span class="float-right">مدیریت تراکنش های مالی  </span>
+                <i class="fa fa-plus"></i>
+            </a>
+            <ul >
+                <li><a asp-controller="ManageTransaction" asp-action="Index">گزارش تراکنش مالی</a></li>
+            </ul>
+        </li >
 
     </ul>
 
