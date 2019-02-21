@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ReflectionIT.Mvc.Paging;
 
 namespace Library
@@ -31,8 +32,21 @@ namespace Library
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        //دو ورودی اخر متد را خودم اضافه کردم      app , loggerFactory
+        public void ConfigureServices(IServiceCollection services, ILoggerFactory loggerFactory, IApplicationBuilder app)
         {
+            /////////////////////////// خودم اضافه کردم///////////////////////////////
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            /////////////////////////////// Create Automatic Database    ساخت خودکار دیتابیس  ///////////////////
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
+            //////////////////////////////////////////////////
+
 
 
             //Define Connection String
